@@ -72,7 +72,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dto\" />
     <Folder Include="Model\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
