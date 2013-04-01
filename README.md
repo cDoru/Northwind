@@ -94,7 +94,9 @@ Por ejemplo, para recuperar únicamente el nombre y los apellidos de un cliente,
 
 # Ejemplos
 
-Creación de un cliente llamado John Doe
+## Creación de un cliente 
+
+**Petición**
 
 ```json
 POST /customers
