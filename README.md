@@ -23,17 +23,17 @@ La URL base del servicio siempre hará referencia a una colección. La recuperac
 
 **URL base**
 
-`/customers`
+	/customers
 
 **URL para una entidad específica**
 
-`/customers/1234`
+	/customers/1234
 
 ## Elementos totales de una colección
 
 Se podrá recuperar el total de registros de una colección accediendo al recurso `count` de la misma. Este recurso devolverá únicamente el número total de elementos de la colección.
 
-`/customers/count`
+	/customers/count
 
 ## Códigos de error
 
@@ -54,7 +54,7 @@ Se utilizarán los parámetros `offset` y `limit` para informar de la cantidad d
 
 Por ejemplo, para recuperar los registros del 31 al 40:
 
-`/customers?offset=31&limit=10`
+	/customers?offset=31&limit=10
 
 Se establecerá un valor por defecto para la recuperación de cualquier lista. Jamás se devolverán todos los registros. 
 
@@ -66,11 +66,11 @@ Se utilizará el parámetro `order` seguido de una lista separada por comas para
 
 Por ejemplo, para recuperar los 10 primeros registros ordenados por nombre de manera ascendente sería:
 
-`/customers?offset=1&limit=10&order=lastName`
+	/customers?offset=1&limit=10&order=lastName
 
 Para recuperar la misma lista en ordenación descendente, sería:
 
-`/customers?offset=1&limit=10&order=lastName%20desc`
+	/customers?offset=1&limit=10&order=lastName%20desc
 
 ## Búsqueda
 
@@ -78,13 +78,13 @@ Para buscar resultados no se utilizará ninguna palabra clave, sino que se utili
 
 Por ejemplo, para recuperar los clientes que viven en Barcelona, sería:
 
-`/customers?city=Barcelona`
+	/customers?city=Barcelona
 
 Para indicar múltiples valores para una propiedad, los valores se indicarán en modo de lista separada por comas.
 
 Por ejemplo, para recuperar los clientes que viven en Madrid o Barcelona, sería:
 
-`/customers?city=Barcelona,Madrid`
+	/customers?city=Barcelona,Madrid
 
 ## Respuestas parciales
 
@@ -92,7 +92,7 @@ Se habilita la posibilidad de recuperar únicamente aquella información realmen
 
 Por ejemplo, para recuperar únicamente el nombre y los apellidos de un cliente, sería: 
 
-`/customers/1234?select=name,lastName`
+	/customers/1234?select=name,lastName
 
 # Operaciones
 
