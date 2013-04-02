@@ -13,13 +13,21 @@
 
 # Guía de estilo
 
+Los servicios de este proyecto seguirán las siguientes recomendaciones
+
 ## Nombrado de los servicios
 
-Los servicios nombres comunes y estarán en plural.
+Los servicios que hagan referencia a recursos estarán nombrados como nombres comunes en plural.
+
+## Elementos totales de una colección
+
+Se podrá recuperar el total de registros de una colección accediendo al recurso `count` de la misma. Este recurso devolverá únicamente el número total de elementos de la colección.
+
+`/customers/count`
 
 ## Códigos de error
 
-Los códigos de error serán equivalentes códigos de [status HTTP](http://es.wikipedia.org/wiki/Anexo:C%C3%B3digos_de_estado_HTTP). Por ejemplo:
+Los códigos de error serán equivalentes a los códigos de [status HTTP](http://es.wikipedia.org/wiki/Anexo:C%C3%B3digos_de_estado_HTTP). Por ejemplo:
 
   * 200 - OK
   * 201 - Creado
@@ -52,7 +60,7 @@ Por ejemplo, para recuperar los 10 primeros registros ordenados por nombre de ma
 
 Para recuperar la misma lista en ordenación descendente, sería:
 
-`/customers?offset=1&limit=10&order=lastName desc`
+`/customers?offset=1&limit=10&order=lastName%20desc`
 
 ## Respuestas parciales
 
@@ -70,7 +78,7 @@ Por ejemplo, para recuperar únicamente el nombre y los apellidos de un cliente,
 			<td><strong>Recurso</strong></td>
 			<td><strong>GET</strong></td>
 			<td><strong>POST</strong></td>
-			<td><strong>PUT</strong></td>
+			<td><strong>PUT / PATCH</strong></td>
 			<td><strong>DELETE<strong></td>
 		</tr>
 	</thead>
