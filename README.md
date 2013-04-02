@@ -11,13 +11,23 @@
     * Contracts
     * Dto
 
-# Guía de estilo
+# Guía de diseño de la API
 
-Los servicios de este proyecto seguirán las siguientes recomendaciones
+Los servicios de este proyecto seguirán las siguientes recomendaciones.
 
 ## Nombrado de los servicios
 
 Los servicios que hagan referencia a recursos estarán nombrados como nombres comunes en plural.
+
+La URL base del servicio siempre hará referencia a una colección. La recuperación de un elemento específico se realizará añadiendo el valor de la propiedad clave de la entidad.
+
+**URL base**
+
+`/customers`
+
+**URL para una entidad específica**
+
+`/customers/1234`
 
 ## Elementos totales de una colección
 
@@ -62,6 +72,20 @@ Para recuperar la misma lista en ordenación descendente, sería:
 
 `/customers?offset=1&limit=10&order=lastName%20desc`
 
+## Búsqueda
+
+Para buscar resultados no se utilizará ninguna palabra clave, sino que se utilizarán las propiedades del recurso para indicar las condiciones. Las condiciones estarán separadas por `&` o `|`, que representan un *AND* y un *OR* respectivamente.
+
+Por ejemplo, para recuperar los clientes que viven en Barcelona, sería:
+
+`/customers?city=Barcelona`
+
+Para indicar múltiples valores para una propiedad, los valores se indicarán en modo de lista separada por comas.
+
+Por ejemplo, para recuperar los clientes que viven en Madrid o Barcelona, sería:
+
+`/customers?city=Barcelona,Madrid`
+
 ## Respuestas parciales
 
 Se habilita la posibilidad de recuperar únicamente aquella información realmente necesaria. Para ello se utilizará el parámetro `select` seguido de una lista separada por comas con la información requerida. Con esto se ahorra ancho de banda al no tener que servir toda la información de un recurso cuando únicamente nos interesa cierta información.
@@ -87,14 +111,14 @@ Por ejemplo, para recuperar únicamente el nombre y los apellidos de un cliente,
 			<td>/customers</td>
 			<td>Lista de customers</td>
 			<td>Creación de un customer</td>
-			<td>Actualización customers en bloque</td>
+			<td>Actualización de customers en bloque</td>
 			<td>Elimina todos los customers</td>
 		</tr>
 		<tr>
 			<td>/customers/1234</td>
 			<td>Recuperación de un customer</td>
 			<td>Error</td>
-			<td>Si existe, actualiza el customer</td>
+			<td>Si existe, actualiza el customer. Si no, error</td>
 			<td>Elimina el customer</td>
 		</tr>
 	</tbody>
