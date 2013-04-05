@@ -13,42 +13,54 @@ namespace Northwind.Data.Repositories
 		/// <summary>
 		/// Añade la entidad TEntity a la base de datos
 		/// </summary>
-		/// <param name="entity">Entidad a añadir</param>
-		/// <returns>La nueva entidad creada</returns>
-		TEntity Add( TEntity entity );
+		/// <param name="entity">Entidad a añadir</param>		
+		void Add( TEntity entity );
+
+		/// <summary>
+		/// Añade todas las entidades de la lista a la base de datos
+		/// </summary>
+		/// <param name="entities">Lista de entidades</param>
+		void AddAll( IEnumerable<TEntity> entities );
 
 		/// <summary>
 		/// Actualiza la entidad TEntity
 		/// </summary>
 		/// <param name="entity">Entidad a actualizar</param>
 		/// <returns>true o false</returns>
-		bool Update( TEntity entity );
+		void Update( TEntity entity );
+
+		/// <summary>
+		/// Actualiza todas las entidades de la lista
+		/// </summary>
+		/// <param name="entities">Lista de entidades</param>
+		void UpdateAll( IEnumerable<TEntity> entities );
 
 		/// <summary>
 		/// Elimina la entidad TEntity
 		/// </summary>
 		/// <param name="entity">Entidad a eliminar</param>
 		/// <returns>true o false</returns>
-		bool Delete( TEntity entity );
+		void Delete( TEntity entity );
 
 		/// <summary>
-		/// Devuelve todos los registros
+		/// Elimina todos los elementos de la lista
 		/// </summary>
+		/// <param name="entities">Elementos a eliminar</param>
+		void DeleteAll( IEnumerable<TEntity> entities );
+
+		/// <summary>
+		/// Obtiene un elemento por su clave primaria
+		/// </summary>
+		/// <param name="id">Valor de la clave</param>
+		/// <returns>TEntity</returns>
+		TEntity Get( long id );
+
+		/// <summary>
+		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
+		/// </summary>
+		/// <param name="filter">Expresión de filtrado</param>
 		/// <returns>Una lista de TEntity</returns>
-		IList<TEntity> GetAll();
-
-		/// <summary>
-		/// Devuelve una sóla entidad TEntity de la base de datos
-		/// </summary>
-		/// <param name="where">Expresión Linq a utilizar</param>
-		/// <returns>La entidad TEntity</returns>
-		TEntity Single( Expression<Func<TEntity, bool>> where );
-
-		/// <summary>
-		/// Devuelve la primera entidad TEntity de la base de datos
-		/// </summary>
-		/// <param name="where">Expresión Linq a utilizar</param>
-		/// <returns>La entidad TEntity</returns>
-		TEntity First( Expression<Func<TEntity, bool>> where );
+		IEnumerable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> filter);
+		
 	}
 }
