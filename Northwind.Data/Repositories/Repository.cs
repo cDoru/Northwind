@@ -30,7 +30,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				db.Insert<TEntity>(entity);
+				db.Insert(entity);
 
 				// TODO: Hay que asegurarse que OrmLite actualiza la propiedad Id
 			}
@@ -68,7 +68,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				db.Update<TEntity>(entity);
+				db.Update(entity);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				db.UpdateAll<TEntity>(entities);
+				db.UpdateAll(entities);
 			}
 		}
 
@@ -105,7 +105,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				db.DeleteAll<TEntity>(entities);
+				db.DeleteAll(entities);
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				return db.Select<TEntity>(filter);
+				return db.Select(filter);
 			}
 		}
 
