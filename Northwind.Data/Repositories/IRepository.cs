@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Northwind.Data.Model;
 
 namespace Northwind.Data.Repositories
 {
@@ -8,7 +9,7 @@ namespace Northwind.Data.Repositories
 	/// Interfaz que representa un Repositorio
 	/// </summary>
 	/// <typeparam name="TEntity">Tipo de clase para el repositorio</typeparam>
-	public interface IRepository<TEntity> where TEntity : class
+	public interface IRepository<TEntity> where TEntity : IEntity
 	{
 		/// <summary>
 		/// Añade la entidad TEntity a la base de datos

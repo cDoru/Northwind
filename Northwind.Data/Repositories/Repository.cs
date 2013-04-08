@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.OrmLite;
+using Northwind.Data.Model;
 
 namespace Northwind.Data.Repositories
 {
 	/// <summary>
 	/// Clase que representa un repositorio
 	/// </summary>
-	public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
+	public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : IEntity, new()
 	{
 		#region Propiedades
 
 		/// <summary>
 		/// Conexión a la base de datos
 		/// </summary>
-		public abstract IDbConnectionFactory dbFactory { get; set; }	// Se establece automáticamente mediante IoC
+		protected IDbConnectionFactory dbFactory { get; set; }
 
+		#endregion
+
+		#region Constructor
+		/// <summary>
+		/// Constructor de la clase
+		/// </summary>
+		/// <param name="factory">Conexión</param>
+		public Repository( IDbConnectionFactory factory )
+		{
+			dbFactory = factory;
+		}
 		#endregion
 
 		#region Miembros de IRepository<TEntity>
