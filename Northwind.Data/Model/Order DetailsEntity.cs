@@ -15,10 +15,10 @@ using ServiceStack.OrmLite;
 using ServiceStack.DataAnnotations;
 using ServiceStack.DesignPatterns.Model;
 
-namespace Northwind
+namespace Northwind.Data.Model
 {
 	[Alias("Order Details")]
-    public partial class OrderDetailEntity 
+    public partial class OrderDetailEntity : IEntity 
     {
         [Alias("Order ID")]
         [Required]

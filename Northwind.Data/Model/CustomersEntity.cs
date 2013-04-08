@@ -15,38 +15,29 @@ using ServiceStack.OrmLite;
 using ServiceStack.DataAnnotations;
 using ServiceStack.DesignPatterns.Model;
 
-namespace Northwind
+namespace Northwind.Data.Model
 {
-	[Alias("Employees")]
-    public partial class EmployeeEntity : IHasId<int> 
+	[Alias("Customers")]
+    public partial class CustomerEntity : IEntity, IHasId<string> 
     {
-        [Alias("Employee ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Last Name")]
+        [Alias("Customer ID")]
         [Required]
-        public string LastName { get; set;}
-        [Alias("First Name")]
+        public string Id { get; set;}
+        [Alias("Company Name")]
         [Required]
-        public string FirstName { get; set;}
-        public string Title { get; set;}
-        [Alias("Birth Date")]
-        public DateTime? BirthDate { get; set;}
-        [Alias("Hire Date")]
-        public DateTime? HireDate { get; set;}
+        public string CompanyName { get; set;}
+        [Alias("Contact Name")]
+        public string ContactName { get; set;}
+        [Alias("Contact Title")]
+        public string ContactTitle { get; set;}
         public string Address { get; set;}
         public string City { get; set;}
         public string Region { get; set;}
         [Alias("Postal Code")]
         public string PostalCode { get; set;}
         public string Country { get; set;}
-        [Alias("Home Phone")]
-        public string HomePhone { get; set;}
-        public string Extension { get; set;}
-        public byte[] Photo { get; set;}
-        public string Notes { get; set;}
-        [Alias("Reports To")]
-        public int? ReportsTo { get; set;}
+        public string Phone { get; set;}
+        public string Fax { get; set;}
     }
 }
 #pragma warning restore 1591

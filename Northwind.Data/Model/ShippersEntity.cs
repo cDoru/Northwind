@@ -15,29 +15,17 @@ using ServiceStack.OrmLite;
 using ServiceStack.DataAnnotations;
 using ServiceStack.DesignPatterns.Model;
 
-namespace Northwind
+namespace Northwind.Data.Model
 {
-	[Alias("Suppliers")]
-    public partial class SupplierEntity : IHasId<int> 
+	[Alias("Shippers")]
+    public partial class ShipperEntity : IEntity, IHasId<int> 
     {
-        [Alias("Supplier ID")]
+        [Alias("Shipper ID")]
         [AutoIncrement]
         public int Id { get; set;}
         [Alias("Company Name")]
         [Required]
         public string CompanyName { get; set;}
-        [Alias("Contact Name")]
-        public string ContactName { get; set;}
-        [Alias("Contact Title")]
-        public string ContactTitle { get; set;}
-        public string Address { get; set;}
-        public string City { get; set;}
-        public string Region { get; set;}
-        [Alias("Postal Code")]
-        public string PostalCode { get; set;}
-        public string Country { get; set;}
-        public string Phone { get; set;}
-        public string Fax { get; set;}
     }
 }
 #pragma warning restore 1591

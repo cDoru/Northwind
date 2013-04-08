@@ -2,8 +2,8 @@
 <#
 	// Settings
 	ConnectionStringName = "";	 			// Uses last connection string in config if not specified
-	Namespace = "";
-	ClassPrefix = "";
+	Namespace = "Northwind.Data.Model";
+	ClassPrefix = ""; 
 	ClassSuffix = "Entity";
 	bool SplitIntoMultipleFiles = true;		// if true: Generates one file for every class
 	bool MakeSingular = true;				// if true: Changes the classname to singular if tablename is not singular
@@ -54,12 +54,12 @@ namespace <#=Namespace #>
 <#
 foreach(Table tbl in from t in tables where !t.Ignore select t)
 {
-manager.StartNewFile(tbl.Name + ".cs");
+manager.StartNewFile(tbl.Name + ClassSuffix + ".cs");
 #>
 <# if (MakeSingular) {#>
 	[Alias("<#=tbl.Name#>")]
 <#}#>
-    public partial class <#=tbl.ClassName#><#if (tbl.HasPK() && UseIdAsPK) { #> : IHasId<<#=tbl.PK.PropertyType#>><#}#> 
+    public partial class <#=tbl.ClassName#> : IEntity<#if (tbl.HasPK() && UseIdAsPK) { #>, IHasId<<#=tbl.PK.PropertyType#>><#}#> 
     {
 <# if (GenerateConstructor) { #>
 		public <#=tbl.ClassName#>()

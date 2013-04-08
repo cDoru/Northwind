@@ -15,10 +15,10 @@ using ServiceStack.OrmLite;
 using ServiceStack.DataAnnotations;
 using ServiceStack.DesignPatterns.Model;
 
-namespace Northwind
+namespace Northwind.Data.Model
 {
 	[Alias("Products")]
-    public partial class ProductEntity : IHasId<int> 
+    public partial class ProductEntity : IEntity, IHasId<int> 
     {
         [Alias("Product ID")]
         [AutoIncrement]

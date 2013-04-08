@@ -65,19 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Categories.cs">
+    <Compile Include="Model\CategoriesEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Customers.cs">
+    <Compile Include="Model\CustomersEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Employees.cs">
+    <Compile Include="Model\EmployeesEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Order Details.cs">
+    <Compile Include="Model\IEntity.cs" />
+    <Compile Include="Model\Order DetailsEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Orders.cs">
+    <Compile Include="Model\OrdersEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OrmLite.Core1.cs">
@@ -90,18 +91,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Products.cs">
+    <Compile Include="Model\ProductsEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Shippers.cs">
+    <Compile Include="Model\ShippersEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Suppliers.cs">
+    <Compile Include="Model\SuppliersEntity.cs">
       <DependentUpon>OrmLite.Poco.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CategoryEntityRepository.cs" />
+    <Compile Include="Repositories\CustomerEntityRepository.cs" />
+    <Compile Include="Repositories\EmployeeEntityRepository.cs" />
+    <Compile Include="Repositories\ICategoryEntityRepository.cs" />
+    <Compile Include="Repositories\ICustomerEntityRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repositories\IEmployeeEntityRepository.cs" />
+    <Compile Include="Repositories\IOrderDetailRepository.cs" />
+    <Compile Include="Repositories\IOrderEntityRepository.cs" />
+    <Compile Include="Repositories\IProductEntityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\IShipperRepository.cs" />
+    <Compile Include="Repositories\ISupplierEntity.cs" />
+    <Compile Include="Repositories\OrderDetailEntityRepository.cs" />
+    <Compile Include="Repositories\OrderEntityRepository.cs" />
+    <Compile Include="Repositories\ProductEntityRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\ShipperEntityRepository.cs" />
+    <Compile Include="Repositories\SupplierEntityRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Northwind.sdf">
@@ -118,6 +137,7 @@
     <None Include="Model\OrmLite.Poco.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>OrmLite.Poco.cs</LastGenOutput>
+      <CustomToolNamespace>Northwind.Data</CustomToolNamespace>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
