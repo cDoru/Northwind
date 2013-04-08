@@ -1,19 +1,58 @@
 # Estructura de la solución
 
-  * Northwind.Data. *Clases del modelo y repositorios de acceso*
+  * Northwind.Data. *Clases del modelo de datos y repositorios de acceso*
     * Model			    
     * Repositories		
   * Northwind.Host. *Servicio web*
   * Northwind.ServiceBase. *Clases base de servicio*
   * NorthWind.ServiceInterface. *Clases de implementación del servicio*
     * Services
-  * NorthWind.ServiceModel
-    * Contracts
-    * Dto
+  * NorthWind.ServiceModel. *Modelo del servicio*
+    * Contracts. *Clases de petición (Request) y respuesta (Response)*
+    * Dto. *Clases Dto*
 
 # Guía de diseño de la API
 
 Los servicios de este proyecto seguirán las siguientes recomendaciones.
+
+## Nombrado de las clases
+
+<table>
+	<thead>
+		<tr>
+			<td>Tipo de clase</td>
+			<td>Nombre</td>
+			<td>Ejemplo</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Modelo de datos</td>
+			<td>[NombreDeTablaEnSingular]Entity</td>
+			<td>CustomerEntity</td>
+		</tr>
+		<tr>
+			<td>DTOs</td>
+			<td>Nombre en plural de la clase del modelo asociada</td>
+			<td>Customers</td>
+		</tr>
+		<tr>
+			<td>Clases de petición (Request)</td>
+			<td>[NombreDto]Request</td>
+			<td>CustomersRequest</td>
+		</tr>
+		<tr>
+			<td>Clases de respuesta (Response)</td>
+			<td>[NombreDto]Response</td>
+			<td>CustomersResponse</td>
+		</tr>
+		<tr>
+			<td>Clases de servicio</td>
+			<td>[NombreDto]Service</td>
+			<td>CustomersService</td>
+		</tr>
+	</tbody>
+</table>
 
 ## Nombrado de los servicios
 
