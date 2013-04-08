@@ -20,36 +20,36 @@ Los servicios de este proyecto seguirán las siguientes recomendaciones.
 <table>
 	<thead>
 		<tr>
-			<td>Tipo de clase</td>
-			<td>Nombre</td>
-			<td>Ejemplo</td>
+			<th>Tipo de clase</th>
+			<th>Nombre</th>
+			<th>Ejemplo</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>Modelo de datos</td>
 			<td>[NombreDeTablaEnSingular]Entity</td>
-			<td>CustomerEntity</td>
+			<td><code>CustomerEntity</code></td>
 		</tr>
 		<tr>
 			<td>DTOs</td>
 			<td>Nombre en plural de la clase del modelo asociada</td>
-			<td>Customers</td>
+			<td><code>Customers</code></td>
 		</tr>
 		<tr>
 			<td>Clases de petición (Request)</td>
 			<td>[NombreDto]Request</td>
-			<td>CustomersRequest</td>
+			<td><code>CustomersRequest</code></td>
 		</tr>
 		<tr>
 			<td>Clases de respuesta (Response)</td>
 			<td>[NombreDto]Response</td>
-			<td>CustomersResponse</td>
+			<td><code>CustomersResponse</code></td>
 		</tr>
 		<tr>
 			<td>Clases de servicio</td>
 			<td>[NombreDto]Service</td>
-			<td>CustomersService</td>
+			<td><code>CustomersService</code></td>
 		</tr>
 	</tbody>
 </table>
