@@ -86,11 +86,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Northwind.Data\App.config">
-      <Link>App.config</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -103,6 +98,10 @@
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
       <Project>{0B403B34-B8C3-402E-B195-F2CD4002DCCB}</Project>
       <Name>Northwind.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.ServiceInterface\Northwind.ServiceInterface.csproj">
+      <Project>{90D13AF8-B307-4F5D-AE29-5439C954180B}</Project>
+      <Name>Northwind.ServiceInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

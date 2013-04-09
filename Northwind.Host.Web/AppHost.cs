@@ -14,6 +14,7 @@ using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using System.Configuration;
 using Northwind.Data.Repositories;
+using Northwind.ServiceInterface.Services;
 
 namespace Northwind.Host.Web
 {
@@ -25,7 +26,7 @@ namespace Northwind.Host.Web
 		/// <summary>
 		/// Constructor de la clase
 		/// </summary>
-		public AppHost() : base("Northwind web services", null)
+		public AppHost() : base("Northwind web services", typeof(CustomersService).Assembly)
 		{
 		}
 
@@ -59,7 +60,7 @@ namespace Northwind.Host.Web
 			container.RegisterAs<OrderDetailEntityRepository, IOrderDetailEntityRepository>();	
 
 			// Acceso a datos
-			var connectionString = ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString;
+			var connectionString = ConfigurationManager.ConnectionStrings["Northwind.Data.DataSource"].ConnectionString;
 			var dbFactory = new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider);
 			container.Register<IDbConnectionFactory>(dbFactory);
 		}
