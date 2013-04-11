@@ -10,29 +10,21 @@ namespace Northwind.ServiceBase
 	/// Clase que representa una respuesta básica cuando hay una colección de elementos
 	/// </summary>
 	/// <typeparam name="TDto">Tipo que contiene la respuesta</typeparam>
-	public abstract class ResponseCollectionBase<TDto> : IHasResponseStatus
+	/// <seealso cref="https://github.com/ServiceStack/ServiceStack/wiki/New-Api#structured-error-handling"/>
+	public abstract class ResponseCollectionBase<TDto> 
 		where TDto : class
 	{
 		/// <summary>
 		/// Resultado que contiene la respuesta
 		/// </summary>
-		public IEnumerable<TDto> Result { get; set; }
+		public IList<TDto> Result { get; set; }
 
 		/// <summary>
 		/// Constructor de la clase
 		/// </summary>
-		public ResponseCollectionBase()
+		protected ResponseCollectionBase()
 		{
 			Result = new List<TDto>();
-		}
-
-		#region Miembros de IHasResponseStatus
-
-		/// <summary>
-		/// Status de la respuesta
-		/// </summary>
-		public ResponseStatus ResponseStatus { get; set; }		
-
-		#endregion
+		}		
 	}
 }

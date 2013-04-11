@@ -11,28 +11,21 @@ namespace Northwind.ServiceBase
 	/// Clase que representa una respuesta básica
 	/// </summary>
 	/// <typeparam name="TDto">Tipo que contiene la respuesta</typeparam>
-	public abstract class ResponseBase<TDto> : IHasResponseStatus
+	/// <seealso cref="https://github.com/ServiceStack/ServiceStack/wiki/New-Api#structured-error-handling"/>
+	public abstract class ResponseBase<TDto> 
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		protected ResponseBase()
 		{
-			ResponseStatus = new ResponseStatus();
+			
 		}
 
 		/// <summary>
 		/// Contenido de la respuesta
 		/// </summary>
 		public TDto Result { get; set; }
-
-		#region Miembros de IHasResponseStatus
-
-		/// <summary>
-		/// Status de la respuesta
-		/// </summary>
-		public ResponseStatus ResponseStatus { get; set; } 		
-
-		#endregion
+		
 	}
 }
