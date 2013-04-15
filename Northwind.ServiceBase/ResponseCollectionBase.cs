@@ -12,7 +12,7 @@ namespace Northwind.ServiceBase
 	/// <typeparam name="TDto">Tipo que contiene la respuesta</typeparam>
 	/// <seealso cref="https://github.com/ServiceStack/ServiceStack/wiki/New-Api#structured-error-handling"/>
 	public abstract class ResponseCollectionBase<TDto> 
-		where TDto : class
+		where TDto : class, IDto
 	{
 		/// <summary>
 		/// Resultado que contiene la respuesta

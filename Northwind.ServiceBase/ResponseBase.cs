@@ -13,6 +13,7 @@ namespace Northwind.ServiceBase
 	/// <typeparam name="TDto">Tipo que contiene la respuesta</typeparam>
 	/// <seealso cref="https://github.com/ServiceStack/ServiceStack/wiki/New-Api#structured-error-handling"/>
 	public abstract class ResponseBase<TDto> 
+		where TDto : class, IDto
 	{
 		/// <summary>
 		/// Constructor
