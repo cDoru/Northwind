@@ -72,9 +72,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
+      <Project>{0B403B34-B8C3-402E-B195-F2CD4002DCCB}</Project>
+      <Name>Northwind.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Northwind.ServiceBase\Northwind.ServiceBase.csproj">
       <Project>{3B12E984-CC87-42E2-AF76-EFA9025BDF89}</Project>
       <Name>Northwind.ServiceBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.ServiceModel\Northwind.ServiceModel.csproj">
+      <Project>{767242D5-7351-43AA-9C0F-8EC621FF1125}</Project>
+      <Name>Northwind.ServiceModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

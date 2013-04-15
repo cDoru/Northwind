@@ -99,6 +99,10 @@
       <Project>{0B403B34-B8C3-402E-B195-F2CD4002DCCB}</Project>
       <Name>Northwind.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Northwind.ServiceBase\Northwind.ServiceBase.csproj">
+      <Project>{3B12E984-CC87-42E2-AF76-EFA9025BDF89}</Project>
+      <Name>Northwind.ServiceBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Northwind.ServiceInterface\Northwind.ServiceInterface.csproj">
       <Project>{90D13AF8-B307-4F5D-AE29-5439C954180B}</Project>
       <Name>Northwind.ServiceInterface</Name>
