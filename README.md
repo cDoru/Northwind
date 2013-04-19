@@ -8,8 +8,9 @@
   * NorthWind.ServiceInterface. *Clases de implementación del servicio*
     * Services
   * NorthWind.ServiceModel. *Modelo del servicio*
-    * Contracts. *Clases de petición (Request) y respuesta (Response)*
+    * Contracts. *Clases de petición (Request)*
     * Dto. *Clases Dto*
+    * Operations. *Clases de respuesta (Response)*
 
 # Guía de diseño de la API
 
