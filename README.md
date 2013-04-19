@@ -34,8 +34,8 @@ Los servicios de este proyecto seguirán las siguientes recomendaciones.
 		</tr>
 		<tr>
 			<td>DTOs</td>
-			<td>Nombre en plural de la clase del modelo asociada</td>
-			<td><code>Customers</code></td>
+			<td>Nombre en singular de la clase del modelo asociada</td>
+			<td><code>Customer</code></td>
 		</tr>
 		<tr>
 			<td>Clases de petición (Request)</td>
