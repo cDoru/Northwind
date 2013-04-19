@@ -39,13 +39,13 @@ Los servicios de este proyecto seguirán las siguientes recomendaciones.
 		</tr>
 		<tr>
 			<td>Clases de petición (Request)</td>
-			<td>[NombreDto]Request</td>
-			<td><code>CustomersRequest</code></td>
+			<td>[Operación]Request</td>
+			<td><code>CustomerDetailRequest</code></td>
 		</tr>
 		<tr>
 			<td>Clases de respuesta (Response)</td>
-			<td>[NombreDto]Response</td>
-			<td><code>CustomersResponse</code></td>
+			<td>[Operación]Response</td>
+			<td><code>CustomerDetailResponse</code></td>
 		</tr>
 		<tr>
 			<td>Clases de servicio</td>
