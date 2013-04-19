@@ -11,5 +11,11 @@ namespace Northwind.Data.Repositories
 	/// </summary>
 	public interface ICustomerEntityRepository : IRepository<CustomerEntity>
 	{
+		/// <summary>
+		/// Obtiene un <see cref="Customer"/> a partir de su clave
+		/// </summary>
+		/// <param name="id">Valor de la clave</param>
+		/// <returns>TEntity</returns>
+		CustomerEntity Get( string id );
 	}
 }
