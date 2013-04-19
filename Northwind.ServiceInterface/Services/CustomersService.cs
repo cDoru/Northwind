@@ -21,7 +21,7 @@ namespace Northwind.ServiceInterface.Services
 	/// </summary>
 	public class CustomersService : ServiceBase<ICustomerEntityRepository, CustomerEntity>
 	{
-		public CustomersResponse Get( CustomerIdRequest request )
+		public CustomersResponse Get( CustomerDetail request )
 		{
 			var result = Repository.Get(request.Id);
 
@@ -30,7 +30,7 @@ namespace Northwind.ServiceInterface.Services
 				throw HttpError.NotFound("Customer {0} not found".Fmt(request.Id));
 			}
 
-			return new CustomersResponse { Result = result.ToDto<Customers>() };
+			return new CustomersResponse { Result = result.ToDto<Customer>() };
 		}
 	}
 }
