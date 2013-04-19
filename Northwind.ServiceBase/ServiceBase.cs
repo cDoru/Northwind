@@ -12,9 +12,9 @@ namespace Northwind.ServiceBase
 	/// <summary>
 	/// Clase que representa un servicio web
 	/// </summary>
-	public abstract class ServiceBase<TRepository, TDto> : Service
-		where TRepository : class
-		where TDto: class, IDto
+	public abstract class ServiceBase<TRepository, TEntity> : Service
+		where TRepository : IRepository<TEntity>
+		where TEntity : IEntity
 	{
 		#region Propiedades
 
