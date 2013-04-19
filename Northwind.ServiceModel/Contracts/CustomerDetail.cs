@@ -13,7 +13,7 @@ namespace Northwind.ServiceModel.Contracts
 	/// Clase que representa una petición del tipo <see cref="Customer"/> por su clave
 	/// </summary>
 	[Route("/customers/{Id}", "GET")]
-	public class CustomerIdRequest : RequestBase<Customers, CustomersResponse>
+	public class CustomerDetail : RequestBase<Customer, CustomersResponse>
 	{
 		/// <summary>
 		/// Identificador
