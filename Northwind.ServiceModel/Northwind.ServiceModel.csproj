@@ -64,9 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\CustomerIdRequest.cs" />
+    <Compile Include="Contracts\CustomerDetail.cs" />
     <Compile Include="Operations\CustomersResponse.cs" />
-    <Compile Include="Dto\Customers.cs" />
+    <Compile Include="Dto\Customer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

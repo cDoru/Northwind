@@ -11,7 +11,7 @@ namespace Northwind.ServiceModel.Operations
 	/// <summary>
 	/// Clase que representa una respuesta para el tipo Customer
 	/// </summary>
-	public class CustomersResponse : ResponseBase<Customers>
+	public class CustomersResponse : ResponseBase<Customer>
 	{
 
 	}
