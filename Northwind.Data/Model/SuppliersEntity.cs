@@ -18,26 +18,33 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Suppliers")]
-    public partial class SupplierEntity : IEntity, IHasId<int> 
+    public partial class SupplierEntity : IEntity, IHasId<long> 
     {
-        [Alias("Supplier ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Company Name")]
+        [Alias("Id")]
         [Required]
+        public long Id { get; set;}
+        [StringLength(8000)]
         public string CompanyName { get; set;}
-        [Alias("Contact Name")]
+        [StringLength(8000)]
         public string ContactName { get; set;}
-        [Alias("Contact Title")]
+        [StringLength(8000)]
         public string ContactTitle { get; set;}
+        [StringLength(8000)]
         public string Address { get; set;}
+        [StringLength(8000)]
         public string City { get; set;}
+        [StringLength(8000)]
         public string Region { get; set;}
-        [Alias("Postal Code")]
+        [StringLength(8000)]
         public string PostalCode { get; set;}
+        [StringLength(8000)]
         public string Country { get; set;}
+        [StringLength(8000)]
         public string Phone { get; set;}
+        [StringLength(8000)]
         public string Fax { get; set;}
+        [StringLength(8000)]
+        public string HomePage { get; set;}
     }
 }
 #pragma warning restore 1591

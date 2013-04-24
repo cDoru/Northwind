@@ -1,9 +1,9 @@
-﻿<#@ include file="OrmLite.Core.ttinclude" #>
+﻿<#@ include file="OrmLite.Core.ttinclude" #> 
 <#
 	// Settings
-	ConnectionStringName = "";	 			// Uses last connection string in config if not specified
+	ConnectionStringName = "";			// Uses last connection string in config if not specified
 	Namespace = "Northwind.Data.Model";
-	ClassPrefix = ""; 
+	ClassPrefix = "";
 	ClassSuffix = "Entity";
 	bool SplitIntoMultipleFiles = true;		// if true: Generates one file for every class
 	bool MakeSingular = true;				// if true: Changes the classname to singular if tablename is not singular
@@ -21,7 +21,7 @@
 	tables["tablename"]["columnname"].Ignore = true;			// To ignore a column
 	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
 	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
-*/	
+*/
 
 	// Generate output
 	if (tables.Count>0)

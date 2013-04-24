@@ -18,14 +18,15 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Shippers")]
-    public partial class ShipperEntity : IEntity, IHasId<int> 
+    public partial class ShipperEntity : IEntity, IHasId<long> 
     {
-        [Alias("Shipper ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Company Name")]
+        [Alias("Id")]
         [Required]
+        public long Id { get; set;}
+        [StringLength(8000)]
         public string CompanyName { get; set;}
+        [StringLength(8000)]
+        public string Phone { get; set;}
     }
 }
 #pragma warning restore 1591

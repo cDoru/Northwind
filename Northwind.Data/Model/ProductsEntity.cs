@@ -18,32 +18,29 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Products")]
-    public partial class ProductEntity : IEntity, IHasId<int> 
+    public partial class ProductEntity : IEntity, IHasId<long> 
     {
-        [Alias("Product ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Supplier ID")]
-        public int? SupplierID { get; set;}
-        [Alias("Category ID")]
-        public int? CategoryID { get; set;}
-        [Alias("Product Name")]
+        [Alias("Id")]
         [Required]
+        public long Id { get; set;}
+        [StringLength(8000)]
         public string ProductName { get; set;}
-        [Alias("English Name")]
-        public string EnglishName { get; set;}
-        [Alias("Quantity Per Unit")]
-        public string QuantityPerUnit { get; set;}
-        [Alias("Unit Price")]
-        public decimal? UnitPrice { get; set;}
-        [Alias("Units In Stock")]
-        public short? UnitsInStock { get; set;}
-        [Alias("Units On Order")]
-        public short? UnitsOnOrder { get; set;}
-        [Alias("Reorder Level")]
-        public short? ReorderLevel { get; set;}
         [Required]
-        public bool Discontinued { get; set;}
+        public long SupplierId { get; set;}
+        [Required]
+        public long CategoryId { get; set;}
+        [StringLength(8000)]
+        public string QuantityPerUnit { get; set;}
+        [Required]
+        public decimal UnitPrice { get; set;}
+        [Required]
+        public long UnitsInStock { get; set;}
+        [Required]
+        public long UnitsOnOrder { get; set;}
+        [Required]
+        public long ReorderLevel { get; set;}
+        [Required]
+        public long Discontinued { get; set;}
     }
 }
 #pragma warning restore 1591

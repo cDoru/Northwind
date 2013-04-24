@@ -18,35 +18,43 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Employees")]
-    public partial class EmployeeEntity : IEntity, IHasId<int> 
+    public partial class EmployeeEntity : IEntity, IHasId<long> 
     {
-        [Alias("Employee ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Last Name")]
+        [Alias("Id")]
         [Required]
+        public long Id { get; set;}
+        [StringLength(8000)]
         public string LastName { get; set;}
-        [Alias("First Name")]
-        [Required]
+        [StringLength(8000)]
         public string FirstName { get; set;}
+        [StringLength(8000)]
         public string Title { get; set;}
-        [Alias("Birth Date")]
-        public DateTime? BirthDate { get; set;}
-        [Alias("Hire Date")]
-        public DateTime? HireDate { get; set;}
+        [StringLength(8000)]
+        public string TitleOfCourtesy { get; set;}
+        [StringLength(8000)]
+        public string BirthDate { get; set;}
+        [StringLength(8000)]
+        public string HireDate { get; set;}
+        [StringLength(8000)]
         public string Address { get; set;}
+        [StringLength(8000)]
         public string City { get; set;}
+        [StringLength(8000)]
         public string Region { get; set;}
-        [Alias("Postal Code")]
+        [StringLength(8000)]
         public string PostalCode { get; set;}
+        [StringLength(8000)]
         public string Country { get; set;}
-        [Alias("Home Phone")]
+        [StringLength(8000)]
         public string HomePhone { get; set;}
+        [StringLength(8000)]
         public string Extension { get; set;}
-        public byte[] Photo { get; set;}
+        public string Photo { get; set;}
+        [StringLength(8000)]
         public string Notes { get; set;}
-        [Alias("Reports To")]
-        public int? ReportsTo { get; set;}
+        public long? ReportsTo { get; set;}
+        [StringLength(8000)]
+        public string PhotoPath { get; set;}
     }
 }
 #pragma warning restore 1591

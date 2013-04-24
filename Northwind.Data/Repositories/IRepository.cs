@@ -54,7 +54,7 @@ namespace Northwind.Data.Repositories
 		/// </summary>
 		/// <param name="id">Valor de la clave</param>
 		/// <returns>TEntity</returns>
-		TEntity Get( long id );
+		TEntity Get( object id );
 
 		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>

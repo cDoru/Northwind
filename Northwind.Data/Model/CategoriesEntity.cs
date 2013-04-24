@@ -18,16 +18,15 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Categories")]
-    public partial class CategoryEntity : IEntity, IHasId<int> 
+    public partial class CategoryEntity : IEntity, IHasId<long> 
     {
-        [Alias("Category ID")]
-        [AutoIncrement]
-        public int Id { get; set;}
-        [Alias("Category Name")]
+        [Alias("Id")]
         [Required]
+        public long Id { get; set;}
+        [StringLength(8000)]
         public string CategoryName { get; set;}
+        [StringLength(8000)]
         public string Description { get; set;}
-        public byte[] Picture { get; set;}
     }
 }
 #pragma warning restore 1591

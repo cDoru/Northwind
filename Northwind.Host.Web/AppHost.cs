@@ -6,10 +6,11 @@ using System.Web.Configuration;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
+using ServiceStack.Common.Utils;
 using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
 using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.SqlServer;
+using ServiceStack.OrmLite.Sqlite;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using System.Configuration;
@@ -57,11 +58,20 @@ namespace Northwind.Host.Web
 			container.RegisterAs<CategoryEntityRepository, ICategoryEntityRepository>();
 			container.RegisterAs<CustomerEntityRepository, ICustomerEntityRepository>();
 			container.RegisterAs<EmployeeEntityRepository, IEmployeeEntityRepository>();
-			container.RegisterAs<OrderDetailEntityRepository, IOrderDetailEntityRepository>();	
+			container.RegisterAs<OrderEntityRepository, IOrderEntityRepository>();	
+			container.RegisterAs<OrderDetailEntityRepository, IOrderDetailEntityRepository>();
+			container.RegisterAs<ProductEntityRepository, IProductEntityRepository>();
+			container.RegisterAs<ShipperEntityRepository, IShipperEntityRepository>();
+			container.RegisterAs<SupplierEntityRepository, ISupplierEntityRepository>();
+			container.RegisterAs<RegionEntityRepository, IRegionEntityRepository>();
+			container.RegisterAs<TerritoryEntityRepository, ITerritoryEntityRepository>();
+			container.RegisterAs<EmployeeTerritoryEntityRepository, IEmployeeTerritoryEntityRepository>();	
 
 			// Acceso a datos
-			var connectionString = ConfigurationManager.ConnectionStrings["Northwind.Data.DataSource"].ConnectionString;
-			var dbFactory = new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider);
+			var dbFactory = new OrmLiteConnectionFactory(
+				//ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString.MapHostAbsolutePath(),
+				"~/Northwind.sqlite".MapHostAbsolutePath(),
+				SqliteDialect.Provider);
 			container.Register<IDbConnectionFactory>(dbFactory);
 		}
 		#endregion

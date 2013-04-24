@@ -20,23 +20,29 @@ namespace Northwind.Data.Model
 	[Alias("Customers")]
     public partial class CustomerEntity : IEntity, IHasId<string> 
     {
-        [Alias("Customer ID")]
+        [Alias("Id")]
+        [StringLength(8000)]
         [Required]
         public string Id { get; set;}
-        [Alias("Company Name")]
-        [Required]
+        [StringLength(8000)]
         public string CompanyName { get; set;}
-        [Alias("Contact Name")]
+        [StringLength(8000)]
         public string ContactName { get; set;}
-        [Alias("Contact Title")]
+        [StringLength(8000)]
         public string ContactTitle { get; set;}
+        [StringLength(8000)]
         public string Address { get; set;}
+        [StringLength(8000)]
         public string City { get; set;}
+        [StringLength(8000)]
         public string Region { get; set;}
-        [Alias("Postal Code")]
+        [StringLength(8000)]
         public string PostalCode { get; set;}
+        [StringLength(8000)]
         public string Country { get; set;}
+        [StringLength(8000)]
         public string Phone { get; set;}
+        [StringLength(8000)]
         public string Fax { get; set;}
     }
 }

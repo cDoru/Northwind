@@ -16,22 +16,6 @@ namespace Northwind.Data.Repositories
 			: base(dbFactory)
 		{
 		}
-
-		#region Miembros de ICustomerEntityRepository
-
-		/// <summary>
-		/// Obtiene un <see cref="Customer"/> a partir de su clave
-		/// </summary>
-		/// <param name="id">Valor de la clave</param>
-		/// <returns>CustomerEntity</returns>
-		public CustomerEntity Get( string id )
-		{
-			using ( var db = dbFactory.OpenDbConnection() )
-			{
-				return db.GetById<CustomerEntity>(id);
-			}
-		}
-
-		#endregion
+		
 	}
 }

@@ -126,7 +126,7 @@ namespace Northwind.Data.Repositories
 		/// </summary>
 		/// <param name="id">Valor de la clave</param>
 		/// <returns>TEntity</returns>
-		public TEntity Get( long id )
+		public TEntity Get( object id )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{

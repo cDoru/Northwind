@@ -18,37 +18,36 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Orders")]
-    public partial class OrderEntity : IEntity, IHasId<int> 
+    public partial class OrderEntity : IEntity, IHasId<long> 
     {
-        [Alias("Order ID")]
+        [Alias("Id")]
         [Required]
-        public int Id { get; set;}
-        [Alias("Customer ID")]
+        public long Id { get; set;}
+        [StringLength(8000)]
+        public string CustomerId { get; set;}
         [Required]
-        public string CustomerID { get; set;}
-        [Alias("Employee ID")]
-        public int? EmployeeID { get; set;}
-        [Alias("Ship Name")]
+        public long EmployeeId { get; set;}
+        [StringLength(8000)]
+        public string OrderDate { get; set;}
+        [StringLength(8000)]
+        public string RequiredDate { get; set;}
+        [StringLength(8000)]
+        public string ShippedDate { get; set;}
+        public long? ShipVia { get; set;}
+        [Required]
+        public decimal Freight { get; set;}
+        [StringLength(8000)]
         public string ShipName { get; set;}
-        [Alias("Ship Address")]
+        [StringLength(8000)]
         public string ShipAddress { get; set;}
-        [Alias("Ship City")]
+        [StringLength(8000)]
         public string ShipCity { get; set;}
-        [Alias("Ship Region")]
+        [StringLength(8000)]
         public string ShipRegion { get; set;}
-        [Alias("Ship Postal Code")]
+        [StringLength(8000)]
         public string ShipPostalCode { get; set;}
-        [Alias("Ship Country")]
+        [StringLength(8000)]
         public string ShipCountry { get; set;}
-        [Alias("Ship Via")]
-        public int? ShipVia { get; set;}
-        [Alias("Order Date")]
-        public DateTime? OrderDate { get; set;}
-        [Alias("Required Date")]
-        public DateTime? RequiredDate { get; set;}
-        [Alias("Shipped Date")]
-        public DateTime? ShippedDate { get; set;}
-        public decimal? Freight { get; set;}
     }
 }
 #pragma warning restore 1591

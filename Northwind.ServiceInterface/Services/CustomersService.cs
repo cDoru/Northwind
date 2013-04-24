@@ -30,7 +30,7 @@ namespace Northwind.ServiceInterface.Services
 				throw HttpError.NotFound("Customer {0} not found".Fmt(request.Id));
 			}
 
-			return new CustomersResponse { Result = result.ToDto<Customer>() };
+			return new CustomersResponse { Result = result.TranslateTo<Customer>() };
 		}
 	}
 }

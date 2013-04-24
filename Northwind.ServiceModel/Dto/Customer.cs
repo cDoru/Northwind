@@ -7,7 +7,7 @@ using Northwind.ServiceBase;
 namespace Northwind.ServiceModel.Dto
 {
 	/// <summary>
-	/// Clase que representa 
+	/// Clase que representa una entidad <see cref="Customer"/>
 	/// </summary>
 	public class Customer 
 	{		
