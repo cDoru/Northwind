@@ -12,6 +12,23 @@ namespace Northwind.Data.Repositories
 	/// </summary>
 	public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : IEntity, new()
 	{
+		#region Campos
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private const int DefaultOffset = 1;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private const int DefaultLimit = 100;
+
+		private int offset = DefaultOffset;
+		private int limit = DefaultLimit;
+
+		#endregion
+
 		#region Propiedades
 
 		/// <summary>
@@ -19,6 +36,24 @@ namespace Northwind.Data.Repositories
 		/// </summary>
 		protected IDbConnectionFactory dbFactory { get; set; }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Offset
+		{
+			get { return offset; }
+			set { offset = value; }
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Limit
+		{
+			get { return limit; }
+			set { limit = value; }
+		}
+		
 		#endregion
 
 		#region Constructor
@@ -135,6 +170,18 @@ namespace Northwind.Data.Repositories
 		}
 
 		/// <summary>
+		/// Obtiene todos los registros
+		/// </summary>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		public IEnumerable<TEntity> GetAll()
+		{
+			using ( var db = dbFactory.OpenDbConnection() )
+			{
+				return db.Select<TEntity>().Skip(Offset - 1).Take(Limit);
+			}
+		}
+
+		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
@@ -144,6 +191,18 @@ namespace Northwind.Data.Repositories
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
 				return db.Select(filter);
+			}
+		}
+
+		/// <summary>
+		/// Devuelve el número total de registros
+		/// </summary>
+		/// <returns>El número de registros</returns>
+		public long Count()
+		{
+			using ( var db = dbFactory.OpenDbConnection() )
+			{
+				return db.Count<TEntity>();
 			}
 		}
 

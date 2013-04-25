@@ -57,11 +57,23 @@ namespace Northwind.Data.Repositories
 		TEntity Get( object id );
 
 		/// <summary>
+		/// Obtiene todos los registros
+		/// </summary>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		IEnumerable<TEntity> GetAll();
+
+		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
 		/// <returns>Una lista de TEntity</returns>
 		IEnumerable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> filter);
+
+		/// <summary>
+		/// Devuelve el número total de registros
+		/// </summary>
+		/// <returns>El número de registros</returns>
+		long Count();
 		
 	}
 }
