@@ -21,6 +21,11 @@ namespace Northwind.ServiceInterface.Services
 	/// </summary>
 	public class CustomersService : ServiceBase<ICustomerEntityRepository, CustomerEntity>
 	{
+		/// <summary>
+		/// Obtención de un <seealso cref="Customer"/> a partir de su identificador
+		/// </summary>
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
 		public CustomersResponse Get( CustomerDetail request )
 		{
 			var result = Repository.Get(request.Id);
@@ -31,6 +36,29 @@ namespace Northwind.ServiceInterface.Services
 			}
 
 			return new CustomersResponse { Result = result.TranslateTo<Customer>() };
+		}
+
+		/// <summary>
+		/// Devuelve todos los elementos <see cref="Customers"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public CustomersCollectionResponse Get( Customers request )
+		{
+			var result = Repository.GetAll();
+
+			if ( result == null )
+			{
+				throw HttpError.NotFound("Customers not found");
+			}
+
+			var list = new List<Customer>();
+
+			result.ToList().ForEach(
+					r => list.Add(r.TranslateTo<Customer>())
+				);			
+
+			return new CustomersCollectionResponse { Result = list };
 		}
 	}
 }
