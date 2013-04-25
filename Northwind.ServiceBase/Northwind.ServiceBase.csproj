@@ -65,8 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDto.cs" />
+    <Compile Include="ISearchable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestBase.cs" />
+    <Compile Include="RequestCollectionBase.cs" />
     <Compile Include="ResponseBase.cs" />
     <Compile Include="ResponseCollectionBase.cs" />
     <Compile Include="ServiceBase.cs" />
