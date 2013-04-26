@@ -11,6 +11,7 @@
     * Contracts. *Clases de petición (Request)*
     * Dto. *Clases Dto*
     * Operations. *Clases de respuesta (Response)*
+    * Validators. *Clases de validación*
 
 # Guía de diseño de la API
 
