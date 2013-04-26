@@ -18,7 +18,7 @@ namespace Northwind.ServiceModel.Validators
 		public CustomerValidator()
 		{
 			// Reglas de validación para peticiones GET
-			RuleSet(ApplyTo.Get, () =>
+			RuleSet(ApplyTo.Get | ApplyTo.Post, () =>
 			{
 				RuleFor(r => r.Id).NotEmpty();
 			});
