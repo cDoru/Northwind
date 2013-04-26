@@ -165,7 +165,7 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				return db.GetById<TEntity>(id);
+				return db.GetByIdOrDefault<TEntity>(id);
 			}
 		}
 
@@ -177,8 +177,19 @@ namespace Northwind.Data.Repositories
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
-				return db.Select<TEntity>().Skip(Offset - 1).Take(Limit);
+				return db.Select<TEntity>();
 			}
+		}
+
+		/// <summary>
+		/// Obtiene registros según los límites indicados
+		/// </summary>
+		/// <param name="start">Índice del primer registro que se recuperará</param>
+		/// <param name="limit">Número de registros a recuperar</param>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		public IEnumerable<TEntity> GetAll( int start, int limit )
+		{
+			return GetAll().Skip(start - 1).Take(limit);
 		}
 
 		/// <summary>

@@ -63,6 +63,14 @@ namespace Northwind.Data.Repositories
 		IEnumerable<TEntity> GetAll();
 
 		/// <summary>
+		/// Obtiene registros según los límites indicados
+		/// </summary>
+		/// <param name="start">Índice del primer registro que se recuperará</param>
+		/// <param name="limit">Número de registros a recuperar</param>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		IEnumerable<TEntity> GetAll(int start, int limit);
+
+		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
