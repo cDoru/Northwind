@@ -126,6 +126,10 @@
       <Project>{90D13AF8-B307-4F5D-AE29-5439C954180B}</Project>
       <Name>Northwind.ServiceInterface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Northwind.ServiceModel\Northwind.ServiceModel.csproj">
+      <Project>{767242D5-7351-43AA-9C0F-8EC621FF1125}</Project>
+      <Name>Northwind.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

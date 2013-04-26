@@ -11,11 +11,13 @@ using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using System.Configuration;
 using Northwind.Data.Repositories;
 using Northwind.ServiceInterface.Services;
+using Northwind.ServiceModel.Validators;
 
 namespace Northwind.Host.Web
 {
@@ -50,6 +52,12 @@ namespace Northwind.Host.Web
 			{
 				DebugMode = true,
 			});
+
+			// Plugins
+			Plugins.Add(new ValidationFeature());
+
+			// Validaciones
+			container.RegisterValidators(typeof(CustomerValidator).Assembly);
 
 			// Caché
 			container.Register<ICacheClient>(new MemoryCacheClient());
