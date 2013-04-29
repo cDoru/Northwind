@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -41,8 +42,8 @@ namespace Northwind.ServiceInterface.Services
 		/// <summary>
 		/// Devuelve todos los elementos <see cref="Customers"/>
 		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerCollectionResponse"/></returns>
 		public CustomersCollectionResponse Get( Customers request )
 		{
 			var result = Repository.GetAll();
@@ -59,6 +60,29 @@ namespace Northwind.ServiceInterface.Services
 				);			
 
 			return new CustomersCollectionResponse { Result = list };
+		}
+
+		/// <summary>		
+		/// Añade un nuevo <see cref="Customer"/>
+		/// <para>
+		/// Devuelve Status 201 si la creación ha sido correcta
+		/// </para>		
+		/// </summary>	
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
+		public object Post( CustomerCreation request )
+		{
+			try
+			{
+				var newCustomer = Repository.Add(request.TranslateTo<CustomerEntity>());
+
+				var result = new CustomersResponse { Result = newCustomer.TranslateTo<Customer>() };
+				return new HttpResult(result, HttpStatusCode.Created);
+			}
+			catch ( Exception ex )
+			{
+				throw;
+			}
 		}
 	}
 }

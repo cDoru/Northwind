@@ -14,10 +14,23 @@ namespace Northwind.ServiceBase
 	public abstract class ResponseCollectionBase<TDto> 
 		where TDto : class
 	{
+		#region Propiedades
+
 		/// <summary>
 		/// Resultado que contiene la respuesta
 		/// </summary>
 		public IList<TDto> Result { get; set; }
+
+		/// <summary>
+		/// Número de elementos de la colección
+		/// </summary>
+		public int Count 
+		{
+			get { return Result.Count; }
+		}
+		#endregion
+
+		#region Constructores
 
 		/// <summary>
 		/// Constructor de la clase
@@ -25,6 +38,8 @@ namespace Northwind.ServiceBase
 		protected ResponseCollectionBase()
 		{
 			Result = new List<TDto>();
-		}		
+		}
+
+		#endregion
 	}
 }
