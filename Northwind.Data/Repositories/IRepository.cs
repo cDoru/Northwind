@@ -15,7 +15,7 @@ namespace Northwind.Data.Repositories
 		/// Añade la entidad TEntity a la base de datos
 		/// </summary>
 		/// <param name="entity">Entidad a añadir</param>		
-		void Add( TEntity entity );
+		TEntity Add( TEntity entity );
 
 		/// <summary>
 		/// Añade todas las entidades de la lista a la base de datos

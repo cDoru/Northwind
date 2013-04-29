@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using ServiceStack.OrmLite;
 using Northwind.Data.Model;
 
@@ -73,13 +74,20 @@ namespace Northwind.Data.Repositories
 		/// Añade la entidad TEntity a la base de datos
 		/// </summary>
 		/// <param name="entity">Entidad a añadir</param>	
-		public void Add( TEntity entity )
+		public TEntity Add( TEntity entity )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{
 				db.Insert(entity);
 
-				// TODO: Hay que asegurarse que OrmLite actualiza la propiedad Id
+				// Hay que asegurarse que OrmLite actualiza la propiedad Id
+				var propertyInfo = entity.GetType().GetProperty("Id");
+				if ( propertyInfo != null )
+				{
+					propertyInfo.SetValue(entity, Convert.ChangeType(db.GetLastInsertId(), propertyInfo.PropertyType), null);					
+				}
+
+				return entity;
 			}
 		}
 
