@@ -17,7 +17,7 @@ using ServiceStack.WebHost.Endpoints;
 using System.Configuration;
 using Northwind.Data.Repositories;
 using Northwind.ServiceInterface.Services;
-using Northwind.ServiceModel.Validators;
+using Northwind.ServiceInterface.Validators;
 
 namespace Northwind.Host.Web
 {

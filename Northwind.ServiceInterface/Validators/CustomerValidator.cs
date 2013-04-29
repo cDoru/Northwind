@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using Northwind.ServiceModel.Dto;
 
-namespace Northwind.ServiceModel.Validators
+namespace Northwind.ServiceInterface.Validators
 {
 	/// <summary>
 	/// Clase que representa un validador de <see cref="Customer"/>
