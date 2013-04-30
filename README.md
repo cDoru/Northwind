@@ -7,11 +7,12 @@
   * Northwind.ServiceBase. *Clases base de servicio*
   * NorthWind.ServiceInterface. *Clases de implementación del servicio*
     * Services
+    * Validators. *Clases de validación*
   * NorthWind.ServiceModel. *Modelo del servicio*
     * Contracts. *Clases de petición (Request)*
     * Dto. *Clases Dto*
-    * Operations. *Clases de respuesta (Response)*
-    * Validators. *Clases de validación*
+    * Operations. *Clases de respuesta (Response)*    
+  * Northwind.Services.Test *Clases de test*
 
 # Guía de diseño de la API
 
