@@ -25,7 +25,7 @@ namespace Northwind.Services.Test
 			Assert.That(response.Count, Is.GreaterThanOrEqualTo(0));
 		}
 
-		[Test]
+		[Test(Description = "GET Customers por Url")]
 		public void GetAllCustomersUsingUrl()
 		{
 			var responseStr = (TestConfig.CustomerServiceUri.ToString()).GetJsonFromUrl();
@@ -35,13 +35,28 @@ namespace Northwind.Services.Test
 			AssertCollectionResponseIsValid(response);
 		}
 
-		[Test]
+		[Test(Description = "GET Customers por Dto")]
 		public void GetAllCustomers()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
 			var response = client.Get(new Customers());
 
 			AssertCollectionResponseIsValid(response);
+		}
+
+		[Test(Description = "GET Customer por Id")]
+		public void GetCustomerById()
+		{
+			var client = TestConfig.CreateJsonServiceClient();
+			var response = client.Get(new Customers());
+
+			var source = response.Result.First();
+
+			var responseById = client.Get(new CustomerDetail { Id = source.Id });
+			var target = responseById.Result;
+
+			Assert.That(target.Id, Is.EqualTo(source.Id));
+			Assert.That(target.ToString(), Is.EqualTo(source.ToString()));
 		}
 	}
 }
