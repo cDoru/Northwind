@@ -50,7 +50,8 @@ namespace Northwind.Services.Test
 			var client = TestConfig.CreateJsonServiceClient();
 			var response = client.Get(new Customers());
 
-			var source = response.Result.First();
+			var itemIndex = new Random().Next(1, response.Count);
+			var source = response.Result.ElementAt(itemIndex);
 
 			var responseById = client.Get(new CustomerDetail { Id = source.Id });
 			var target = responseById.Result;

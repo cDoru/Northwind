@@ -79,26 +79,15 @@ namespace Northwind.Services.Test
 
 			// Acceso a datos			
 			var dbFactory = new OrmLiteConnectionFactory(
+				//"Northwind.sqlite".MapHostAbsolutePath(), 
 				ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString,
+				true, 
 				SqliteDialect.Provider);
-			container.Register<IDbConnectionFactory>(dbFactory);
+			container.Register<IDbConnectionFactory>(dbFactory);			
 		}
 		#endregion
 
 		#endregion
-
-		#region Miembros estáticos
-
-		#region Start
-		/// <summary>
-		/// Inicio de una instancia de la aplicación
-		/// </summary>
-		public static void Start()
-		{
-			new TestAppHost().Init();
-		}
-		#endregion
-
-		#endregion
+		
 	}
 }
