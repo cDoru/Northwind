@@ -84,5 +84,49 @@ namespace Northwind.ServiceInterface.Services
 				throw;
 			}
 		}
+
+		/// <summary>		
+		/// Actualiza un nuevo <see cref="Customer"/>
+		/// <para>
+		/// Devuelve Status 200 si la creación ha sido correcta
+		/// </para>		
+		/// </summary>	
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
+		public CustomersResponse Put( CustomerUpdate request )
+		{
+			try
+			{
+				Repository.Update(request.TranslateTo<CustomerEntity>());
+
+				return null;
+			}
+			catch ( Exception ex )
+			{
+				throw;
+			}
+		}
+
+		/// <summary>		
+		/// Actualiza un nuevo <see cref="Customer"/>
+		/// <para>
+		/// Devuelve Status 200 si la creación ha sido correcta
+		/// </para>		
+		/// </summary>	
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
+		public CustomersResponse Delete( CustomerDetail request )
+		{
+			try
+			{
+				Repository.Delete(request.TranslateTo<CustomerEntity>());
+
+				return null;
+			}
+			catch ( Exception ex )
+			{
+				throw;
+			}
+		}
 	}
 }

@@ -12,7 +12,7 @@ namespace Northwind.ServiceBase
 	/// <typeparam name="TDto">Tipo que contiene la respuesta</typeparam>
 	/// <seealso cref="https://github.com/ServiceStack/ServiceStack/wiki/New-Api#structured-error-handling"/>
 	public abstract class ResponseCollectionBase<TDto> 
-		where TDto : class
+		where TDto : class, new()
 	{
 		#region Propiedades
 
@@ -26,7 +26,7 @@ namespace Northwind.ServiceBase
 		/// </summary>
 		public int Count 
 		{
-			get { return Result.Count; }
+			get { return (Result != null ? Result.Count : 0); }
 		}
 		#endregion
 
@@ -35,7 +35,7 @@ namespace Northwind.ServiceBase
 		/// <summary>
 		/// Constructor de la clase
 		/// </summary>
-		protected ResponseCollectionBase()
+		public ResponseCollectionBase()
 		{
 			Result = new List<TDto>();
 		}

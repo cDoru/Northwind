@@ -72,6 +72,7 @@
     <Compile Include="Contracts\CustomerDetail.cs" />
     <Compile Include="Contracts\CustomerCreation.cs" />
     <Compile Include="Contracts\Customers.cs" />
+    <Compile Include="Contracts\CustomerUpdate.cs" />
     <Compile Include="Operations\CustomersCollectionResponse.cs" />
     <Compile Include="Operations\CustomersResponse.cs" />
     <Compile Include="Dto\Customer.cs" />
