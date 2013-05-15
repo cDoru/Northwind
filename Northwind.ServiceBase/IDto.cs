@@ -9,10 +9,6 @@ namespace Northwind.ServiceBase
 	/// Interfaz que representa un Dto
 	/// </summary>
 	public interface IDto
-	{
-		/// <summary>
-		/// Identificador
-		/// </summary>
-		int Id { get; set; }
+	{		
 	}
 }

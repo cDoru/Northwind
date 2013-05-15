@@ -9,7 +9,7 @@ namespace Northwind.ServiceModel.Dto
 	/// <summary>
 	/// Clase que representa una entidad <see cref="Customer"/>
 	/// </summary>
-	public class Customer 
+	public class Customer : IDto
 	{		
 		public string Id { get; set; }
 		public string CompanyName { get; set; }
@@ -22,5 +22,11 @@ namespace Northwind.ServiceModel.Dto
 		public string Country { get; set; }
 		public string Phone { get; set; }
 		public string Fax { get; set; }
+		public List<Order> Orders { get; set; }
+
+		public Customer()
+		{
+			Orders = new List<Order>();
+		}
 	}
 }
