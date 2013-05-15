@@ -14,7 +14,7 @@ namespace Northwind.ServiceModel.Contracts
 	/// </summary>
 	[Api("Get a single Customer by Id.")]
 	[Route("/customers/{Id}", "GET, DELETE")]
-	public class CustomerDetail : RequestBase<Customer, CustomersResponse>
+	public class CustomerDetail : IReturn<CustomersResponse>
 	{
 		/// <summary>
 		/// Identificador

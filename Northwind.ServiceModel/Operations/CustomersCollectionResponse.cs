@@ -10,7 +10,18 @@ namespace Northwind.ServiceModel.Operations
 	/// <summary>
 	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
 	/// </summary>
-	public class CustomersCollectionResponse : ResponseCollectionBase<Customer>
+	public class CustomersCollectionResponse : CollectionResponse<Customer>
 	{
+
+		public CustomersCollectionResponse()
+			: base()
+		{
+		}
+
+		public CustomersCollectionResponse( IList<Customer> customers )
+			: base(customers)
+		{
+		}
+
 	}
 }
