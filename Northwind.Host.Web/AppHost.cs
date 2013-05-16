@@ -51,6 +51,7 @@ namespace Northwind.Host.Web
 			JsConfig.EmitCamelCaseNames = true;
 			JsConfig.IncludeNullValues = false;
 			JsConfig.DateHandler = JsonDateHandler.ISO8601;
+			JsConfig.EscapeUnicode = true;
 
 			// ServiceStack
 			SetConfig(new EndpointHostConfig
@@ -58,13 +59,16 @@ namespace Northwind.Host.Web
 				DebugMode = true,
 			});
 
-			// Rutas
+			// Rutas			
 			Routes
-				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")
-				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST");
+				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")				
+				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST")
+				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
+				.Add<CustomerOrders>("/customers/{Id}/orders")
+				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST");			 
 
 			// Formatos
-			AtomFeedFormat.Register(this);
+			//AtomFeedFormat.Register(this);
 
 			// Plugins
 			Plugins.Add(new ValidationFeature());
