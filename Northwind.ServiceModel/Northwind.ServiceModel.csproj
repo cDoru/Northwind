@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Contracts\CustomerDetail.cs" />
     <Compile Include="Contracts\CustomerCreation.cs" />
+    <Compile Include="Contracts\CustomerOrders.cs" />
     <Compile Include="Contracts\Customers.cs" />
     <Compile Include="Contracts\CustomerUpdate.cs" />
     <Compile Include="Dto\Order.cs" />
@@ -89,6 +90,7 @@
       <Name>Northwind.ServiceBase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -11,6 +11,9 @@ namespace Northwind.Data.Repositories
 	/// </summary>
 	public interface ICustomerEntityRepository : IRepository<CustomerEntity>
 	{
-		
+		IOrderEntityRepository OrderRepository { get; set; }
+
+		List<OrderEntity> GetOrders(string Id);
+		List<OrderEntity> GetOrders( CustomerEntity customer );
 	}
 }
