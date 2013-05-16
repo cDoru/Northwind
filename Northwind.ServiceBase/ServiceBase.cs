@@ -16,7 +16,7 @@ namespace Northwind.ServiceBase
 	/// <summary>
 	/// Clase que representa un servicio web
 	/// </summary>
-	public abstract class ServiceBase<TEntity, TDto> : Service
+	public class ServiceBase<TEntity, TDto> : Service
 		where TEntity : IEntity, new()
 		where TDto : IDto, new()
 	{
@@ -85,7 +85,7 @@ namespace Northwind.ServiceBase
 		#endregion
 
 		#region DELETE
-		#endregion
+		#endregion		
 
 		#endregion
 
