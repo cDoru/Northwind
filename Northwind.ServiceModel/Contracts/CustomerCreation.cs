@@ -13,8 +13,8 @@ namespace Northwind.ServiceModel.Contracts
 	/// Clase que representa una petición de inserción de un <see cref="Customer"/>
 	/// </summary>
 	[Api("Insert a single Customer")]
-	[Route("/customers", "POST")]
-	public class CustomerCreation : Customer, IReturn<CustomersResponse>
+	//[Route("/customers", "POST")]
+	public class CustomerCreation : SingleRequest<Customer>
 	{
 		
 	}
