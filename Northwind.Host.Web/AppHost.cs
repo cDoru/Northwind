@@ -64,7 +64,7 @@ namespace Northwind.Host.Web
 				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")				
 				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST")
 				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
-				.Add<CustomerOrders>("/customers/{Id}/orders")
+				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
 				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST");			 
 
 			// Formatos
