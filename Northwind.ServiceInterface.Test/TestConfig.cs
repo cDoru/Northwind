@@ -23,6 +23,11 @@ namespace Northwind.Services.Test
 		public static Uri CustomerServiceUri = new Uri(AbsoluteBaseUri, "customers");
 
 		/// <summary>
+		/// <see cref="Uri"/> para el servicio obtener <see cref="Order"/> de un <see cref="Customer"/>
+		/// </summary>
+		public static Uri CustomerOrdersUri = new Uri(CustomerServiceUri, "{1}/orders");
+
+		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
