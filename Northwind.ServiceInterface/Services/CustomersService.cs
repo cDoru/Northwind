@@ -18,10 +18,34 @@ using Northwind.ServiceModel.Operations;
 namespace Northwind.ServiceInterface.Services
 {
 	/// <summary>
-	/// Servicio de clientes 
+	/// Servicio de <see cref="Customer"/> 
 	/// </summary>	
 	public class CustomersService : ServiceBase<CustomerEntity, Customer>
 	{
+		/// <summary>
+		/// Recuperación de <see cref="Order"/> para un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( CustomerOrders request )
+		{
+			var cacheKey = UrnId.Create<CustomerOrders>(request.Id);
 
+			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+			{
+				var orders = ((CustomerEntityRepository)Repository).GetOrders(request.Id);
+
+				var list = new List<Order>();
+				var result = orders.All(
+					o =>
+					{
+						list.Add(o.TranslateTo<Order>());
+						return true;
+					});
+
+				return new CollectionResponse<Order>(list);
+				
+			});
+		}		
 	}
 }
