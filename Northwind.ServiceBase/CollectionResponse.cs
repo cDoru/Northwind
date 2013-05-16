@@ -18,7 +18,7 @@ namespace Northwind.ServiceBase
 			get { return (Result != null ? Result.Count : 0); }
 		}
 
-		public IList<TDto> Result { get; set; }
+		public List<TDto> Result { get; set; }
 
 		#endregion		
 
@@ -32,7 +32,7 @@ namespace Northwind.ServiceBase
 			Result = new List<TDto>();
 		}
 
-		public CollectionResponse( IList<TDto> result )
+		public CollectionResponse( List<TDto> result )
 		{
 			Result = result;
 		}

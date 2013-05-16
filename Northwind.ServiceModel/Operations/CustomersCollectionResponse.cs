@@ -18,7 +18,7 @@ namespace Northwind.ServiceModel.Operations
 		{
 		}
 
-		public CustomersCollectionResponse( IList<Customer> customers )
+		public CustomersCollectionResponse( List<Customer> customers )
 			: base(customers)
 		{
 		}

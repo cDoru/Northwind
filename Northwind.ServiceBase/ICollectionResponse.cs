@@ -13,6 +13,6 @@ namespace Northwind.ServiceBase
 		where TDto : IDto, new()
 	{
 		int Count { get; }
-		IList<TDto> Result { get; set; }
+		List<TDto> Result { get; set; }
 	}
 }
