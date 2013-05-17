@@ -11,6 +11,8 @@ using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.Cors;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
@@ -56,16 +58,17 @@ namespace Northwind.Host.Web
 			// ServiceStack
 			SetConfig(new EndpointHostConfig
 			{
-				DebugMode = true,
+				DebugMode = true
 			});
 
 			// Rutas			
 			Routes
-				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")				
+				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")
 				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST")
 				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
 				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
-				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST");			 
+				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST")
+				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST");
 
 			// Formatos
 			//AtomFeedFormat.Register(this);

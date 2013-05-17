@@ -22,6 +22,30 @@ namespace Northwind.ServiceInterface.Services
 	/// </summary>	
 	public class OrdersService : ServiceBase<OrderEntity, Order>
 	{
+		/// <summary>
+		/// Recuperación de <see cref="Order"/> para un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( OrderDetails request )
+		{
+			var cacheKey = UrnId.Create<OrderDetails>(request.Id.ToString());
 
+			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+			{
+				var details = ((OrderEntityRepository)Repository).GetDetails(request.Id);
+
+				var list = new List<OrderDetail>();
+				var result = details.All(
+					o =>
+					{
+						list.Add(o.TranslateTo<OrderDetail>());
+						return true;
+					});
+
+				return new CollectionResponse<OrderDetail>(list);
+
+			});
+		}
 	}
 }

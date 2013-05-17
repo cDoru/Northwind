@@ -16,5 +16,34 @@ namespace Northwind.Data.Repositories
 			: base(dbFactory)
 		{
 		}
+
+		#region Miembros de IOrderEntityRepository
+
+		public IOrderDetailEntityRepository OrderDetailRepository { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="orderId"></param>
+		/// <returns></returns>
+		public List<OrderDetailEntity> GetDetails( long orderId )
+		{
+			using ( var db = dbFactory.OpenDbConnection() )
+			{
+				return OrderDetailRepository.GetFiltered(d => d.OrderId == orderId).ToList();
+			}	
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="order"></param>
+		/// <returns></returns>
+		public List<OrderDetailEntity> GetDetails( OrderEntity order )
+		{
+			return GetDetails(order.Id);
+		}
+
+		#endregion
 	}
 }
