@@ -172,8 +172,10 @@ Por ejemplo, para recuperar únicamente el nombre y los apellidos de un cliente,
 
 **Petición**
 
-```json
+```http
 POST /customers
+```
+```json
 {
 	"customer" : {
 		name : "John",
@@ -184,8 +186,10 @@ POST /customers
 
 **Respuesta**
 
-```json
+```http
 200 OK
+```
+```json
 {
 	"customer" : {
 		id : 1234,
