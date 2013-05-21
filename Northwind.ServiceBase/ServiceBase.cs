@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -79,12 +80,84 @@ namespace Northwind.ServiceBase
 		#endregion
 
 		#region POST
+
+		/// <summary>
+		/// Actualización
+		/// <para>
+		/// Devuelve Status 201 si la creación ha sido correcta
+		/// </para>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public virtual object Post( SingleRequest<TDto> request )
+		{
+			try
+			{
+				var newEntity = Repository.Add(request.TranslateTo<TEntity>());
+
+				var result = new SingleResponse<TDto> { Result = newEntity.TranslateTo<TDto>() };
+
+				return new HttpResult(result, HttpStatusCode.Created);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
 		#endregion
 
 		#region PUT
+
+		/// <summary>
+		/// Actualización
+		/// <para>
+		/// Devuelve Status 200 si la actualización ha sido correcta
+		/// </para>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public virtual object Put( SingleRequest<TDto> request )
+		{
+			try
+			{
+				Repository.Update(request.TranslateTo<TEntity>());
+
+				return null;
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
 		#endregion
 
 		#region DELETE
+
+		/// <summary>		
+		/// Elimina una entidad
+		/// <para>
+		/// Devuelve Status 200 si la creación ha sido correcta
+		/// </para>		
+		/// </summary>	
+		/// <param name="request">Petición</param>
+		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
+		public object Delete( SingleResponse<TDto> request )
+		{
+			try
+			{
+				Repository.Delete(request.TranslateTo<TEntity>());
+
+				return null;
+			}
+			catch
+			{
+				throw;
+			}
+
+		}
+
 		#endregion		
 
 		#endregion

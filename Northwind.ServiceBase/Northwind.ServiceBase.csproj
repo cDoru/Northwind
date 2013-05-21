@@ -76,7 +76,7 @@
     <Compile Include="CollectionRequest.cs" />
     <Compile Include="CollectionResponse.cs" />
     <Compile Include="Common\ClassUtil.cs" />
-    <Compile Include="Formats\AtomFeedFormat.cs" />
+    <Compile Include="Formats\AtomFeed\AtomFeedFormat.cs" />
     <Compile Include="ICollectionResponse.cs" />
     <Compile Include="IDto.cs" />
     <Compile Include="IResponse.cs" />
@@ -95,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parsing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
