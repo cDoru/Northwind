@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
 using ServiceStack.OrmLite;
@@ -101,9 +102,6 @@ namespace Northwind.Data.Repositories
 			{				
 				using ( var tr = db.OpenTransaction() )
 				{
-					// TODO: Si OrmLite actualiza la clave primaria
-					//db.InsertAll(entities);
-
 					foreach ( var e in entities )
 					{
 						Add(e);
@@ -197,6 +195,9 @@ namespace Northwind.Data.Repositories
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
 		public IEnumerable<TEntity> GetAll( int start, int limit )
 		{
+			if ( start <= 0 ) start = DefaultOffset;
+			if ( limit <= 0 ) limit = DefaultLimit;
+
 			return GetAll().Skip(start - 1).Take(limit);
 		}
 
@@ -205,7 +206,7 @@ namespace Northwind.Data.Repositories
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
 		/// <returns>Una lista de TEntity</returns>
-		public IEnumerable<TEntity> GetFiltered( System.Linq.Expressions.Expression<Func<TEntity, bool>> filter )
+		public IEnumerable<TEntity> GetFiltered( Expression<Func<TEntity, bool>> filter )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
 			{

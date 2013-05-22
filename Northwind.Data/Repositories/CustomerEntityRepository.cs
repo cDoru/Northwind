@@ -33,7 +33,7 @@ namespace Northwind.Data.Repositories
 		public List<OrderEntity> GetOrders( string id )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
-			{
+			{				
 				return OrderRepository.GetFiltered(o => o.CustomerId == id).ToList();
 			}			
 		}
