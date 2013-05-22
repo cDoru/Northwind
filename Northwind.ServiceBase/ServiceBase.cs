@@ -11,6 +11,7 @@ using ServiceStack.Text;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase.Common;
+using Northwind.ServiceBase.Caching;
 
 namespace Northwind.ServiceBase
 {
@@ -40,11 +41,11 @@ namespace Northwind.ServiceBase
 		/// <returns></returns>
 		public virtual object Get( SingleRequest<TDto> request )
 		{
-			var cacheKey = UrnId.Create<TDto>(request.Id.ToString());
+			var cacheKey = UrnId.Create<TDto>(request.Id.ToString());			
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 				{
-					var result = Repository.Get(request.Id);
+					var result = Repository.Get(request.Id);					
 
 					if ( result == null )
 					{
@@ -62,11 +63,13 @@ namespace Northwind.ServiceBase
 		/// <returns>Collección de elementos</returns>
 		public virtual object Get( CollectionRequest<TDto> request )
 		{
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, "urn:{0}".Fmt(typeof(TDto).Name), () =>
+			var cacheKey = new CacheKey(this.Request.AbsoluteUri, this.Request.Headers).ToString();			
+
+			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 				{
 					var list = new List<TDto>();
 
-					var result = Repository.GetAll().All(
+					var result = Repository.GetAll(request.Offset, request.Limit).All(
 						r =>
 						{
 							list.Add(r.TranslateTo<TDto>());
