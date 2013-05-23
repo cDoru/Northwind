@@ -14,6 +14,6 @@ namespace Northwind.ServiceBase
 		where TDto : IDto, new()
 		where TResponse : class, new()
 	{
-
+		
 	}
 }
