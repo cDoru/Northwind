@@ -73,15 +73,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheKey.cs" />
     <Compile Include="CollectionRequest.cs" />
     <Compile Include="CollectionResponse.cs" />
-    <Compile Include="Common\ClassUtil.cs" />
+    <Compile Include="CommonDto.cs" />
+    <Compile Include="Common\ServiceUtils.cs" />
     <Compile Include="Formats\AtomFeed\AtomFeedFormat.cs" />
     <Compile Include="ICollectionResponse.cs" />
     <Compile Include="IDto.cs" />
     <Compile Include="IResponse.cs" />
     <Compile Include="ISearchable.cs" />
+    <Compile Include="ISelectable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\SelectQueryOption.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="SingleRequest.cs" />
@@ -96,9 +100,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parsing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
