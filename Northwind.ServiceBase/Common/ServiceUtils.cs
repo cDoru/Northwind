@@ -9,7 +9,7 @@ namespace Northwind.ServiceBase.Common
 	/// <summary>
 	/// Clases de ayuda
 	/// </summary>
-	internal static class ClassUtil
+	internal static class ServiceUtils
 	{
 		/// <summary>
 		/// Comprueba si TDto tiene una propiedad Id
