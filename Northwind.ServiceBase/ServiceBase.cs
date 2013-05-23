@@ -72,7 +72,9 @@ namespace Northwind.ServiceBase
 					var result = Repository.GetAll(request.Offset, request.Limit).All(
 						r =>
 						{
-							list.Add(r.TranslateTo<TDto>());
+							var dto = r.TranslateTo<TDto>();
+							dto.Link = new Uri(String.Format("{0}/{1}", Request.GetPathUrl(), ServiceUtils.GetIdValue(dto)));
+							list.Add(dto);
 							return true;
 						});
 
