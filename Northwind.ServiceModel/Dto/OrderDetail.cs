@@ -9,7 +9,7 @@ namespace Northwind.ServiceModel.Dto
 	/// <summary>
 	/// Clase que representa una entidad <see cref="Customer"/>
 	/// </summary>
-	public class OrderDetail : IDto
+	public class OrderDetail : CommonDto
 	{
 		public string Id { get; set; }
 		public long OrderId { get; set; }

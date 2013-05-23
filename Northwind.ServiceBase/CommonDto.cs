@@ -6,10 +6,14 @@ using System.Text;
 namespace Northwind.ServiceBase
 {
 	/// <summary>
-	/// Interfaz que representa un Dto
+	/// Clase que representa un Dto
 	/// </summary>
-	public interface IDto
+	public class CommonDto : IDto
 	{
-		Uri Link { get; set; }
+		#region Miembros de IDto
+
+		public Uri Link { get; set; }
+
+		#endregion
 	}
 }
