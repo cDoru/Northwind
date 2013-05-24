@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Configuration;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
-using ServiceStack.Common;
 using ServiceStack.Common.Utils;
 using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
@@ -21,6 +20,7 @@ using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase;
 using Northwind.ServiceBase.Formats;
+using Northwind.ServiceBase.Meta;
 using Northwind.ServiceInterface.Services;
 using Northwind.ServiceInterface.Validators;
 using Northwind.ServiceModel.Contracts;
@@ -54,6 +54,7 @@ namespace Northwind.Host.Web
 			JsConfig.IncludeNullValues = false;
 			JsConfig.DateHandler = JsonDateHandler.ISO8601;
 			JsConfig.EscapeUnicode = true;
+			JsConfig<MetadataUriType>.SerializeFn = text => text.ToString().ToCamelCase();
 
 			// ServiceStack
 			SetConfig(new EndpointHostConfig

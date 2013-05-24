@@ -12,6 +12,7 @@ using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase.Common;
 using Northwind.ServiceBase.Caching;
+using Northwind.ServiceBase.Meta;
 
 namespace Northwind.ServiceBase
 {
@@ -31,7 +32,7 @@ namespace Northwind.ServiceBase
 
 		#endregion
 
-		#region Métodos
+		#region Métodos CRUD
 
 		#region GET
 		/// <summary>
@@ -63,12 +64,13 @@ namespace Northwind.ServiceBase
 		/// <returns>Collección de elementos</returns>
 		public virtual object Get( CollectionRequest<TDto> request )
 		{
-			var cacheKey = new CacheKey(this.Request.AbsoluteUri, this.Request.Headers).ToString();			
+			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();			
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 				{
+					// Creación de la lista
 					var list = new List<TDto>();
-
+					
 					var result = Repository.GetAll(request.Offset, request.Limit).All(
 						r =>
 						{
@@ -77,8 +79,12 @@ namespace Northwind.ServiceBase
 							list.Add(dto);
 							return true;
 						});
-
-					return new CollectionResponse<TDto> { Result = list };
+					
+					// Creación de la respuesta
+					return new CollectionResponse<TDto> { 
+						Result = list, 
+						Metadata = new Metadata(Request, Repository.Count(), request.Offset, request.Limit)
+					};
 				});			
 		}
 
@@ -165,7 +171,7 @@ namespace Northwind.ServiceBase
 
 		#endregion		
 
-		#endregion
+		#endregion		
 
 	}
 }

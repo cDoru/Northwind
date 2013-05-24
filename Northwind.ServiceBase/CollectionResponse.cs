@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Northwind.ServiceBase.Meta;
 
 namespace Northwind.ServiceBase
 {
@@ -19,6 +20,8 @@ namespace Northwind.ServiceBase
 		}
 
 		public List<TDto> Result { get; set; }
+
+		public Metadata Metadata { get; set; }
 
 		#endregion		
 
@@ -39,5 +42,6 @@ namespace Northwind.ServiceBase
 
 		#endregion		
 		
+	
 	}
 }

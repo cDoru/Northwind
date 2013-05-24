@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Northwind.ServiceBase.Meta;
 
 namespace Northwind.ServiceBase
 {
@@ -14,5 +15,6 @@ namespace Northwind.ServiceBase
 	{
 		int Count { get; }
 		List<TDto> Result { get; set; }
+		Metadata Metadata { get; set; }
 	}
 }

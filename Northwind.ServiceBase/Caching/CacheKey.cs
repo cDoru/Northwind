@@ -64,8 +64,8 @@ namespace Northwind.ServiceBase.Caching
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString()
-		{
-			if ( _toString.Length == 0 )
+		{			
+			if ( String.IsNullOrEmpty(_toString) )
 			{
 				_toString = String.Format(CacheKeyFormat, _resourceUri, String.Join("-", _headerValues));
 			}
