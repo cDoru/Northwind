@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ServiceStack.Common;
+using ServiceStack.Common.Utils;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
@@ -42,11 +43,12 @@ namespace Northwind.ServiceBase
 		/// <returns></returns>
 		public virtual object Get( SingleRequest<TDto> request )
 		{
-			var cacheKey = UrnId.Create<TDto>(request.Id.ToString());			
+			//var cacheKey = UrnId.Create<TDto>(request.Id.ToString());
+			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 				{
-					var result = Repository.Get(request.Id);					
+					var result = Repository.Get(request.Id);
 
 					if ( result == null )
 					{
@@ -66,24 +68,25 @@ namespace Northwind.ServiceBase
 		{
 			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();			
 
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, 
+				() =>
 				{
 					// Creación de la lista
 					var list = new List<TDto>();
-					
+										
 					var result = Repository.GetAll(request.Offset, request.Limit).All(
-						r =>
+						entity =>
 						{
-							var dto = r.TranslateTo<TDto>();
-							dto.Link = new Uri(String.Format("{0}/{1}", Request.GetPathUrl(), ServiceUtils.GetIdValue(dto)));
+							var dto = entity.TranslateTo<TDto>();
+							dto.Link = new Uri(String.Format("{0}/{1}", Request.GetPathUrl(), IdUtils.GetId<TDto>(dto)));
 							list.Add(dto);
 							return true;
 						});
-					
-					// Creación de la respuesta
+				
+					// Creación de la respuesta					
 					return new CollectionResponse<TDto> { 
-						Result = list, 
-						Metadata = new Metadata(Request, Repository.Count(), request.Offset, request.Limit)
+						Result = list,
+						Metadata = list.GetMetadata(Request, Repository.Count())
 					};
 				});			
 		}
@@ -134,7 +137,7 @@ namespace Northwind.ServiceBase
 			{
 				Repository.Update(request.TranslateTo<TEntity>());
 
-				return null;
+				return new HttpResult(HttpStatusCode.OK);
 			}
 			catch
 			{
@@ -160,7 +163,7 @@ namespace Northwind.ServiceBase
 			{
 				Repository.Delete(request.TranslateTo<TEntity>());
 
-				return null;
+				return new HttpResult(HttpStatusCode.OK);
 			}
 			catch
 			{

@@ -14,7 +14,9 @@ namespace Northwind.ServiceBase
 		where TDto : IDto, new()
 	{
 		int Count { get; }
+
 		List<TDto> Result { get; set; }
+		
 		Metadata Metadata { get; set; }
 	}
 }

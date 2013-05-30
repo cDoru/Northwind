@@ -21,6 +21,7 @@ using Northwind.Data.Repositories;
 using Northwind.ServiceBase;
 using Northwind.ServiceBase.Formats;
 using Northwind.ServiceBase.Meta;
+using Northwind.ServiceBase.Query;
 using Northwind.ServiceInterface.Services;
 using Northwind.ServiceInterface.Validators;
 using Northwind.ServiceModel.Contracts;
@@ -69,13 +70,14 @@ namespace Northwind.Host.Web
 				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
 				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
 				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST")
-				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST");
+				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST");			
 
 			// Formatos
 			//AtomFeedFormat.Register(this);
 
 			// Plugins
 			Plugins.Add(new ValidationFeature());
+			Plugins.Add(new QueryLanguageFeature());
 
 			// Validaciones
 			container.RegisterValidators(typeof(CustomerValidator).Assembly);						
@@ -112,6 +114,9 @@ namespace Northwind.Host.Web
 			var dbFactory = new OrmLiteConnectionFactory(
 				"~/Northwind.sqlite".MapHostAbsolutePath(),
 				SqliteDialect.Provider);
+
+			//var connStr = ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString.Replace("{AppData}", AppDomain.CurrentDomain.BaseDirectory + @"..\Northwind.Data");
+			//var dbFactory = new OrmLiteConnectionFactory(connStr, true, SqliteDialect.Provider);
 			container.Register<IDbConnectionFactory>(dbFactory);
 		}
 		#endregion

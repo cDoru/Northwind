@@ -59,13 +59,19 @@ namespace Northwind.ServiceBase.Meta
 
 			_uriFormat = request.GetPathUrl() + "?{0}";
 			_queryString = new NameValueCollection(request.QueryString);
+			
+			AddNavigationLinks();				
+			
+		}
 
-			AddLink(MetadataUriType.Self, request.AbsoluteUri);
-			AddNextLink();
-			AddPreviousLink();
-			AddFirstLink();
-			AddLastLink();						
-		}		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="request"></param>
+		/// <param name="totalCount"></param>
+		public Metadata( IHttpRequest request, long totalCount )
+			: this(request, totalCount, Convert.ToInt32(request.QueryString[ServiceOperations.Offset]), Convert.ToInt32(request.QueryString[ServiceOperations.Limit]))
+		{ }
 
 		#endregion
 
@@ -75,9 +81,10 @@ namespace Northwind.ServiceBase.Meta
 		/// <param name="type"></param>
 		/// <param name="uri"></param>
 		/// <returns></returns>
-		private void AddLink( MetadataUriType type, String uri )
+		private void AddLink( MetadataUriType type, int offset )
 		{
-			Links.Add(type, uri);
+			_queryString[ServiceOperations.Offset] = offset.ToString();
+			Links.Add(type, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
 		}
 
 		/// <summary>
@@ -90,8 +97,7 @@ namespace Northwind.ServiceBase.Meta
 				// Link a la siguiente página
 				if ( Offset + Limit < TotalCount )
 				{
-					_queryString[ServiceOperations.Offset] = (Offset + Limit).ToString();
-					AddLink(MetadataUriType.Next, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
+					AddLink(MetadataUriType.Next, (Offset + Limit));
 				}
 			}
 		}
@@ -106,8 +112,7 @@ namespace Northwind.ServiceBase.Meta
 				// Link a la página anterior
 				if ( Offset - Limit > 0 )
 				{
-					_queryString[ServiceOperations.Offset] = (Offset - Limit).ToString();
-					AddLink(MetadataUriType.Previous, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
+					AddLink(MetadataUriType.Previous, (Offset - Limit));
 				}
 			}					
 		}
@@ -117,8 +122,10 @@ namespace Northwind.ServiceBase.Meta
 		/// </summary>
 		private void AddFirstLink()
 		{
-			_queryString[ServiceOperations.Offset] = "1";
-			AddLink(MetadataUriType.First, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
+			if ( Offset > 1 )
+			{
+				AddLink(MetadataUriType.First, 1);
+			}
 		}
 
 		/// <summary>
@@ -126,8 +133,22 @@ namespace Northwind.ServiceBase.Meta
 		/// </summary>
 		private void AddLastLink()
 		{
-			_queryString[ServiceOperations.Offset] = (TotalCount - Limit).ToString();
-			AddLink(MetadataUriType.Last, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
+			if ( Offset + Limit < TotalCount )
+			{
+				AddLink(MetadataUriType.Last, (Convert.ToInt32(TotalCount) - Limit));
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void AddNavigationLinks()
+		{
+			AddLink(MetadataUriType.Self, Convert.ToInt32(_queryString[ServiceOperations.Offset]));
+			AddNextLink();
+			AddPreviousLink();
+			AddFirstLink();
+			AddLastLink();
 		}
 	}	
 }
