@@ -5,6 +5,11 @@
     * Repositories		
   * Northwind.Host. *Servicio web*
   * Northwind.ServiceBase. *Clases base de servicio*
+    * Caching. *Clases relacionadas con cache*
+    * Common. *Clases de uso común*
+    * Formats. *Formatos de respuesta adicionales*
+    * Meta.  *Clases de metadatos en respuesta*
+    * Query. *Clases de gestión de lenguaje de selección*
   * NorthWind.ServiceInterface. *Clases de implementación del servicio*
     * Services
     * Validators. *Clases de validación*
@@ -17,45 +22,6 @@
 # Guía de diseño de la API
 
 Los servicios de este proyecto seguirán las siguientes recomendaciones.
-
-## Nombrado de las clases
-
-<table>
-	<thead>
-		<tr>
-			<th>Tipo de clase</th>
-			<th>Nombre</th>
-			<th>Ejemplo</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>Modelo de datos</td>
-			<td>[NombreDeTablaEnSingular]Entity</td>
-			<td><code>CustomerEntity</code></td>
-		</tr>
-		<tr>
-			<td>DTOs</td>
-			<td>Nombre en singular de la clase del modelo asociada</td>
-			<td><code>Customer</code></td>
-		</tr>
-		<tr>
-			<td>Clases de petición (Request)</td>
-			<td>[Operación]Request</td>
-			<td><code>CustomerDetailRequest</code></td>
-		</tr>
-		<tr>
-			<td>Clases de respuesta (Response)</td>
-			<td>[Operación]Response</td>
-			<td><code>CustomerDetailResponse</code></td>
-		</tr>
-		<tr>
-			<td>Clases de servicio</td>
-			<td>[NombreDto]Service</td>
-			<td><code>CustomersService</code></td>
-		</tr>
-	</tbody>
-</table>
 
 ## Nombrado de los servicios
 
@@ -104,15 +70,15 @@ Para el ejemplo anterior, `/customers` es equivalente a `/customers?offset=1&lim
 
 ## Ordenación
 
-Se utilizará el parámetro `order` seguido de una lista separada por comas para indicar el orden en el que se devolverán los resultados. Si no se indica nada, la lista siempre indicará orden ascendente. Para indicar una ordenación descendente, se utilizará el parámetro `desc` a continuación del elemento de la lista necesario.
+Se utilizará el parámetro `orderby` seguido de una lista separada por comas para indicar el orden en el que se devolverán los resultados. Si no se indica nada, la lista siempre indicará orden ascendente. Para indicar una ordenación descendente, se utilizará el parámetro `desc` a continuación del elemento de la lista necesario.
 
 Por ejemplo, para recuperar los 10 primeros registros ordenados por nombre de manera ascendente sería:
 
-	/customers?offset=1&limit=10&order=lastName
+	/customers?offset=1&limit=10&orderby=lastName
 
 Para recuperar la misma lista en ordenación descendente, sería:
 
-	/customers?offset=1&limit=10&order=lastName%20desc
+	/customers?offset=1&limit=10&orderby=lastName-desc
 
 ## Búsqueda
 
