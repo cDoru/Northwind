@@ -58,20 +58,15 @@ namespace Northwind.ServiceBase.Query
 			if ( req.HttpMethod != "GET" ) return;			
 
 			if ( dto is ISearchable )
-			{				
+			{					
 				var typeOfDto = dto.GetType().GetGenericArguments();
 				var parserType = typeof(QueryParametersParser<>).MakeGenericType(typeOfDto);
-				var parser = Activator.CreateInstance(parserType);				 
+				var parser = Activator.CreateInstance(parserType);
 				
-				MethodInfo parseMethod = parser.GetType().GetMethod("Parse");
+				var parseMethod = parser.GetType().GetMethod("Parse");
 				var queryExpr = parseMethod.Invoke(parser, new object[] { req.QueryString });
 
-				dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);
-
-				if ( 1 == 2 ) 
-				{
-				}
-				
+				dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);				
 			}
 		}
 		

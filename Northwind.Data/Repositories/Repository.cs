@@ -202,6 +202,17 @@ namespace Northwind.Data.Repositories
 		}
 
 		/// <summary>
+		/// Obtiene los registros según la selección indicada
+		/// </summary>
+		/// <param name="select">Expresión de selección</param>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		public IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector )
+		{
+			return (IEnumerable<TEntity>)GetAll().Select(selector.Compile());
+			
+		}
+
+		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
@@ -209,7 +220,7 @@ namespace Northwind.Data.Repositories
 		public IEnumerable<TEntity> GetFiltered( Expression<Func<TEntity, bool>> filter )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
-			{
+			{				
 				return db.Select(filter);
 			}
 		}

@@ -13,13 +13,23 @@ namespace Northwind.ServiceBase.Query.Parser
 	/// <typeparam name="T"></typeparam>
 	public class QueryParametersParser<T>
 	{
+		#region Campos
+
+		/// <summary>
+		/// Factoría de expresiones de selección
+		/// </summary>
+		private SelectExpressionFactory<T> _selectExpressionFactory;
+
+		#endregion
+
 		#region Constructores
 
 		/// <summary>
-		/// 
+		/// Constructor de la clase
 		/// </summary>
 		public QueryParametersParser()
 		{
+			_selectExpressionFactory = new SelectExpressionFactory<T>();
 		}
 
 		#endregion
@@ -35,7 +45,15 @@ namespace Northwind.ServiceBase.Query.Parser
 			var selectParam = queryParams[QueryLanguageConstants.Select];			
 			var orderByParam = queryParams[QueryLanguageConstants.OrderBy];
 
-			return new QueryExpression<T>();			
+			var selectExpression = _selectExpressionFactory.Create(selectParam);
+
+			var queryExpression = new QueryExpression<T>(
+				String.IsNullOrWhiteSpace(offsetParam) ? 0 : Convert.ToInt32(offsetParam),
+				String.IsNullOrWhiteSpace(limitParam) ? 0 : Convert.ToInt32(limitParam), 
+				selectExpression
+			);
+
+			return queryExpression;
 		}
 
 		#endregion

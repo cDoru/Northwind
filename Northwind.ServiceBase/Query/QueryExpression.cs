@@ -36,13 +36,56 @@ namespace Northwind.ServiceBase.Query
 
 		#endregion
 
+		#region Propiedades
+
+		#region Offset
+
+		/// <summary>
+		/// Índice de partida
+		/// </summary>
+		public int Offset
+		{
+			get { return _offset; }
+		}
+
+		#endregion
+
+		#region Limit
+
+		/// <summary>
+		/// Índice de partida
+		/// </summary>
+		public int Limit
+		{
+			get { return _limit; }
+		}
+
+		#endregion
+
+		#region Select
+
+		/// <summary>
+		/// Expresión de selección
+		/// </summary>
+		public Expression<Func<T, object>> Select 
+		{ 
+			get { return _selectExpression; }
+		}
+
+		#endregion
+
+		#endregion
+
 		#region Constructores
 
 		/// <summary>
-		/// 
+		/// Constructor de la clase
 		/// </summary>
-		public QueryExpression()
+		public QueryExpression(int offset, int limit, Expression<Func<T, object>> select)
 		{
+			_offset = offset;
+			_limit = limit;
+			_selectExpression = select;
 		}
 
 		#endregion

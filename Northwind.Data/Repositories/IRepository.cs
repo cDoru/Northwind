@@ -71,6 +71,13 @@ namespace Northwind.Data.Repositories
 		IEnumerable<TEntity> GetAll(int start, int limit);
 
 		/// <summary>
+		/// Obtiene los registros según la selección indicada
+		/// </summary>
+		/// <param name="select">Expresión de selección</param>
+		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
+		IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector );
+
+		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>

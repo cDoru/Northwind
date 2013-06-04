@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using ServiceStack.Common;
@@ -73,8 +74,19 @@ namespace Northwind.ServiceBase
 				{
 					// Creación de la lista
 					var list = new List<TDto>();
-										
-					var result = Repository.GetAll(request.Offset, request.Limit).All(
+					IEnumerable<TEntity> result;
+
+					if ( request.Query.Select != null )
+					{
+						result = Repository.GetAll();
+					}
+					else
+					{
+						result = Repository.GetAll(request.Offset, request.Limit);
+					}
+
+					//var result = Repository.GetAll(request.Offset, request.Limit).All(
+					result.All(
 						entity =>
 						{
 							var dto = entity.TranslateTo<TDto>();

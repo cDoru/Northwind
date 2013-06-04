@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.Common.Extensions;
 
 namespace Northwind.ServiceBase.Common
 {
@@ -15,7 +16,7 @@ namespace Northwind.ServiceBase.Common
 		/// </summary>
 		/// <param name="value">Valor a comprobar</param>
 		/// <param name="paramName">Nombre del parámetro</param>
-		internal static void ArgumentNotNull( object value, string paramName )
+		public static void ArgumentNotNull( object value, string paramName )
 		{
 			if ( value == null )
 			{
@@ -28,13 +29,13 @@ namespace Northwind.ServiceBase.Common
 		/// </summary>
 		/// <param name="value">Valor a comprobar</param>
 		/// <param name="paramName">Nombre del parámetro</param>
-		internal static void ArgumentStringNotNullOrEmpty( string value, string paramName )
+		public static void ArgumentStringNotNullOrEmpty( string value, string paramName )
 		{
 			if ( String.IsNullOrEmpty(value) )
 			{
 				throw new ArgumentNullException(paramName);
 			}
-		}
+		}		
 	
 	}
 }
