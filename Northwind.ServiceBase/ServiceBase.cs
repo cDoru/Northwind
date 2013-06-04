@@ -72,33 +72,14 @@ namespace Northwind.ServiceBase
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, 
 				() =>
 				{
-					// Creación de la lista
-					var list = new List<TDto>();
-					IEnumerable<TEntity> result;
-
-					if ( request.Query.Select != null )
-					{
-						result = Repository.GetAll();
-					}
-					else
-					{
-						result = Repository.GetAll(request.Offset, request.Limit);
-					}
-
-					//var result = Repository.GetAll(request.Offset, request.Limit).All(
-					result.All(
-						entity =>
-						{
-							var dto = entity.TranslateTo<TDto>();
-							dto.Link = new Uri(String.Format("{0}/{1}", Request.GetPathUrl(), IdUtils.GetId<TDto>(dto)));
-							list.Add(dto);
-							return true;
-						});
-				
+					var result = Repository
+						.GetAll(request.Offset, request.Limit)
+						.Select(e => e.TranslateTo<TDto>());												
+					
 					// Creación de la respuesta					
-					return new CollectionResponse<TDto> { 
-						Result = list,
-						Metadata = list.GetMetadata(Request, Repository.Count())
+					return new CollectionResponse<TDto> {
+						Result = result.ToList() /*list*/,
+					//	Metadata = Result.GetMetadata(Request, Repository.Count())
 					};
 				});			
 		}
