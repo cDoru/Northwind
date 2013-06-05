@@ -74,11 +74,11 @@ namespace Northwind.ServiceBase
 				{
 					var result = Repository
 						.GetAll(request.Offset, request.Limit)
-						.Select(e => e.TranslateTo<TDto>());												
+						.Select(e => e.TranslateTo<TDto>()).ToList();												
 					
 					// Creación de la respuesta					
 					return new CollectionResponse<TDto> {
-						Result = result.ToList() /*list*/,
+						Result = result /*list*/,
 					//	Metadata = Result.GetMetadata(Request, Repository.Count())
 					};
 				});			
