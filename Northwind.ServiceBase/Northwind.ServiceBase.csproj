@@ -79,6 +79,7 @@
     <Compile Include="CommonDto.cs" />
     <Compile Include="Common\ExceptionUtils.cs" />
     <Compile Include="Common\ServiceOperations.cs" />
+    <Compile Include="Common\TypeExtensions.cs" />
     <Compile Include="Formats\AtomFeed\AtomFeedFormat.cs" />
     <Compile Include="ICollectionRequest.cs" />
     <Compile Include="ICollectionResponse.cs" />
