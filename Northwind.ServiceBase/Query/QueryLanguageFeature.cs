@@ -17,8 +17,23 @@ namespace Northwind.ServiceBase.Query
 	/// </summary>
 	public class QueryLanguageFeature : IPlugin
 	{
+		#region Campos
+
+		/// <summary>
+		/// Referencia a IAppHost
+		/// </summary>
 		private IAppHost _appHost;
 
+		/// <summary>
+		/// Diccionario donde se guardarán las asociaciones entre clases
+		/// </summary>
+		private Dictionary<Type, Type> _associations = new Dictionary<Type, Type>();
+
+		#endregion
+
+		#region Propiedades
+
+		#region IsEnabled
 		/// <summary>
 		/// Indica si el plugin está habilitado o no
 		/// </summary>
@@ -26,6 +41,9 @@ namespace Northwind.ServiceBase.Query
 		{
 			get { return EndpointHost.Plugins.Any(p => p is QueryLanguageFeature); }
 		}
+		#endregion		
+
+		#endregion
 
 		#region Miembros de IPlugin
 
@@ -43,13 +61,16 @@ namespace Northwind.ServiceBase.Query
 
 		#endregion		
 
+		#region Métodos privados
+
+		#region ProcessRequest
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="req"></param>
 		/// <param name="res"></param>
 		/// <param name="dto"></param>
-		public void ProcessRequest( IHttpRequest req, IHttpResponse res, object dto )
+		private void ProcessRequest( IHttpRequest req, IHttpResponse res, object dto )
 		{
 			Verify.ArgumentNotNull(req, "req");
 			Verify.ArgumentNotNull(res, "res");
@@ -60,15 +81,49 @@ namespace Northwind.ServiceBase.Query
 			if ( dto is ISearchable )
 			{					
 				var typeOfDto = dto.GetType().GetGenericArguments();
-				var parserType = typeof(QueryParametersParser<>).MakeGenericType(typeOfDto);
-				var parser = Activator.CreateInstance(parserType);
 				
-				var parseMethod = parser.GetType().GetMethod("Parse");
-				var queryExpr = parseMethod.Invoke(parser, new object[] { req.QueryString });
+				Type associatedType;
 
-				dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);				
+				if ( _associations.TryGetValue(typeOfDto.First(), out associatedType) )
+				{
+					var parserType = typeof(QueryParametersParser<>).MakeGenericType(associatedType);
+					var parser = parserType.CreateInstance();
+
+					var queryExpr = Expression.Call(
+						Expression.Constant(parser, parserType),
+						"Parse",
+						null,
+						Expression.Constant(req.QueryString));
+
+					var lambda = Expression.Lambda(typeof(Func<object>), queryExpr);
+
+					//dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);
+					dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile(), null);
+				}				
 			}
 		}
-		
+		#endregion
+
+		#endregion
+
+		#region Métodos públicos
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T1"></typeparam>
+		/// <typeparam name="T2"></typeparam>
+		public void RegisterAssociation(Type t1, Type t2)
+		{
+			Type type;
+
+			if ( !(_associations.TryGetValue(t1, out type)) ) 
+			{
+				_associations.Add(t1, t2);
+			}
+		}
+
+		#endregion
+
 	}
 }

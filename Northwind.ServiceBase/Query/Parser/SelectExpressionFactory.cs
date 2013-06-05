@@ -80,8 +80,7 @@ namespace Northwind.ServiceBase.Query.Parser
 				.ToList();
 
 			// Guardamos en un Dictionary la lista de propieades que se solicitan
-			//var sourceMembers = fields.ToDictionary(name => name, source => elementMembers.First(p => p.Name == source && p.MemberType == MemberTypes.Property));
-			var sourceMembers = fields.ToDictionary(name => name, source => elementMembers.First(p => p.Name == source));
+			var sourceMembers = fields.ToDictionary(name => name, source => elementMembers.First(p => p.Name.Equals(source, StringComparison.InvariantCultureIgnoreCase)));
 
 			// Necestiamos crear un tipo dinámico que contenga los campos elegidos y sus valores
 			// Ej.: Cuando ejecutamos IEnumerable.Select, le pasamos como argumento un delegado anónimo anónimo. Algo así:

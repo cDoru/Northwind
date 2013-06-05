@@ -76,8 +76,11 @@ namespace Northwind.Host.Web
 			//AtomFeedFormat.Register(this);
 
 			// Plugins
+			var queryPlugin = new QueryLanguageFeature();
+			queryPlugin.RegisterAssociation(typeof(Customer), typeof(CustomerEntity));
+
+			Plugins.Add(queryPlugin);
 			Plugins.Add(new ValidationFeature());
-			Plugins.Add(new QueryLanguageFeature());
 
 			// Validaciones
 			container.RegisterValidators(typeof(CustomerValidator).Assembly);						
