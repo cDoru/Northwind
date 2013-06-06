@@ -80,7 +80,9 @@ namespace Northwind.ServiceBase.Query.Parser
 				.ToList();
 
 			// Guardamos en un Dictionary la lista de propieades que se solicitan
-			var sourceMembers = fields.ToDictionary(name => name, source => elementMembers.First(p => p.Name.Equals(source, StringComparison.InvariantCultureIgnoreCase)));
+			var sourceMembers = fields.ToDictionary(
+				name => name.ToCamelCase(), 
+				source => elementMembers.First(p => p.Name.Equals(source, StringComparison.InvariantCultureIgnoreCase)));
 
 			// Necestiamos crear un tipo dinámico que contenga los campos elegidos y sus valores
 			// Ej.: Cuando ejecutamos IEnumerable.Select, le pasamos como argumento un delegado anónimo anónimo. Algo así:
@@ -93,7 +95,7 @@ namespace Northwind.ServiceBase.Query.Parser
 			var bindings = dynamicType.GetProperties().Select(
 				p =>
 				{
-					var member = sourceMembers[p.Name];
+					var member = sourceMembers[p.Name.ToCamelCase()];
 					var expression = Expression.Property(sourceItem, (PropertyInfo)member);
 
 					return Expression.Bind(p, expression);					

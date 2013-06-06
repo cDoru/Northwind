@@ -94,11 +94,11 @@ namespace Northwind.ServiceBase.Query
 						"Parse",
 						null,
 						Expression.Constant(req.QueryString));
-
-					var lambda = Expression.Lambda(typeof(Func<object>), queryExpr);
+					
+					var lambda = Expression.Lambda<Func<IQueryExpression>>(queryExpr);					
 
 					//dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);
-					dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile(), null);
+					dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile()(), null);
 				}				
 			}
 		}
