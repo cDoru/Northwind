@@ -11,18 +11,6 @@ namespace Northwind.ServiceBase
 	/// </summary>	
 	public interface ISearchable
 	{
-
-	}
-
-	/// <summary>
-	/// Interfaz que representa una entidad que permite funciones de búsqueda
-	/// </summary>	
-	public interface ISearchable<TDto> : ISearchable
-	{
-		/// <summary>
-		/// Condiciones de búsqueda
-		/// </summary>
-		QueryExpression<TDto> Query { get; set; }
-		
-	}
+		IQueryExpression Query { get; set; }
+	}	
 }

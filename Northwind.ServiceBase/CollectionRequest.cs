@@ -11,7 +11,7 @@ namespace Northwind.ServiceBase
 	/// 
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class CollectionRequest<TDto> : Request<TDto, CollectionResponse<TDto>>, ICollectionRequest, ISearchable<TDto>
+	public class CollectionRequest<TDto> : Request<TDto, CollectionResponse<TDto>>, ICollectionRequest, ISearchable
 		where TDto : IDto, new()
 	{
 		/// <summary>
@@ -24,12 +24,12 @@ namespace Northwind.ServiceBase
 		/// </summary>
 		public int Limit { get; set; }
 
-		#region Miembros de ISearchable<TDto>
+		#region Miembros de ISearchable
 	
 		/// <summary>
-		/// 
+		/// Representa una expresión de búsqueda y filtrado de datos
 		/// </summary>
-		public QueryExpression<TDto> Query { get; set; }
+		public IQueryExpression Query { get; set; }
 
 		#endregion
 	}

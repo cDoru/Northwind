@@ -10,7 +10,7 @@ namespace Northwind.ServiceBase.Query
 	/// Clase que representa una expresión de consulta
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class QueryExpression<T>
+	public class QueryExpression<T> : IQueryExpression
 	{
 		#region Campos
 
@@ -38,6 +38,8 @@ namespace Northwind.ServiceBase.Query
 
 		#region Propiedades
 
+		#region Miembros de IQueryExpression
+
 		#region Offset
 
 		/// <summary>
@@ -53,7 +55,7 @@ namespace Northwind.ServiceBase.Query
 		#region Limit
 
 		/// <summary>
-		/// Índice de partida
+		/// Límite de elementos
 		/// </summary>
 		public int Limit
 		{
@@ -61,6 +63,8 @@ namespace Northwind.ServiceBase.Query
 		}
 
 		#endregion
+
+		#endregion		
 
 		#region Select
 
