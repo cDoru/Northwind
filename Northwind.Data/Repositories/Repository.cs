@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
+using ServiceStack.Common;
 using ServiceStack.OrmLite;
 using Northwind.Data.Model;
 
@@ -208,7 +209,19 @@ namespace Northwind.Data.Repositories
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
 		public IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector )
 		{
-			return (IEnumerable<TEntity>)GetAll().Select(selector.Compile());
+			if ( selector == null )
+			{
+				return GetAll();
+			}
+			else
+			{
+				using ( var db = dbFactory.OpenDbConnection() )
+				{
+					return GetAll()
+						.Select(selector.Compile())
+						.Select(i => i.TranslateTo<TEntity>());
+				}
+			}
 			
 		}
 

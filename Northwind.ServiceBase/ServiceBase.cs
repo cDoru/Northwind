@@ -15,6 +15,7 @@ using Northwind.Data.Repositories;
 using Northwind.ServiceBase.Common;
 using Northwind.ServiceBase.Caching;
 using Northwind.ServiceBase.Meta;
+using Northwind.ServiceBase.Query;
 
 namespace Northwind.ServiceBase
 {
@@ -72,13 +73,15 @@ namespace Northwind.ServiceBase
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, 
 				() =>
 				{
+					var query = (QueryExpression<TEntity>)request.Query;
+
 					var result = Repository
-						.GetAll(request.Offset, request.Limit)
-						.Select(e => e.TranslateTo<TDto>()).ToList();												
+						.GetAll(query.Select/*request.Offset, request.Limit*/)
+						.Select(e => e.TranslateTo<TDto>()).ToList();
 					
 					// Creación de la respuesta					
 					return new CollectionResponse<TDto> {
-						Result = result /*list*/,
+						Result = result,
 					//	Metadata = Result.GetMetadata(Request, Repository.Count())
 					};
 				});			
@@ -145,7 +148,7 @@ namespace Northwind.ServiceBase
 		/// <summary>		
 		/// Elimina una entidad
 		/// <para>
-		/// Devuelve Status 200 si la creación ha sido correcta
+		/// Devuelve Status 204 (sin contenido) si la eliminación ha sido correcta
 		/// </para>		
 		/// </summary>	
 		/// <param name="request">Petición</param>
@@ -156,7 +159,7 @@ namespace Northwind.ServiceBase
 			{
 				Repository.Delete(request.TranslateTo<TEntity>());
 
-				return new HttpResult(HttpStatusCode.OK);
+				return new HttpResult(HttpStatusCode.NoContent);
 			}
 			catch
 			{

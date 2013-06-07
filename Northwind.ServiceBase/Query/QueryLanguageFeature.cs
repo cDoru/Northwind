@@ -79,8 +79,8 @@ namespace Northwind.ServiceBase.Query
 			if ( req.HttpMethod != "GET" ) return;			
 
 			if ( dto is ISearchable )
-			{					
-				var typeOfDto = dto.GetType().GetGenericArguments();
+			{
+				var typeOfDto = dto.GetType().IsGenericType ? dto.GetType().GetGenericArguments() : new Type[] { dto.GetType() };
 				
 				Type associatedType;
 
@@ -97,7 +97,6 @@ namespace Northwind.ServiceBase.Query
 					
 					var lambda = Expression.Lambda<Func<IQueryExpression>>(queryExpr);					
 
-					//dto.GetType().GetProperty("Query").SetValue(dto, queryExpr, null);
 					dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile()(), null);
 				}				
 			}
