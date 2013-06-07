@@ -11,6 +11,8 @@ using ServiceStack.Text;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase;
+using Northwind.ServiceBase.Common;
+using Northwind.ServiceBase.Caching;
 using Northwind.ServiceModel.Contracts;
 using Northwind.ServiceModel.Dto;
 using Northwind.ServiceModel.Operations;
@@ -29,21 +31,16 @@ namespace Northwind.ServiceInterface.Services
 		/// <returns></returns>
 		public object Get( CustomerOrders request )
 		{
-			var cacheKey = UrnId.Create<CustomerOrders>(request.Id);
+			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 			{
-				var orders = ((CustomerEntityRepository)Repository).GetOrders(request.Id);
+				var orders = ((CustomerEntityRepository)Repository)
+					.GetOrders(request.Id)
+					.Select(o => o.TranslateTo<Order>()).ToList();
 
-				var list = new List<Order>();
-				var result = orders.All(
-					o =>
-					{
-						list.Add(o.TranslateTo<Order>());
-						return true;
-					});
 
-				return new CollectionResponse<Order>(list);
+				return new CollectionResponse<Order>(orders);
 				
 			});
 		}		

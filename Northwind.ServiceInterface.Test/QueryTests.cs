@@ -19,7 +19,7 @@ namespace Northwind.Services.Test
 		/// Comprobación de validez de un <see cref="CustomersCollectionResponse"/>
 		/// </summary>
 		/// <param name="response"></param>
-		private void AssertCollectionResponseIsValid( CustomersCollectionResponse response )
+		private void AssertCollectionResponseIsValid( CollectionResponse<Customer> response )
 		{
 			Assert.That(!response.IsErrorResponse());			
 			Assert.That(response, Is.Not.Null);
@@ -41,21 +41,21 @@ namespace Northwind.Services.Test
 		public void GetAllCustomers()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
-			var response = client.Get(new Customers());
+			var response = client.Get(new CollectionRequest<Customer>());
 
-			//AssertCollectionResponseIsValid(response);
+			AssertCollectionResponseIsValid(response);
 		}
 
 		[Test(Description = "GET Customer por Id")]
 		public void GetCustomerById()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
-			var response = client.Get(new Customers());
+			var response = client.Get(new CollectionRequest<Customer>());
 
 			var itemIndex = new Random().Next(1, response.Count);
 			var source = response.Result.ElementAt(itemIndex);
 
-			var responseById = client.Get(new CustomerDetail { Id = source.Id });
+			var responseById = client.Get(new SingleRequest<Customer> { Id = source.Id });
 			var target = responseById.Result;
 
 			Assert.That(target.Id, Is.EqualTo(source.Id));
@@ -66,7 +66,7 @@ namespace Northwind.Services.Test
 		public void GetCustomerOrdersById()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
-			var response = client.Get(new Customers());
+			var response = client.Get(new CollectionRequest<Customer>());
 
 			var itemIndex = new Random().Next(1, response.Count);
 			var customer = response.Result.ElementAt(itemIndex);			
