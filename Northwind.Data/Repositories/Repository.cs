@@ -6,6 +6,7 @@ using System.Text;
 using System.Reflection;
 using ServiceStack.Common;
 using ServiceStack.OrmLite;
+using Northwind.Data;
 using Northwind.Data.Model;
 
 namespace Northwind.Data.Repositories
@@ -214,17 +215,17 @@ namespace Northwind.Data.Repositories
 				return GetAll();
 			}
 			else
-			{
+			{				
 				using ( var db = dbFactory.OpenDbConnection() )
-				{
-					return GetAll()
-						.Select(selector.Compile())
-						.Select(i => i.TranslateTo<TEntity>());
+				{					
+					return db.Select<TEntity>(selector);
+					//return GetAll()
+					//	.Select(selector.Compile())
+					//	.Select(i => i.TranslateTo<TEntity>());
 				}
-			}
-			
+			}			
 		}
-
+		
 		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
@@ -233,7 +234,8 @@ namespace Northwind.Data.Repositories
 		public IEnumerable<TEntity> GetFiltered( Expression<Func<TEntity, bool>> filter )
 		{
 			using ( var db = dbFactory.OpenDbConnection() )
-			{				
+			{
+				
 				return db.Select(filter);
 			}
 		}
