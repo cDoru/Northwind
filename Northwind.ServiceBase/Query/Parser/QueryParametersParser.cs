@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using Northwind.Common;
 using Northwind.ServiceBase.Common;
 
 namespace Northwind.ServiceBase.Query.Parser
@@ -35,7 +36,11 @@ namespace Northwind.ServiceBase.Query.Parser
 		#endregion
 
 		#region Métodos públicos
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="queryParams"></param>
+		/// <returns></returns>
 		public QueryExpression<T> Parse( NameValueCollection queryParams )
 		{
 			Verify.ArgumentNotNull(queryParams, "queryParams");

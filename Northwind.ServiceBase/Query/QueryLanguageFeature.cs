@@ -7,6 +7,7 @@ using System.Reflection;
 using ServiceStack.Common.Reflection;
 using ServiceStack.ServiceHost;
 using ServiceStack.WebHost.Endpoints;
+using Northwind.Common;
 using Northwind.ServiceBase.Common;
 using Northwind.ServiceBase.Query.Parser;
 

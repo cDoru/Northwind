@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1CE8110E-4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Services.Test", "Northwind.ServiceInterface.Test\Northwind.Services.Test.csproj", "{E9D1E1C7-D7B6-4359-BB06-6268AB0ABFD3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B20ED208-B459-4D90-A96C-E98A515C8C0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Common", "Northwind.Common\Northwind.Common.csproj", "{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Northwind1.vsmdi
@@ -94,6 +98,16 @@ Global
 		{E9D1E1C7-D7B6-4359-BB06-6268AB0ABFD3}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E9D1E1C7-D7B6-4359-BB06-6268AB0ABFD3}.Release|x86.ActiveCfg = Release|x86
 		{E9D1E1C7-D7B6-4359-BB06-6268AB0ABFD3}.Release|x86.Build.0 = Release|x86
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,5 +119,6 @@ Global
 		{90D13AF8-B307-4F5D-AE29-5439C954180B} = {C79DEF34-B644-419C-ABCD-076E6E8C75EC}
 		{767242D5-7351-43AA-9C0F-8EC621FF1125} = {C79DEF34-B644-419C-ABCD-076E6E8C75EC}
 		{E9D1E1C7-D7B6-4359-BB06-6268AB0ABFD3} = {1CE8110E-4C50-45C7-8D14-43031163FF37}
+		{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6} = {B20ED208-B459-4D90-A96C-E98A515C8C0B}
 	EndGlobalSection
 EndGlobal

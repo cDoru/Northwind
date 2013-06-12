@@ -120,6 +120,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Common\Northwind.Common.csproj">
+      <Project>{D0E4AB68-7E09-4D2D-890B-8A41FE0D15A6}</Project>
+      <Name>Northwind.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
       <Project>{0B403B34-B8C3-402E-B195-F2CD4002DCCB}</Project>
       <Name>Northwind.Data</Name>

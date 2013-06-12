@@ -85,10 +85,11 @@ namespace Northwind.ServiceBase.Query.Parser
 				source => elementMembers.First(p => p.Name.Equals(source, StringComparison.InvariantCultureIgnoreCase)));
 
 			// Necestiamos crear un tipo dinámico que contenga los campos elegidos y sus valores
-			// Ej.: Cuando ejecutamos IEnumerable.Select, le pasamos como argumento un delegado anónimo anónimo. Algo así:
-			//		lista.Select(s => new { Id, Name });
+			// Ej.: Cuando ejecutamos IDbConnection.Select, le pasamos como argumento un delegado que devuelve un tipo anónimo. 
+			// Algo así:
+			//		lista.Select<object>(s => new { s.Id, s.Name });
 			// En este caso, tenemos que crear dinámicamente el tipo.
-			Type dynamicType = _classFactory.Create(elementType, sourceMembers.Values);
+			var dynamicType = _classFactory.Create(elementType, sourceMembers.Values);
 
 			// Creamos la expresión
 			var sourceItem = Expression.Parameter(elementType, "t");

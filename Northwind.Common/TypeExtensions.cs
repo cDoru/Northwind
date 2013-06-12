@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Northwind.ServiceBase.Common
+namespace Northwind.Common
 {
 	/// <summary>
 	/// Clase con métodos de extensión para <see cref="Type"/>

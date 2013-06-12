@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using ServiceStack.Common.Extensions;
+using Northwind.Common;
 using Northwind.ServiceBase.Common;
 
 namespace Northwind.ServiceBase.Query.Parser
@@ -139,11 +140,11 @@ namespace Northwind.ServiceBase.Query.Parser
 
 			try
 			{
-				var typeName = sourceType.Name + DefaultClassNameSuffix + (CreatedClasses.Count + 1).ToString();
+				var typeName = DefaultClassNameSuffix + (CreatedClasses.Count + 1).ToString();
 				var typeBuilder = _moduleBuilder.DefineType(typeName, ClassAttributes);
 
 				// Establecemos los mismos atributos que la clase original
-				SetAttributes(typeBuilder, sourceType);
+				SetAttributes(typeBuilder, sourceType);				
 
 				// Creamos las propiedades
 				CreateProperties(typeBuilder, properties);
@@ -189,7 +190,7 @@ namespace Northwind.ServiceBase.Query.Parser
 			// Creación del campo
 			var fieldBuilder = typeBuilder.DefineField("_" + property.Name, property.PropertyType, FieldAttributes.Private);
 			// Creación de la propiedad
-			var propBuilder = typeBuilder.DefineProperty(property.Name, PropertyAttributes.HasDefault, property.PropertyType, null);
+			var propBuilder = typeBuilder.DefineProperty(property.Name, PropertyAttributes.None, property.PropertyType, null);
 
 			// Establecemos los atributos
 			SetAttributes(propBuilder, property);

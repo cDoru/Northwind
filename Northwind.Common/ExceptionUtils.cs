@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ServiceStack.Common.Extensions;
 
-namespace Northwind.ServiceBase.Common
+namespace Northwind.Common
 {
 	/// <summary>
 	/// Utilidades para lanzar excepciones
 	/// </summary>
-	internal static class Verify
+	public static class Verify
 	{
 		/// <summary>
 		/// Comprueba si value es nulo. En caso afirmativo lanza una excepción

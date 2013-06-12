@@ -22,7 +22,7 @@ namespace Northwind.ServiceBase
 	/// <summary>
 	/// Clase que representa un servicio web
 	/// </summary>
-	public class ServiceBase<TEntity, TDto> : Service
+	public abstract class ServiceBase<TEntity, TDto> : Service
 		where TEntity : IEntity, new()
 		where TDto : IDto, new()
 	{
@@ -76,8 +76,8 @@ namespace Northwind.ServiceBase
 					var query = (QueryExpression<TEntity>)request.Query;
 
 					var result = Repository
-						.GetAll(query.Select/*request.Offset, request.Limit*/)
-						.Select(e => e.TranslateTo<TDto>()).ToList();
+						.GetAll(query.Select /*request.Offset, request.Limit*/)
+						.Select(e => e.TranslateTo<TDto>()).ToList();					
 					
 					// Creación de la respuesta					
 					return new CollectionResponse<TDto> {

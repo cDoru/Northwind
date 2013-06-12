@@ -1,23 +1,24 @@
 # Estructura de la solución
 
-  * Northwind.Data. *Clases del modelo de datos y repositorios de acceso*
+  * **Northwind.Common**. *Clases uso común*
+  * **Northwind.Data**. *Clases del modelo de datos y repositorios de acceso*
     * Model			    
     * Repositories		
-  * Northwind.Host. *Servicio web*
-  * Northwind.ServiceBase. *Clases base de servicio*
+  * **Northwind.Host**. *Servicio web*
+  * **Northwind.ServiceBase**. *Clases base de servicio*
     * Caching. *Clases relacionadas con cache*
     * Common. *Clases de uso común*
     * Formats. *Formatos de respuesta adicionales*
     * Meta.  *Clases de metadatos en respuesta*
     * Query. *Clases de gestión de lenguaje de selección*
-  * NorthWind.ServiceInterface. *Clases de implementación del servicio*
+  * **NorthWind.ServiceInterface**. *Clases de implementación del servicio*
     * Services
     * Validators. *Clases de validación*
-  * NorthWind.ServiceModel. *Modelo del servicio*
+  * **NorthWind.ServiceModel**. *Modelo del servicio*
     * Contracts. *Clases de petición (Request)*
     * Dto. *Clases Dto*
     * Operations. *Clases de respuesta (Response)*    
-  * Northwind.Services.Test *Clases de test*
+  * **Northwind.Services.Test**. *Clases de test*
 
 # Guía de diseño de la API
 
