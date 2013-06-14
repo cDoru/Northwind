@@ -78,6 +78,7 @@ namespace Northwind.Host.Web
 			// Plugins
 			var queryPlugin = new QueryLanguageFeature();
 			queryPlugin.RegisterAssociation(typeof(Customer), typeof(CustomerEntity));
+			queryPlugin.RegisterAssociation(typeof(Order), typeof(OrderEntity));
 
 			Plugins.Add(queryPlugin);
 			Plugins.Add(new ValidationFeature());

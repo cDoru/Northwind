@@ -74,9 +74,10 @@ namespace Northwind.ServiceBase
 				() =>
 				{
 					var query = (QueryExpression<TEntity>)request.Query;
+					var queryExpr = (query != null ? query.Select : null);
 
 					var result = Repository
-						.GetAll(query.Select /*request.Offset, request.Limit*/)
+						.GetAll(queryExpr /*request.Offset, request.Limit*/)
 						.Select(e => e.TranslateTo<TDto>()).ToList();					
 					
 					// Creación de la respuesta					
