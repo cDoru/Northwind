@@ -37,7 +37,7 @@ namespace Northwind.Data
 			//ev.Select(selector);
 
 			var modelDef = ModelDefinition<T>.Definition;
-			var visitor = new SqlSelectExpressionTranslator();
+			var visitor = new SqlSelectExpressionTranslator();						
 
 			var selectStr = GenerateSelectExpression(ModelDefinition<T>.Definition, visitor.Translate(selector), false);
 			ev.Select(selectStr);
@@ -53,9 +53,15 @@ namespace Northwind.Data
 		/// <returns></returns>
 		private static String GenerateSelectExpression(ModelDefinition modelDef, String fields, bool distinct )
 		{
+			var columns = fields
+				.Split(',')
+				.ToList()
+				.Select(c => OrmLiteConfig.DialectProvider.GetQuotedColumnName(c))
+				.Join(",");
+
 			return String.Format("SELECT {0}{1} \n FROM {2}", 
 				(distinct ? "DISTINCT " : ""),
-				(String.IsNullOrEmpty(fields) ? OrmLiteConfig.DialectProvider.GetColumnNames(modelDef) : fields),
+				(String.IsNullOrEmpty(columns) ? OrmLiteConfig.DialectProvider.GetColumnNames(modelDef) : columns),
 				OrmLiteConfig.DialectProvider.GetQuotedTableName(modelDef));
 		}
 	}

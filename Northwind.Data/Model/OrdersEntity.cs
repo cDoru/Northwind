@@ -16,8 +16,10 @@ namespace Northwind.Data.Model
         [Required]
         public long Id { get; set;}
         [StringLength(8000)]
+		[References(typeof(CustomerEntity))]
         public string CustomerId { get; set;}
         [Required]
+		[References(typeof(EmployeeEntity))]
         public long EmployeeId { get; set;}
         [StringLength(8000)]
         public string OrderDate { get; set;}
@@ -41,9 +43,9 @@ namespace Northwind.Data.Model
         [StringLength(8000)]
         public string ShipCountry { get; set;}
 
-		public CustomerEntity Customer { get; set; }
-		public List<OrderDetailEntity> Details { get; set; }
-		public EmployeeEntity Employee { get; set; }
+		public virtual CustomerEntity Customer { get; set; }
+		public virtual List<OrderDetailEntity> Details { get; set; }
+		public virtual EmployeeEntity Employee { get; set; }
 
     }
 }

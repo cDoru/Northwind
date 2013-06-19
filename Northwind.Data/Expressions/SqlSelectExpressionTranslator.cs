@@ -16,6 +16,12 @@ namespace Northwind.Data.Expressions
 	{
 		List<String> _columns = new List<String>();
 
+		public List<String> Columns
+		{
+			get { return _columns; }
+			private set { _columns = value; }
+		}
+
 		#region Constructor
 
 		/// <summary>
@@ -39,7 +45,7 @@ namespace Northwind.Data.Expressions
 		{			
 			Visit(expression);
 
-			return String.Join(",", _columns);
+			return String.Join(",", Columns);
 		}
 
 		#endregion
@@ -53,7 +59,7 @@ namespace Northwind.Data.Expressions
 		/// <returns></returns>
 		protected override MemberBinding VisitMemberBinding( MemberBinding node )
 		{
-			_columns.Add(node.Member.Name);
+			Columns.Add(node.Member.Name);
 
 			return base.VisitMemberBinding(node);
 		}

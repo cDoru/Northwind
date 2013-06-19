@@ -28,7 +28,7 @@ namespace Northwind.Services.Test
 		}
 
 		[Test(Description = "GET Customers por Url")]
-		public void GetAllCustomersUsingUrl()
+		public void Get_all_customers_using_url()
 		{
 			var responseStr = (TestConfig.CustomerServiceUri.ToString()).GetJsonFromUrl();
 
@@ -38,7 +38,7 @@ namespace Northwind.Services.Test
 		}
 
 		[Test(Description = "GET Customers por Dto")]
-		public void GetAllCustomers()
+		public void Get_all_customers()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
 			var response = client.Get(new CollectionRequest<Customer>());
@@ -47,7 +47,7 @@ namespace Northwind.Services.Test
 		}
 
 		[Test(Description = "GET Customer por Id")]
-		public void GetCustomerById()
+		public void Get_customer_by_id()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
 			var response = client.Get(new CollectionRequest<Customer>());
@@ -63,7 +63,7 @@ namespace Northwind.Services.Test
 		}
 
 		[Test(Description = "GET lista de Order por Id de Customer")]
-		public void GetCustomerOrdersById()
+		public void Get_customer_orders_by_id()
 		{
 			var client = TestConfig.CreateJsonServiceClient();
 			var response = client.Get(new CollectionRequest<Customer>());

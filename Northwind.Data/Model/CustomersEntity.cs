@@ -18,7 +18,7 @@ namespace Northwind.Data.Model
         public string Id { get; set;}
         [StringLength(8000)]
         public string CompanyName { get; set;}
-        [StringLength(8000)]
+        [StringLength(8000)]		
         public string ContactName { get; set;}
         [StringLength(8000)]
         public string ContactTitle { get; set;}
@@ -37,6 +37,6 @@ namespace Northwind.Data.Model
         [StringLength(8000)]
         public string Fax { get; set;}
 
-		public List<OrderEntity> Orders { get; set; }
+		public virtual List<OrderEntity> Orders { get; set; }
     }
 }
