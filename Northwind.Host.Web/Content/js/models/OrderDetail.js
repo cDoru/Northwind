@@ -5,7 +5,7 @@
 	@module		@Northwind
 **/
 
-Northwind.OrderDetail = DS.Model.extend({
+Northwind.OrderDetail = Northwind.Model.extend({
 	id: DS.attrib('string'),
 	orderId: DS.attrib('long'),
 	productId: DS.attrib('long'),

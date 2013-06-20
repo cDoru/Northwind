@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\normalize.css" />
-    <Content Include="Content\js\models\Customer.js">
+    <Content Include="Content\js\models\customer.js">
       <DependentUpon>EmberModels.tt</DependentUpon>
     </Content>
     <Content Include="Content\js\models\EmberModels.txt">
@@ -117,10 +117,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EmberModels.tt</DependentUpon>
     </Content>
-    <Content Include="Content\js\models\Order.js">
+    <Content Include="Content\js\models\order.js">
       <DependentUpon>EmberModels.tt</DependentUpon>
     </Content>
-    <Content Include="Content\js\models\OrderDetail.js">
+    <Content Include="Content\js\models\orderdetail.js">
       <DependentUpon>EmberModels.tt</DependentUpon>
     </Content>
     <Content Include="Global.asax" />

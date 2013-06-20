@@ -25,6 +25,7 @@ namespace Northwind.ServiceModel.Dto
 		public string ShipRegion { get; set; }
 		public string ShipPostalCode { get; set; }
 		public string ShipCountry { get; set; }
+
 		public List<OrderDetail> Detail { get; set; }
 	}
 }

@@ -5,7 +5,7 @@
 	@module		@Northwind
 **/
 
-Northwind.Customer = DS.Model.extend({
+Northwind.Customer = Northwind.Model.extend({
 	id: DS.attrib('string'),
 	companyName: DS.attrib('string'),
 	contactName: DS.attrib('string'),

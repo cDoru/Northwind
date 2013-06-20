@@ -22,11 +22,7 @@ namespace Northwind.ServiceModel.Dto
 		public string Country { get; set; }
 		public string Phone { get; set; }
 		public string Fax { get; set; }
-		public List<Order> Orders { get; set; }
-
-		public Customer()
-		{
-			Orders = new List<Order>();
-		}
+		
+		public List<Order> Orders { get; set; }		
 	}
 }

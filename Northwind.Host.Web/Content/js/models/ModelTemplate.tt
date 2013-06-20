@@ -43,7 +43,7 @@ public class ModelTemplate : Template
 	@module		@Northwind
 **/
 
-Northwind.<#= ModelName #> = DS.Model.extend({
+Northwind.<#= ModelName #> = Northwind.Model.extend({
 	<#= string.Join(",\r\n\t", Properties.Select(p => string.Format("{0}: DS.attrib('{1}')", p.Key.ToString().ToCamelCase(), p.Value))) #>
 });
 <#+ 

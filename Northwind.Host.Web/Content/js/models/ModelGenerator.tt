@@ -72,6 +72,8 @@ public class ModelGenerator : Generator
 		{
 			if ( elem is CodeProperty )
 			{
+				//System.Diagnostics.Debugger.Break(); 
+
 				var property = elem as CodeProperty;
 
 				propList.Add(property.Name, property.Type.AsString);
@@ -84,15 +86,13 @@ public class ModelGenerator : Generator
 	protected override void RunCore()
 	{				
 		var classList = GetClasses(Namespace);		
-		var modelTemplate = new ModelTemplate();
-
-		//System.Diagnostics.Debugger.Break(); 
+		var modelTemplate = new ModelTemplate();		
 
 		foreach ( CodeClass c in classList )
 		{
 			modelTemplate.ModelName = c.Name;
 			modelTemplate.Properties = GetProperties(c.Members);
-			modelTemplate.RenderToFile(c.Name + ".js");
+			modelTemplate.RenderToFile(c.Name.ToLower() + ".js");
 		}		
 	}
 }

@@ -6,12 +6,5 @@
 
 Northwind = Ember.Application.create();
 
-Northwind.Router.map(function () {
-  // put your routes here
-});
+Northwind.Model = DS.Model.extend();
 
-Northwind.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return ['red', 'yellow', 'blue'];
-  }
-});
