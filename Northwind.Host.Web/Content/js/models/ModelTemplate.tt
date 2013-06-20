@@ -1,0 +1,53 @@
+﻿<#@ assembly name="EnvDTE" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(TargetDir)ServiceStack.Text.dll" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="ServiceStack.Text" #>
+
+<#+
+/// <summary>
+/// Recuperación de las clases del espacio de nombres indicado
+/// </summary>
+public class ModelTemplate : Template
+{		
+	/// <summary>
+	/// Nombre del modelo
+	/// </summary>
+	public string ModelName { get; set; }
+
+	/// <summary>
+	/// Propiedades
+	/// </summary>
+	public Dictionary<string, string> Properties { get; set; }
+
+	/// <summary>
+	/// Transformación de texto
+	/// </summary>
+	private string ToEmberType(Type type)
+	{
+		return string.Empty;
+	}	
+
+	/// <summary>
+	/// Transformación de texto
+	/// </summary>
+	public override string TransformText()
+	{
+#>
+/**
+	@class		<#= ModelName #>
+	@extends	DS.Model
+	@namespace	Northwind
+	@module		@Northwind
+**/
+
+Northwind.<#= ModelName #> = DS.Model.extend({
+	<#= string.Join(",\r\n\t", Properties.Select(p => string.Format("{0}: DS.attrib('{1}')", p.Key.ToString().ToCamelCase(), p.Value))) #>
+});
+<#+ 
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

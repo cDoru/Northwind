@@ -1,0 +1,99 @@
+﻿<#@ assembly name="EnvDTE" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ include file="ModelTemplate.tt" #> 
+
+<#+
+
+///<sealso href="http://t4-editor.tangible-engineering.com/blog/walking-the-visual-studio-code-model-with-t4-template.html" />
+public class ModelGenerator : Generator
+{
+	// Ensamblado a partir del cual se generarán los modelos
+	public string AssemblyName = string.Empty;
+
+	// Espacio de nombres del cual se extraerán las clases a generar
+	public string Namespace = string.Empty;
+	
+	
+	/// <summary>
+	/// Recuperación de las clases del espacio de nombres indicado
+	/// </summary>
+	private List<CodeClass> GetClasses(string searchNs)
+	{
+		return GetClasses(TransformationContext.Project.CodeModel.CodeElements, searchNs, false);
+	}
+
+	/// <summary>
+	/// Recuperación de las clases del espacio de nombres indicado
+	/// </summary>
+	private List<CodeClass> GetClasses(CodeElements elements, string searchNs, bool namespaceOK)
+	{
+		var list = new List<CodeClass>();
+
+		if ( elements == null ) return list;
+
+		foreach ( CodeElement elem in elements )
+		{
+			if ( elem is CodeNamespace ) 
+			{
+				var ns = elem as CodeNamespace;
+
+				if ( ns != null ) 
+				{
+					list.AddRange(GetClasses(ns.Members, searchNs, String.Equals(ns.FullName, searchNs)));
+				}
+			}
+			else if ( elem is CodeClass && namespaceOK )
+			{
+				var codeClass = elem as CodeClass;
+
+				if ( codeClass != null ) 
+				{					
+					list.Add(codeClass);
+					list.AddRange(GetClasses(codeClass.Members, searchNs, true));
+				}
+			}
+		}
+
+		return list;
+	}	
+
+	/// <summary>
+	/// Recuperación de las clases del espacio de nombres indicado
+	/// </summary>
+	private Dictionary<string, string> GetProperties(CodeElements elements)
+	{
+		var propList = new Dictionary<string, string>();
+
+		foreach ( var elem in elements )
+		{
+			if ( elem is CodeProperty )
+			{
+				var property = elem as CodeProperty;
+
+				propList.Add(property.Name, property.Type.AsString);
+			}
+		}
+
+		return propList;
+	}
+
+	protected override void RunCore()
+	{				
+		var classList = GetClasses(Namespace);		
+		var modelTemplate = new ModelTemplate();
+
+		//System.Diagnostics.Debugger.Break(); 
+
+		foreach ( CodeClass c in classList )
+		{
+			modelTemplate.ModelName = c.Name;
+			modelTemplate.Properties = GetProperties(c.Members);
+			modelTemplate.RenderToFile(c.Name + ".js");
+		}		
+	}
+}
+#>
