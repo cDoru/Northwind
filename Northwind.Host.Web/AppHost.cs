@@ -15,6 +15,7 @@ using ServiceStack.ServiceInterface.Cors;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
+using ServiceStack.Razor;
 using System.Configuration;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
@@ -82,6 +83,7 @@ namespace Northwind.Host.Web
 
 			Plugins.Add(queryPlugin);
 			Plugins.Add(new ValidationFeature());
+			Plugins.Add(new RazorFormat());
 
 			// Validaciones
 			container.RegisterValidators(typeof(CustomerValidator).Assembly);						

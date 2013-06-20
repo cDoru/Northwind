@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.54\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Razor">
+      <HintPath>..\packages\ServiceStack.Razor.3.9.54\lib\net40\ServiceStack.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Redis, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Redis.3.9.54\lib\net35\ServiceStack.Redis.dll</HintPath>
@@ -86,6 +89,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor.Unofficial">
+      <HintPath>..\packages\System.Web.Razor.Unofficial.2.0.2\lib\net40\System.Web.Razor.Unofficial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -102,7 +108,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\normalize.css" />
+    <Content Include="Content\js\models\Customer.js">
+      <DependentUpon>EmberModels.tt</DependentUpon>
+    </Content>
+    <Content Include="Content\js\models\EmberModels.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmberModels.tt</DependentUpon>
+    </Content>
+    <Content Include="Content\js\models\Order.js">
+      <DependentUpon>EmberModels.tt</DependentUpon>
+    </Content>
+    <Content Include="Content\js\models\OrderDetail.js">
+      <DependentUpon>EmberModels.tt</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
+    <Content Include="Content\js\app.js" />
+    <Content Include="Content\js\libs\ember-1.0.0-rc.5.js" />
+    <Content Include="Content\js\libs\handlebars-1.0.0-rc.4.js" />
+    <Content Include="Content\js\libs\jquery-1.9.1.js" />
     <Content Include="packages.config" />
     <Content Include="SQLite\x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -143,6 +168,27 @@
       <Project>{767242D5-7351-43AA-9C0F-8EC621FF1125}</Project>
       <Name>Northwind.ServiceModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\js\controllers\" />
+    <Folder Include="Content\js\routes\" />
+    <Folder Include="Content\js\views\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\js\models\EmberModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EmberModels.txt</LastGenOutput>
+    </None>
+    <None Include="Content\js\models\ModelGenerator.tt" />
+    <None Include="Content\js\models\ModelTemplate.tt">
+      <Parameters>&lt;%3fxml version="1.0" encoding="utf-16"%3f&gt;
+&lt;ArrayOfParameterStorage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Parameters>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
