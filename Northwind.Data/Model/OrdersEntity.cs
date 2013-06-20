@@ -15,37 +15,46 @@ namespace Northwind.Data.Model
         [Alias("Id")]
         [Required]
         public long Id { get; set;}
+
         [StringLength(8000)]
 		[References(typeof(CustomerEntity))]
         public string CustomerId { get; set;}
-        [Required]
+        
+		[Required]
 		[References(typeof(EmployeeEntity))]
         public long EmployeeId { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string OrderDate { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string RequiredDate { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShippedDate { get; set;}
-        public long? ShipVia { get; set;}
-        [Required]
+        
+		public long? ShipVia { get; set;}
+        
+		[Required]
         public decimal Freight { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShipName { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShipAddress { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShipCity { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShipRegion { get; set;}
-        [StringLength(8000)]
+        
+		[StringLength(8000)]
         public string ShipPostalCode { get; set;}
-        [StringLength(8000)]
-        public string ShipCountry { get; set;}
-
-		public virtual CustomerEntity Customer { get; set; }
-		public virtual List<OrderDetailEntity> Details { get; set; }
-		public virtual EmployeeEntity Employee { get; set; }
+        
+		[StringLength(8000)]
+        public string ShipCountry { get; set;}		
 
     }
 }

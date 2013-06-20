@@ -15,12 +15,12 @@ namespace Northwind.Data.Model
         [Alias("Id")]
         [Required]
         public long Id { get; set;}
+
         [StringLength(8000)]
         public string CategoryName { get; set;}
+
         [StringLength(8000)]
         public string Description { get; set;}
-
-		public List<ProductEntity> Products { get; set; }
     }
 }
 

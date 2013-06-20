@@ -4,7 +4,7 @@
 <#@ include file="ModelGenerator.tt" #> 
 
 <#	
-	//System.Diagnostics.Debugger.Launch(); 
+	//System.Diagnostics.Debugger.Launch();
 	
 	var modelGenerator = new ModelGenerator(); 	
 	modelGenerator.AssemblyName = "Northwind.ServiceModel";

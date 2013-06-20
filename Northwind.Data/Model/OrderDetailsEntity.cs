@@ -16,18 +16,23 @@ namespace Northwind.Data.Model
         [StringLength(8000)]
         [Required]
         public string Id { get; set;}
-        [Required]
-        public long OrderId { get; set;}
-        [Required]
-        public long ProductId { get; set;}
-        [Required]
-        public decimal UnitPrice { get; set;}
-        [Required]
-        public long Quantity { get; set;}
-        [Required]
-        public double Discount { get; set;}
 
-		public OrderEntity Order { get; set; }
-		public ProductEntity Product { get; set; }
+		[Required]
+		[References(typeof(OrderEntity))]
+        public long OrderId { get; set;}
+        
+		[Required]
+		[References(typeof(ProductEntity))]
+        public long ProductId { get; set;}
+        
+		[Required]
+        public decimal UnitPrice { get; set;}
+        
+		[Required]
+        public long Quantity { get; set;}
+        
+		[Required]
+        public double Discount { get; set;}
+		
     }
 }

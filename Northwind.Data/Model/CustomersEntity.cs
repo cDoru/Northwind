@@ -15,28 +15,36 @@ namespace Northwind.Data.Model
         [Alias("Id")]
         [StringLength(8000)]
         [Required]
-        public string Id { get; set;}
+        public string Id { get; set; }
+
         [StringLength(8000)]
-        public string CompanyName { get; set;}
+        public string CompanyName { get; set; }
+
         [StringLength(8000)]		
-        public string ContactName { get; set;}
+        public string ContactName { get; set; }
+
         [StringLength(8000)]
-        public string ContactTitle { get; set;}
+        public string ContactTitle { get; set; }
+
         [StringLength(8000)]
         public string Address { get; set;}
+
         [StringLength(8000)]
         public string City { get; set;}
+
         [StringLength(8000)]
         public string Region { get; set;}
+
         [StringLength(8000)]
         public string PostalCode { get; set;}
+
         [StringLength(8000)]
         public string Country { get; set;}
+
         [StringLength(8000)]
         public string Phone { get; set;}
-        [StringLength(8000)]
-        public string Fax { get; set;}
 
-		public virtual List<OrderEntity> Orders { get; set; }
+        [StringLength(8000)]
+        public string Fax { get; set;}		
     }
 }

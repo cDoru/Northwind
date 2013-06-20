@@ -15,28 +15,35 @@ namespace Northwind.Data.Model
         [Alias("Id")]
         [Required]
         public long Id { get; set;}
+
         [StringLength(8000)]
         public string ProductName { get; set;}
-        [Required]
+        
+		[Required]
+		[References(typeof(SupplierEntity))]
         public long SupplierId { get; set;}
+
         [Required]
+		[References(typeof(CategoryEntity))]
         public long CategoryId { get; set;}
+
         [StringLength(8000)]
         public string QuantityPerUnit { get; set;}
-        [Required]
+        
+		[Required]
         public decimal UnitPrice { get; set;}
-        [Required]
+        
+		[Required]
         public long UnitsInStock { get; set;}
-        [Required]
+        
+		[Required]
         public long UnitsOnOrder { get; set;}
-        [Required]
+        
+		[Required]
         public long ReorderLevel { get; set;}
-        [Required]
-        public long Discontinued { get; set;}
-
-		public SupplierEntity Supplier { get; set; }
-		public CategoryEntity Category { get; set; }
-		public List<OrderDetailEntity> OrderDetails { get; set; }
+        
+		[Required]
+        public long Discontinued { get; set;}		
     }
 }
 

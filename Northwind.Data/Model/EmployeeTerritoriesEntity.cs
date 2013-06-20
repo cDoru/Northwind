@@ -16,12 +16,13 @@ namespace Northwind.Data.Model
         [StringLength(8000)]
         [Required]
         public string Id { get; set;}
-        [Required]
-        public long EmployeeId { get; set;}
-        [StringLength(8000)]
-        public string TerritoryId { get; set;}
 
-		public EmployeeEntity Employee { get; set; }
-		public TerritoryEntity Territory { get; set; }
+        [Required]
+		[References(typeof(EmployeeEntity))]
+        public long EmployeeId { get; set;}
+        
+		[StringLength(8000)]
+		[References(typeof(TerritoryEntity))]
+        public string TerritoryId { get; set;}		
     }
 }
