@@ -9,7 +9,7 @@ namespace Northwind.ServiceBase.Relations
 	/// <summary>
 	/// Atributo que define una relación entre clases
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class RelationAttribute : Attribute
 	{
 		/// <summary>

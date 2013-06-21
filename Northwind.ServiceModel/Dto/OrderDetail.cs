@@ -9,15 +9,20 @@ namespace Northwind.ServiceModel.Dto
 {
 	/// <summary>
 	/// Clase que representa una entidad <see cref="OrderDetail"/>
-	/// </summary>
-	[Relation(RelationType.BelongsTo, typeof(Order))]
+	/// </summary>	
 	public class OrderDetail : CommonDto
 	{
 		public string Id { get; set; }
-		public long OrderId { get; set; }
+
+		[Relation(RelationType.BelongsTo, typeof(Order))]
+		public Order Order { get; set; }
+
 		public long ProductId { get; set; }
+
 		public decimal UnitPrice { get; set; }
+
 		public long Quantity { get; set; }
+
 		public double Discount { get; set; }
 	}
 }

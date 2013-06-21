@@ -9,8 +9,7 @@ namespace Northwind.ServiceModel.Dto
 {
 	/// <summary>
 	/// Clase que representa una entidad <see cref="Customer"/>
-	/// </summary>
-	[Relation(RelationType.HasMany, typeof(Order))]
+	/// </summary>	
 	public class Customer : CommonDto
 	{		
 		public string Id { get; set; }
@@ -24,7 +23,8 @@ namespace Northwind.ServiceModel.Dto
 		public string Country { get; set; }
 		public string Phone { get; set; }
 		public string Fax { get; set; }
-		
+
+		[Relation(RelationType.HasMany, typeof(Order))]
 		public List<Order> Orders { get; set; }		
 	}
 }
