@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Northwind.ServiceBase;
+using Northwind.ServiceBase.Relations;
 
 namespace Northwind.ServiceModel.Dto
 {
 	/// <summary>
 	/// Clase que representa una entidad <see cref="Customer"/>
 	/// </summary>
+	[Relation(RelationType.HasMany, typeof(Order))]
 	public class Customer : CommonDto
 	{		
 		public string Id { get; set; }

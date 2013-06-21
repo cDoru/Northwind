@@ -23,6 +23,7 @@ using Northwind.ServiceBase;
 using Northwind.ServiceBase.Formats;
 using Northwind.ServiceBase.Meta;
 using Northwind.ServiceBase.Query;
+using Northwind.ServiceBase.Relations;
 using Northwind.ServiceInterface.Services;
 using Northwind.ServiceInterface.Validators;
 using Northwind.ServiceModel.Contracts;
@@ -57,6 +58,7 @@ namespace Northwind.Host.Web
 			JsConfig.DateHandler = JsonDateHandler.ISO8601;
 			JsConfig.EscapeUnicode = true;
 			JsConfig<MetadataUriType>.SerializeFn = text => text.ToString().ToCamelCase();
+			JsConfig<RelationType>.SerializeFn = text => text.ToString().ToCamelCase();
 
 			// ServiceStack
 			SetConfig(new EndpointHostConfig

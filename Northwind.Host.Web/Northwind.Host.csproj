@@ -183,6 +183,7 @@
     <None Include="Content\js\models\EmberModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EmberModels.txt</LastGenOutput>
+      <TransformOnBuild>True</TransformOnBuild>
     </None>
     <None Include="Content\js\models\ModelGenerator.tt" />
     <None Include="Content\js\models\ModelTemplate.tt">

@@ -97,6 +97,8 @@
     <Compile Include="Query\QueryExpression.cs" />
     <Compile Include="Query\QueryLanguageConstants.cs" />
     <Compile Include="Query\QueryLanguageFeature.cs" />
+    <Compile Include="Relations\RelationAttribute.cs" />
+    <Compile Include="Relations\RelationType.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="SingleRequest.cs" />
