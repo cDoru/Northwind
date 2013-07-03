@@ -61,37 +61,15 @@ public class ModelGenerator : Generator
 		return list;
 	}	
 
-	/// <summary>
-	/// Recuperación de las clases del espacio de nombres indicado
-	/// </summary>
-	private Dictionary<string, string> GetProperties(CodeElements elements)
-	{
-		var propList = new Dictionary<string, string>();
-
-		foreach ( var elem in elements )
-		{
-			if ( elem is CodeProperty )
-			{
-				//System.Diagnostics.Debugger.Break(); 
-
-				var property = elem as CodeProperty;
-
-				propList.Add(property.Name, property.Type.AsString);
-			}
-		}
-
-		return propList;
-	}
-
 	protected override void RunCore()
 	{				
-		var classList = GetClasses(Namespace);		
-		var modelTemplate = new ModelTemplate();		
+		var classList = GetClasses(Namespace);
+
+		//System.Diagnostics.Debugger.Break(); 		
 
 		foreach ( CodeClass c in classList )
 		{
-			modelTemplate.ModelName = c.Name;
-			modelTemplate.Properties = GetProperties(c.Members);
+			var modelTemplate = new ModelTemplate(c);
 			modelTemplate.RenderToFile(c.Name.ToLower() + ".js");
 		}		
 	}

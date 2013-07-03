@@ -16,6 +16,6 @@ Northwind.Customer = Northwind.Model.extend({
 	postalCode: DS.attrib('string'),
 	country: DS.attrib('string'),
 	phone: DS.attrib('string'),
-	fax: DS.attrib('string'),
-	orders: DS.attrib('System.Collections.Generic.List<Northwind.ServiceModel.Dto.Order>')
+	fax: DS.attrib('string')
+	
 });

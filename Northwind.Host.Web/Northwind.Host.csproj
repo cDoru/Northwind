@@ -102,6 +102,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHost.cs" />
+    <Compile Include="Content\js\models\VsAutomationHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VsAutomationHelper.ttinclude</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,13 +187,17 @@
   <ItemGroup>
     <None Include="Content\js\models\EmberModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EmberModels.txt</LastGenOutput>
       <TransformOnBuild>True</TransformOnBuild>
+      <LastGenOutput>EmberModels.txt</LastGenOutput>
     </None>
     <None Include="Content\js\models\ModelGenerator.tt" />
     <None Include="Content\js\models\ModelTemplate.tt">
       <Parameters>&lt;%3fxml version="1.0" encoding="utf-16"%3f&gt;
 &lt;ArrayOfParameterStorage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Parameters>
+    </None>
+    <None Include="Content\js\models\VsAutomationHelper.ttinclude">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VsAutomationHelper.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

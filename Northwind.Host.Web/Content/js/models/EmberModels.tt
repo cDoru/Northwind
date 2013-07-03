@@ -5,11 +5,11 @@
 
 <#	
 	//System.Diagnostics.Debugger.Launch();
-	
+
 	var modelGenerator = new ModelGenerator(); 	
 	modelGenerator.AssemblyName = "Northwind.ServiceModel";
 	modelGenerator.Namespace = "Northwind.ServiceModel.Dto";	
 
-	modelGenerator.Run();	
+	modelGenerator.Run();
 
 #>

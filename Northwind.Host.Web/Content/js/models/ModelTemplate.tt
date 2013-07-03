@@ -4,8 +4,9 @@
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
 <#@ import namespace="ServiceStack.Text" #>
-
+<#@ include file="VsAutomationHelper.ttinclude" #>
 <#+
 /// <summary>
 /// Recuperación de las clases del espacio de nombres indicado
@@ -15,20 +16,41 @@ public class ModelTemplate : Template
 	/// <summary>
 	/// Nombre del modelo
 	/// </summary>
-	public string ModelName { get; set; }
+	public string ModelName { get; private set; }
 
 	/// <summary>
 	/// Propiedades
 	/// </summary>
-	public Dictionary<string, string> Properties { get; set; }
+	public Dictionary<string, string> Properties { get; private set; }
 
 	/// <summary>
-	/// Transformación de texto
+	/// Asociaciones
 	/// </summary>
-	private string ToEmberType(Type type)
+	public Dictionary<string, string> Associations { get; private set; }
+
+	/// <summary>
+	/// Asociaciones
+	/// </summary>
+	private AutomationHelper _vsHelper = new AutomationHelper(TransformationContext.Host);
+
+	/// <summary>
+	/// Propiedades de la clase original
+	/// </summary>
+	private List<CodeProperty> _classProperties = new List<CodeProperty>();	
+
+	/// <summary>
+	/// Constructor de la clase
+	/// </summary>
+	public ModelTemplate(CodeClass codeClass) : base()
 	{
-		return string.Empty;
-	}	
+		ModelName = codeClass.Name;
+		
+		_classProperties = _vsHelper.GetAllCodeElementsOfType(codeClass.Members, vsCMElement.vsCMElementProperty, true).Cast<CodeProperty>().ToList();
+		// Establecemos las propiedades
+		SetProperties();
+		// Establecemos las asociaciones
+		SetAssociations();
+	}
 
 	/// <summary>
 	/// Transformación de texto
@@ -45,9 +67,49 @@ public class ModelTemplate : Template
 
 Northwind.<#= ModelName #> = Northwind.Model.extend({
 	<#= string.Join(",\r\n\t", Properties.Select(p => string.Format("{0}: DS.attrib('{1}')", p.Key.ToString().ToCamelCase(), p.Value))) #>
+	<#= string.Join(",\r\n\t", Associations.Select(p => string.Format("{0}: DS.{1}", p.Key, p.Value))) #>
 });
 <#+ 
         return this.GenerationEnvironment.ToString();
+	}
+
+	/// <summary>
+	/// Generación de las propiedades
+	/// </summary>
+	private void SetProperties()
+	{
+		Properties = new Dictionary<string, string>();
+
+		//System.Diagnostics.Debugger.Break(); 
+
+		_classProperties
+			.Where(p => p.Type.TypeKind != vsCMTypeRef.vsCMTypeRefCodeType )
+			.ToList()
+			.ForEach(p => Properties.Add(p.Name, p.Type.AsString));
+	}	
+
+	/// <summary>
+	/// Generación de las asociaciones
+	/// </summary>
+	private void SetAssociations()
+	{
+		Associations = new Dictionary<string, string>();		
+
+		_classProperties.Where(p => p.Type.TypeKind == vsCMTypeRef.vsCMTypeRefCodeType )
+			.ToList()
+			.ForEach(p => 
+					 {									
+						//System.Diagnostics.Debugger.Break(); 
+			
+						var relationAttr = _vsHelper
+							 .GetAttributes(p)
+							 .FirstOrDefault(a => a.Name == "RelationAttribute");
+
+						if ( relationAttr != null ) 
+						{
+							Associations.Add(relationAttr.Name, relationAttr.Name);
+						}
+					 });
 	}
 }
 #>

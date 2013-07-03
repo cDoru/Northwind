@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Northwind.ServiceBase;
 using Northwind.ServiceBase.Relations;
 
@@ -12,7 +9,7 @@ namespace Northwind.ServiceModel.Dto
 	/// </summary>	
 	public class Customer : CommonDto
 	{		
-		public string Id { get; set; }
+		public string Id { get; set; }		
 		public string CompanyName { get; set; }
 		public string ContactName { get; set; }
 		public string ContactTitle { get; set; }

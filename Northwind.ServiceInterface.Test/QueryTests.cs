@@ -73,7 +73,7 @@ namespace Northwind.Services.Test
 			
 			// Recuperación de Order
 			var orders = client.Get(new CollectionRequest<Order>());
-			var sourceOrders = orders.Result.Select(o => o.CustomerId == customer.Id);
+			var sourceOrders = orders.Result.Select(o => o.Customer == customer);
 
 			var targetOrders = client.Get(new CustomerOrders { Id = customer.Id });
 
