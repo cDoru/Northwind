@@ -10,5 +10,6 @@ namespace Northwind.Data.Model
 	/// </summary>
 	public interface IEntity
 	{
+
 	}
 }

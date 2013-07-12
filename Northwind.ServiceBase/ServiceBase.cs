@@ -46,11 +46,13 @@ namespace Northwind.ServiceBase
 		public virtual object Get( SingleRequest<TDto> request )
 		{
 			//var cacheKey = UrnId.Create<TDto>(request.Id.ToString());
-			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);
+			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);			
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
 				{
 					var result = Repository.Get(request.Id);
+
+					var relations = result.GetRelatedEntities();
 
 					if ( result == null )
 					{

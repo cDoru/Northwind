@@ -37,7 +37,7 @@ namespace Northwind.Data
 			//ev.Select(selector);
 
 			var modelDef = ModelDefinition<T>.Definition;
-			var visitor = new SqlSelectExpressionTranslator();						
+			var visitor = new SqlSelectExpressionTranslator();
 
 			var selectStr = GenerateSelectExpression(ModelDefinition<T>.Definition, visitor.Translate(selector), false);
 			ev.Select(selectStr);

@@ -10,7 +10,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Regions")]
-    public partial class RegionEntity : IEntity, IHasId<long> 
+	public partial class RegionEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
         [Required]

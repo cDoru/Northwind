@@ -81,6 +81,7 @@
     <Compile Include="Model\CustomersEntity.cs" />
     <Compile Include="Model\EmployeesEntity.cs" />
     <Compile Include="Model\EmployeeTerritoriesEntity.cs" />
+    <Compile Include="Model\EntityExtensions.cs" />
     <Compile Include="Model\IEntity.cs" />
     <Compile Include="Model\OrderDetailsEntity.cs" />
     <Compile Include="Model\OrdersEntity.cs" />
