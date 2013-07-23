@@ -73,8 +73,9 @@ namespace Northwind.Data.Model
         public string ShipPostalCode { get; set;}
         
 		[StringLength(8000)]
-        public string ShipCountry { get; set;}		
+        public string ShipCountry { get; set;}
 
+		public virtual List<OrderDetailEntity> Details { get; set; }
     }
 }
 

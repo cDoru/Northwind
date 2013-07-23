@@ -63,7 +63,7 @@ namespace Northwind.Data.Repositories
 		/// <param name="customer"><see cref="Customer"/> del que se recuperarán</param>
 		/// <returns>Lista con los <see cref="Order"/></returns>
 		public List<OrderEntity> GetOrders( CustomerEntity customer )
-		{
+		{							
 			return GetOrders(customer.Id);
 		}
 

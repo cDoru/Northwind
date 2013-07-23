@@ -19,6 +19,7 @@
           
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -100,26 +101,37 @@ namespace Northwind.ServiceBase.Query
 
 			if ( dto is ISearchable )
 			{
-				var typeOfDto = dto.GetType().IsGenericType ? dto.GetType().GetGenericArguments() : new Type[] { dto.GetType() };
-				
-				Type associatedType;
-
-				if ( _associations.TryGetValue(typeOfDto.First(), out associatedType) )
-				{
-					var parserType = typeof(QueryParametersParser<>).MakeGenericType(associatedType);
-					var parser = parserType.CreateInstance();
-
-					var queryExpr = Expression.Call(
-						Expression.Constant(parser, parserType),
-						"Parse",
-						null,
-						Expression.Constant(req.QueryString));
-					
-					var lambda = Expression.Lambda<Func<IQueryExpression>>(queryExpr);					
-
-					dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile()(), null);
-				}				
+				SetQueryExpression(dto as ISearchable, req.QueryString);
 			}
+		}
+		#endregion
+
+		#region SetQueryExpression
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dto"></param>
+		private void SetQueryExpression( ISearchable dto, NameValueCollection queryString )
+		{
+			var typeOfDto = dto.GetType().IsGenericType ? dto.GetType().GetGenericArguments() : new Type[] { dto.GetType() };
+
+			Type associatedType;
+
+			if ( _associations.TryGetValue(typeOfDto.First(), out associatedType) )
+			{
+				var parserType = typeof(QueryParametersParser<>).MakeGenericType(associatedType);
+				var parser = parserType.CreateInstance();
+
+				var queryExpr = Expression.Call(
+					Expression.Constant(parser, parserType),
+					"Parse",
+					null,
+					Expression.Constant(queryString));
+
+				var lambda = Expression.Lambda<Func<IQueryExpression>>(queryExpr);
+
+				dto.GetType().GetProperty("Query").SetValue(dto, lambda.Compile()(), null);
+			}				
 		}
 		#endregion
 

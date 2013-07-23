@@ -1567,6 +1567,11 @@
             Required when using a TypeDescriptor to make it unique
             </summary>
         </member>
+        <member name="T:ServiceStack.ServiceHost.FallbackRouteAttribute">
+            <summary>
+            Fallback routes have the lowest precedence, i.e. after normal Routes, static files or any matching Catch All Handlers.
+            </summary>
+        </member>
         <member name="T:ServiceStack.ServiceInterface.ServiceModel.ErrorResponse">
             <summary>
             Generic ResponseStatus for when Response Type can't be inferred.

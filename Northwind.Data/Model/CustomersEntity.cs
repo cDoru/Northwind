@@ -46,24 +46,26 @@ namespace Northwind.Data.Model
         public string ContactTitle { get; set; }
 
         [StringLength(8000)]
-        public string Address { get; set;}
+        public string Address { get; set; }
 
         [StringLength(8000)]
-        public string City { get; set;}
+        public string City { get; set; }
 
         [StringLength(8000)]
-        public string Region { get; set;}
+        public string Region { get; set; }
 
         [StringLength(8000)]
-        public string PostalCode { get; set;}
+        public string PostalCode { get; set; }
 
         [StringLength(8000)]
-        public string Country { get; set;}
+        public string Country { get; set; }
 
         [StringLength(8000)]
-        public string Phone { get; set;}
+        public string Phone { get; set; }
 
         [StringLength(8000)]
-        public string Fax { get; set;}		
+        public string Fax { get; set; }		
+
+		public virtual List<OrderEntity> Orders { get; set; }
     }
 }

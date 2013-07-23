@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>ServiceStack</id>
-    <version>3.9.55</version>
+    <version>3.9.56</version>
     <title>ServiceStack webservice framework: Faster, Cleaner, Modern WCF alternative</title>
     <authors>Demis Bellot</authors>
     <owners>Demis Bellot</owners>
