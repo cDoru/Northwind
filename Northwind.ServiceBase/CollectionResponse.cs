@@ -21,13 +21,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
+using ServiceStack;
+using ServiceStack.WebHost.Endpoints.Extensions;
+using Northwind.Common.Collections;
 using Northwind.ServiceBase.Meta;
 
 namespace Northwind.ServiceBase
 {
 	public class CollectionResponse<TDto> : ICollectionResponse<TDto>
 		where TDto : IDto, new()
-	{
+	{		
+
 		#region Miembros de ICollectionResponse<TDto>
 
 		/// <summary>
@@ -38,9 +43,16 @@ namespace Northwind.ServiceBase
 			get { return (Result != null ? Result.Count : 0); }
 		}
 
+		/// <summary>
+		/// Resultado
+		/// </summary>
 		public List<TDto> Result { get; set; }
 
+		/// <summary>
+		/// Metadatos
+		/// </summary>
 		public Metadata Metadata { get; set; }
+
 
 		#endregion		
 
@@ -54,13 +66,31 @@ namespace Northwind.ServiceBase
 			Result = new List<TDto>();
 		}
 
+		/// <summary>
+		/// Constructor de la clase
+		/// </summary>
+		/// <param name="result">Resultados de la respuesta</param>
 		public CollectionResponse( List<TDto> result )
 		{
 			Result = result;
 		}
 
-		#endregion		
-		
+		/// <summary>
+		/// Constructor de la clase
+		/// </summary>
+		/// <param name="result">Resultado de la respuesta</param>
+		/// <param name="offset">Primer elemento de la respuesta</param>
+		/// <param name="limit">Número de elementos de la respuesta</param>
+		/// <param name="totalCount">Número total de elementos</param>
+		public CollectionResponse( List<TDto> result, int offset, int limit, long totalCount ) 
+			: this(result)
+		{
+			var staticList = new StaticList<TDto>(result, offset, limit, totalCount);
+
+			Metadata = new Metadata(HttpContext.Current.Request.Url, staticList);
+		}
+
+		#endregion
 	
 	}
 }

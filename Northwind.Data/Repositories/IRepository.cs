@@ -29,7 +29,7 @@ namespace Northwind.Data.Repositories
 	/// </summary>
 	/// <typeparam name="TEntity">Tipo de clase para el repositorio</typeparam>
 	public interface IRepository<TEntity> where TEntity : IEntity
-	{
+	{		
 		/// <summary>
 		/// Añade la entidad TEntity a la base de datos
 		/// </summary>
@@ -79,7 +79,7 @@ namespace Northwind.Data.Repositories
 		/// Obtiene todos los registros
 		/// </summary>
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
-		IEnumerable<TEntity> GetAll();
+		IEnumerable<TEntity> GetAll();		
 
 		/// <summary>
 		/// Obtiene registros según los límites indicados
@@ -87,27 +87,34 @@ namespace Northwind.Data.Repositories
 		/// <param name="start">Índice del primer registro que se recuperará</param>
 		/// <param name="limit">Número de registros a recuperar</param>
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
-		IEnumerable<TEntity> GetAll(int start, int limit);
+		IEnumerable<TEntity> GetAll( int start, int limit );
 
 		/// <summary>
 		/// Obtiene los registros según la selección indicada
 		/// </summary>
 		/// <param name="select">Expresión de selección</param>
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
-		IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector );
+		IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector, int start, int limit );
 		
 		/// <summary>
 		/// Devuelve todos los registros que cumplen la expresión <paramref name="filter"/>
 		/// </summary>
 		/// <param name="filter">Expresión de filtrado</param>
 		/// <returns>Una lista de TEntity</returns>
-		IEnumerable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> filter);
+		IEnumerable<TEntity> GetFiltered( Expression<Func<TEntity, bool>> filter );
 
 		/// <summary>
 		/// Devuelve el número total de registros
 		/// </summary>
 		/// <returns>El número de registros</returns>
 		long Count();
-		
+
+		/// <summary>
+		/// Devuelve un elemento incluyendo entidades relacionadas
+		/// </summary>
+		/// <param name="id">Valor de la clave</param>
+		/// <param name="includes">Entidades relacionadas que se incluirán en el resultado</param>
+		/// <returns>TEntity</returns>
+		TEntity GetIncluding(object id, params Expression<Func<TEntity, object>>[] includes );
 	}
 }

@@ -38,14 +38,14 @@ namespace Northwind.Data.Repositories
 		#region Campos
 
 		/// <summary>
-		/// 
+		/// Primer elemento de la lista por defecto
 		/// </summary>
-		private const int DefaultOffset = 1;
+		public const int DefaultOffset = 1;
 
 		/// <summary>
-		/// 
+		/// Número de elementos por defecto
 		/// </summary>
-		private const int DefaultLimit = 100;
+		public const int DefaultLimit = 100;
 
 		private int offset = DefaultOffset;
 		private int limit = DefaultLimit;
@@ -227,22 +227,25 @@ namespace Northwind.Data.Repositories
 		/// </summary>
 		/// <param name="select">Expresión de selección</param>
 		/// <returns>Una lista de <typeparamref name="TEntity"/></returns>
-		public IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector )
+		public IEnumerable<TEntity> GetAll( Expression<Func<TEntity, object>> selector, int start, int limit )
 		{
 			if ( selector == null )
 			{
-				return GetAll();
+				return GetAll(start, limit);
 			}
 			else
 			{				
 				using ( var db = dbFactory.OpenDbConnection() )
-				{					
-					return db.Select<TEntity>(selector);
-					//return GetAll()
-					//	.Select(selector.Compile())
-					//	.Select(i => i.TranslateTo<TEntity>());
+				{
+					if ( start <= 0 ) start = DefaultOffset;
+					if ( limit <= 0 ) limit = DefaultLimit;
+
+					return db
+						.Select<TEntity>(selector)
+						.Skip(start - 1)
+						.Take(limit);
 				}
-			}			
+			}
 		}
 		
 		/// <summary>
@@ -271,6 +274,24 @@ namespace Northwind.Data.Repositories
 			}
 		}
 
+		/// <summary>
+		/// Devuelve un elemento incluyendo entidades relacionadas
+		/// </summary>
+		/// <param name="id">Valor de la clave</param>
+		/// <param name="includes">Entidades relacionadas que se incluirán en el resultado</param>
+		/// <returns>TEntity</returns>
+		public TEntity GetIncluding( object id, params Expression<Func<TEntity, object>>[] includes )
+		{
+			throw new NotImplementedException();
+			/*
+			using ( var db = dbFactory.OpenDbConnection() )
+			{
+				return db.GetByIdOrDefault<TEntity>(id);
+			}
+			 * */
+		}
+
 		#endregion
+		
 	}
 }

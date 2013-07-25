@@ -47,7 +47,7 @@ namespace Northwind.ServiceBase.Query
 		/// <summary>
 		/// Cosntante que indica los campos a recuperar
 		/// </summary>
-		public const String Select = "select";		
+		public const String Select = "select";
 
 		/// <summary>
 		/// Constante que indica las expansiones que se incluirán

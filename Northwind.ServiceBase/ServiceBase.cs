@@ -29,6 +29,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
+using Northwind.Common;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase.Common;
@@ -71,8 +72,6 @@ namespace Northwind.ServiceBase
 				{
 					var result = Repository.Get(request.Id);
 
-					var relations = result.GetRelatedEntities();
-
 					if ( result == null )
 					{
 						throw HttpError.NotFound("Not found");
@@ -97,15 +96,16 @@ namespace Northwind.ServiceBase
 					var query = (QueryExpression<TEntity>)request.Query;
 					var queryExpr = (query != null ? query.Select : null);
 
+					FixOffsetAndLimit(request);
+
 					var result = Repository
 						.GetAll(queryExpr, request.Offset, request.Limit)
-						.Select(e => e.TranslateTo<TDto>()).ToList();					
-					
+						.Select(e => e.TranslateTo<TDto>()).ToList();
+
+					FixOffsetAndLimit(request);
+
 					// Creación de la respuesta					
-					return new CollectionResponse<TDto> {
-						Result = result,
-					//	Metadata = Result.GetMetadata(Request, Repository.Count())
-					};
+					return new CollectionResponse<TDto>(result, request.Offset, request.Limit, Convert.ToInt32(Repository.Count()));
 				});			
 		}
 
@@ -193,6 +193,20 @@ namespace Northwind.ServiceBase
 		#endregion		
 
 		#endregion		
+
+		#region Métodos privados
+
+		/// <summary>
+		/// Establece los límites de recuperación de datos
+		/// </summary>
+		/// <param name="request"></param>
+		private void FixOffsetAndLimit( CollectionRequest<TDto> request )
+		{
+			if ( request.Offset < 1 ) request.Offset = 1;
+			if ( request.Limit < 1 ) request.Limit = 10;
+		}
+
+		#endregion
 
 	}
 }

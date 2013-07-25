@@ -40,6 +40,11 @@ namespace Northwind.ServiceBase.Query.Parser
 		/// </summary>
 		private SelectExpressionFactory<T> _selectExpressionFactory;
 
+		/// <summary>
+		/// Factoría de expresiones de filtrado
+		/// </summary>
+		private FilterExpressionFactory _filterExpressionFactory;
+
 		#endregion
 
 		#region Constructores
@@ -69,7 +74,7 @@ namespace Northwind.ServiceBase.Query.Parser
 			var selectParam = queryParams[QueryLanguageConstants.Select];			
 			var orderByParam = queryParams[QueryLanguageConstants.OrderBy];
 
-			var selectExpression = _selectExpressionFactory.Create(selectParam);
+			var selectExpression = _selectExpressionFactory.Create(selectParam);			
 
 			var queryExpression = new QueryExpression<T>(
 				String.IsNullOrWhiteSpace(offsetParam) ? 0 : Convert.ToInt32(offsetParam),

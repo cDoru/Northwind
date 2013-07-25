@@ -14,160 +14,110 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using ServiceStack.ServiceHost;
-using ServiceStack.Text;
+using Northwind.Common;
+using Northwind.Common.Collections;
 using Northwind.ServiceBase.Common;
 
 namespace Northwind.ServiceBase.Meta
 {
 	/// <summary>
-	/// Clase que representa los metadatos de una <see cref="IResponse"/>
+	/// Clase que representa los metadatos de una respuesta
 	/// </summary>
 	public class Metadata
 	{
-		private String _uriFormat = String.Empty;
-		private NameValueCollection _queryString;
+		/// <summary>
+		/// Url base para la construcción de los links
+		/// </summary>
+		private Uri _baseUri;
 
 		#region Propiedades
 
-		/// Lista de enlaces
-		public Dictionary<MetadataUriType, String> Links { get; private set; }
-
-		/// Total de elementos
-		public long TotalCount { get; private set; }
-
-		/// Elementos actuales
+		/// <summary>
+		/// Índice del primer elemento
+		/// </summary>
 		public int Offset { get; private set; }
 
-		// Límite actual
+		/// <summary>
+		/// Número límite de elementos
+		/// </summary>
 		public int Limit { get; private set; }
+
+		/// <summary>
+		/// Número total de elementos
+		/// </summary>
+		public long TotalCount { get; private set; }
+
+		/// <summary>
+		/// Lista de enlaces
+		/// </summary>
+		public Dictionary<MetadataUriType, String> Links { get; private set; }
 
 		#endregion
 
 		#region Constructores
 
 		/// <summary>
-		/// 
+		/// Constructor por defecto
 		/// </summary>
 		public Metadata()
 		{
-
 		}
 
 		/// <summary>
-		/// 
+		/// Constructor a partir de una lista paginada
 		/// </summary>
-		/// <param name="absoluteUri"></param>
-		/// <param name="totalCount"></param>
-		/// <param name="offset"></param>
-		/// <param name="limit"></param>
-		public Metadata( IHttpRequest request, long totalCount, int offset, int limit )
+		/// <param name="baseUri">Url base para la construcción de los enlaces</param>
+		/// <param name="list"><see cref="IPagedList"/> a partir de la que se crearán los metadatos</param>
+		public Metadata(Uri baseUri, IStaticList list )
 		{
-			TotalCount = totalCount;
-			Offset = offset;
-			Limit = limit;
-			Links = new Dictionary<MetadataUriType, String>();
+			Verify.ArgumentNotNull(baseUri, "baseUri");
+			Verify.ArgumentNotNull(list, "list");			
 
-			_uriFormat = request.GetPathUrl() + "?{0}";
-			_queryString = new NameValueCollection(request.QueryString);
-			
-			AddNavigationLinks();				
-			
+			_baseUri = baseUri;
+			Offset = list.FirstItemOnPage;
+			Limit = list.PageSize;
+			TotalCount = list.TotalItemCount;
+
+			// Construcción de los enlaces
+			Links = new Dictionary<MetadataUriType, string>();
+
+			AddLink(MetadataUriType.Self, Offset);
+
+			if ( !list.IsFirstPage ) AddLink(MetadataUriType.First, 1);
+			if ( !list.IsLastPage ) AddLink(MetadataUriType.Last, Convert.ToInt32(TotalCount - Limit));
+			if ( list.HasNextPage ) AddLink(MetadataUriType.Next, Offset + Limit);
+			if ( list.HasPreviousPage ) AddLink(MetadataUriType.Previous, Limit - Offset);
 		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="request"></param>
-		/// <param name="totalCount"></param>
-		public Metadata( IHttpRequest request, long totalCount )
-			: this(request, totalCount, Convert.ToInt32(request.QueryString[ServiceOperations.Offset]), Convert.ToInt32(request.QueryString[ServiceOperations.Limit]))
-		{ }
 
 		#endregion
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="uri"></param>
-		/// <returns></returns>
-		private void AddLink( MetadataUriType type, int offset )
-		{
-			_queryString[ServiceOperations.Offset] = offset.ToString();
-			Links.Add(type, String.Format(_uriFormat, _queryString.ToFormUrlEncoded()));
-		}
+		#region Métodos privados
 
 		/// <summary>
-		/// 
+		/// Creación de un enlace
 		/// </summary>
-		private void AddNextLink()
+		/// <param name="type"><see cref="MetadataUriType"/> del enlace</param>
+		/// <param name="value">Valor del parámetros</param>
+		private void AddLink( MetadataUriType type, int value )
 		{
-			if ( Offset > 0 && Limit > 0 )
-			{
-				// Link a la siguiente página
-				if ( Offset + Limit < TotalCount )
-				{
-					AddLink(MetadataUriType.Next, (Offset + Limit));
-				}
-			}
+			Verify.ArgumentNotNull(type, "type");
+
+			if ( value < 0 ) value = 1;
+
+			var newUri = _baseUri
+				.AddQuery(ServiceOperations.Offset, value.ToString())
+				.AddQuery(ServiceOperations.Limit, Limit.ToString());
+
+			Links.Add(type, newUri.ToString());
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		private void AddPreviousLink()
-		{
-			if ( Offset > 0 && Limit > 0 )
-			{
-				// Link a la página anterior
-				if ( Offset - Limit > 0 )
-				{
-					AddLink(MetadataUriType.Previous, (Offset - Limit));
-				}
-			}					
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		private void AddFirstLink()
-		{
-			if ( Offset > 1 )
-			{
-				AddLink(MetadataUriType.First, 1);
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		private void AddLastLink()
-		{
-			if ( Offset + Limit < TotalCount )
-			{
-				AddLink(MetadataUriType.Last, (Convert.ToInt32(TotalCount) - Limit));
-			}
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		private void AddNavigationLinks()
-		{
-			AddLink(MetadataUriType.Self, Convert.ToInt32(_queryString[ServiceOperations.Offset]));
-			AddNextLink();
-			AddPreviousLink();
-			AddFirstLink();
-			AddLastLink();
-		}
-	}	
+		#endregion
+	}
 }

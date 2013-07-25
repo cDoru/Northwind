@@ -108,7 +108,7 @@ namespace Northwind.ServiceBase.Query
 
 		#region SetQueryExpression
 		/// <summary>
-		/// 
+		/// Establece la expresión de selección 
 		/// </summary>
 		/// <param name="dto"></param>
 		private void SetQueryExpression( ISearchable dto, NameValueCollection queryString )

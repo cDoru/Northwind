@@ -26,16 +26,26 @@ using Northwind.ServiceBase.Meta;
 namespace Northwind.ServiceBase
 {
 	/// <summary>
-	/// 
+	/// Interfaz que representa una respuesta en forma de colección
 	/// </summary>
 	/// <typeparam name="TDto"></typeparam>
 	public interface ICollectionResponse<TDto> 
 		where TDto : IDto, new()
 	{
+		/// <summary>
+		/// Número de elementos
+		/// </summary>
 		int Count { get; }
 
+		/// <summary>
+		/// Resultado
+		/// </summary>
 		List<TDto> Result { get; set; }
 		
+		/// <summary>
+		/// Metadatos
+		/// </summary>
 		Metadata Metadata { get; set; }
+
 	}
 }
