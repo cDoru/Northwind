@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using ServiceStack.Api.Swagger;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common.Utils;
@@ -92,7 +93,9 @@ namespace Northwind.Host.Web
 				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
 				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
 				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST")
-				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST");			
+				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST")
+				.Add<CollectionRequest<Supplier>>("/suppliers", "GET, PUT")
+				.Add<SingleRequest<Supplier>>("/suppliers/{Id}", "GET, DELETE, POST");
 
 			// Formatos
 			//AtomFeedFormat.Register(this);
@@ -104,6 +107,7 @@ namespace Northwind.Host.Web
 
 			Plugins.Add(queryPlugin);
 			Plugins.Add(new ValidationFeature());
+			Plugins.Add(new SwaggerFeature());
 			Plugins.Add(new RazorFormat());
 
 			// Validaciones
