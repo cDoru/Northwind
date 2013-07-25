@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Northwind.Common
@@ -80,7 +81,6 @@ namespace Northwind.Common
 		public static object CreateInstance( this Type type )
 		{
 			return CreateInstance(type, new object[] { });
-		}
-			
+		}				
 	}
 }

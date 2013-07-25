@@ -69,7 +69,7 @@ namespace Northwind.Data.Expressions
 
 		#endregion
 
-		#region Overrides		
+		#region Overrides
 		
 		/// <summary>
 		/// 

@@ -53,7 +53,32 @@ namespace Northwind.Common
 			{
 				throw new ArgumentNullException(paramName);
 			}
-		}		
-	
+		}
+
+		/// <summary>
+		/// Comprueba si <paramref name="value"/> se encuentra dentro del rango indicado por <paramref name="count"/>
+		/// </summary>
+		/// <param name="value">Valor a comprobar</param>
+		/// <param name="count">Límite máximo</param>
+		/// <param name="paramName">Nombre del parámetro</param>
+		public static void ArgumentInRange( int value, int count, string paramName )
+		{
+			if ( value < 1 ) throw new ArgumentOutOfRangeException(paramName);
+			if ( count < 1 ) throw new ArgumentOutOfRangeException(paramName);
+			if ( value > count ) throw new ArgumentOutOfRangeException(paramName);
+		}
+
+		/// <summary>
+		/// Comprueba si <paramref name="value"/> se encuentra dentro del rango indicado por <paramref name="count"/>
+		/// </summary>
+		/// <param name="value">Valor a comprobar</param>
+		/// <param name="count">Límite máximo</param>
+		/// <param name="paramName">Nombre del parámetro</param>
+		public static void ArgumentInRange( int value, long count, string paramName )
+		{
+			if ( value < 1 ) throw new ArgumentOutOfRangeException(paramName);
+			if ( count < 1 ) throw new ArgumentOutOfRangeException(paramName);
+			if ( value > count ) throw new ArgumentOutOfRangeException(paramName);
+		}
 	}
 }
