@@ -1,6 +1,7 @@
 ﻿using Northwind.ServiceInterface.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 using Northwind.ServiceBase;
@@ -99,6 +100,75 @@ namespace Northwind.Test
 			{
 				Assert.Fail(ex.Message);
 			}			
+		}
+
+		[TestMethod]
+		public void GetCustomerById()
+		{
+			try
+			{
+				var client = TestConfig.CreateJsonServiceClient();
+				var response = client.Get(new CollectionRequest<Customer>());
+
+				var itemIndex = new Random().Next(1, response.Count);
+				var source = response.Result.ElementAt(itemIndex);
+
+				var responseById = client.Get(new SingleRequest<Customer> { Id = source.Id });
+				var target = responseById.Result;
+
+				Assert.AreEqual(target.Id, source.Id);
+				Assert.AreEqual(target.ToString(), source.ToString());
+			}
+			catch ( Exception ex )
+			{
+				Assert.Fail(ex.Message);
+			}			
+		}
+
+		[TestMethod]
+		public void GetCustomerOrdersById()
+		{
+			try
+			{
+				var client = TestConfig.CreateJsonServiceClient();
+				var response = client.Get(new CollectionRequest<Customer>());
+
+				var itemIndex = new Random().Next(1, response.Count);
+				var customer = response.Result.ElementAt(itemIndex);
+
+				// Recuperación de Order
+				var orders = client.Get(new CollectionRequest<Order>());
+				var sourceOrders = orders.Result.Select(o => o.Customer == customer);
+
+				var targetOrders = client.Get(new CustomerOrders { Id = customer.Id });
+
+				Assert.IsNotNull(targetOrders);
+				Assert.IsFalse(targetOrders.IsErrorResponse());
+				Assert.IsNotNull(targetOrders.Result);
+				Assert.IsTrue(targetOrders.Result.Count >= 0);
+			}
+			catch ( Exception ex )
+			{
+				Assert.Fail(ex.Message);
+			}			
+		}
+
+		[TestMethod]
+		public void GetCustomersWithMetadataProperty()
+		{
+			try
+			{
+				var client = TestConfig.CreateJsonServiceClient();
+				var response = client.Get(new CollectionRequest<Customer>());
+
+				AssertCollectionResponseIsValid(response);
+
+				Assert.IsTrue(response.Metadata != null);
+			}
+			catch ( Exception ex )
+			{
+				Assert.Fail(ex.Message);
+			}
 		}
 	}
 }
