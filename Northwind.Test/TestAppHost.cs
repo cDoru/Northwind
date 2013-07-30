@@ -24,22 +24,33 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Configuration;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
-using ServiceStack.Common;
 using ServiceStack.Common.Utils;
 using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface.Cors;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
+using Northwind.Data.Model;
 using Northwind.Data.Repositories;
+using Northwind.ServiceBase;
+using Northwind.ServiceBase.Formats;
+using Northwind.ServiceBase.Meta;
+using Northwind.ServiceBase.Query;
+using Northwind.ServiceBase.Relations;
 using Northwind.ServiceInterface.Services;
 using Northwind.ServiceInterface.Validators;
+using Northwind.ServiceModel.Contracts;
+using Northwind.ServiceModel.Dto;
 
-namespace Northwind.Services.Test
+namespace Northwind.Test
 {
 	/// <summary>
 	/// Clase que representa la aplicación Web
@@ -67,6 +78,7 @@ namespace Northwind.Services.Test
 			JsConfig.EmitCamelCaseNames = true;
 			JsConfig.IncludeNullValues = true;
 			JsConfig.DateHandler = JsonDateHandler.ISO8601;
+			JsConfig.EscapeUnicode = true;
 
 			// ServiceStack
 			SetConfig(new EndpointHostConfig
@@ -74,8 +86,20 @@ namespace Northwind.Services.Test
 				DebugMode = true,
 			});
 
+			// Rutas			
+			Routes
+				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")
+				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST")
+				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
+				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
+				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST")
+				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST")
+				.Add<CollectionRequest<Supplier>>("/suppliers", "GET, PUT")
+				.Add<SingleRequest<Supplier>>("/suppliers/{Id}", "GET, DELETE, POST");
+
 			// Plugins
-			Plugins.Add(new ValidationFeature());
+			//Plugins.Add(new ValidationFeature());
+			Plugins.Add(new CorsFeature(allowedMethods: "GET, POST"));
 
 			// Validaciones
 			container.RegisterValidators(typeof(CustomerValidator).Assembly);
@@ -94,12 +118,12 @@ namespace Northwind.Services.Test
 			container.RegisterAs<SupplierEntityRepository, ISupplierEntityRepository>();
 			container.RegisterAs<RegionEntityRepository, IRegionEntityRepository>();
 			container.RegisterAs<TerritoryEntityRepository, ITerritoryEntityRepository>();
-			container.RegisterAs<EmployeeTerritoryEntityRepository, IEmployeeTerritoryEntityRepository>();
+			container.RegisterAs<EmployeeTerritoryEntityRepository, IEmployeeTerritoryEntityRepository>();			
 
 			// Acceso a datos			
 			var dbFactory = new OrmLiteConnectionFactory(
-				//"Northwind.sqlite".MapHostAbsolutePath(), 
-				ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString,
+				"Northwind.sqlite".MapHostAbsolutePath(), 
+				//ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString,
 				true, 
 				SqliteDialect.Provider);
 			container.Register<IDbConnectionFactory>(dbFactory);			

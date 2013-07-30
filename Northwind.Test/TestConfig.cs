@@ -24,7 +24,7 @@ using System.Text;
 using ServiceStack.Service;
 using ServiceStack.ServiceClient.Web;
 
-namespace Northwind.Services.Test
+namespace Northwind.Test
 {
 	/// <summary>
 	/// Clase de configuración de test
@@ -32,9 +32,19 @@ namespace Northwind.Services.Test
 	internal static class TestConfig
 	{
 		/// <summary>
+		/// 
+		/// </summary>
+		public static int ProductionPort = 2828;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public static int TestPort = 2829;
+
+		/// <summary>
 		/// <see cref="Uri"/> base de los test
 		/// </summary>
-		public static Uri AbsoluteBaseUri = new Uri("http://localhost:2828/");
+		public static Uri AbsoluteBaseUri = new Uri("http://localhost:" + ProductionPort.ToString() + "/");
 
 		/// <summary>
 		/// <see cref="Uri"/> para el servicio <see cref="Customers"/>
