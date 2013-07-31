@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Categories")]
+	[ETag("Id", "LastUpdated")]
     public partial class CategoryEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
@@ -40,6 +41,8 @@ namespace Northwind.Data.Model
 
         [StringLength(8000)]
         public string Description { get; set;}
+
+		public DateTime LastUpdated { get; set; }
     }
 }
 

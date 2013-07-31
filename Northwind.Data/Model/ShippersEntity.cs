@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Shippers")]
+	[ETag("Id", "LastUpdated")]
 	public partial class ShipperEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
@@ -40,6 +41,8 @@ namespace Northwind.Data.Model
 
         [StringLength(8000)]
         public string Phone { get; set;}
+
+		public DateTime LastUpdated { get; set; }
 		
     }
 }

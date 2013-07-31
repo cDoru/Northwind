@@ -29,6 +29,10 @@ namespace Northwind.ServiceBase
 	/// </summary>
 	public interface IDto
 	{
-		Uri Link { get; set; }
+		/// <summary>
+		/// Enlace a la entidad
+		/// </summary>
+		Uri Link { get; }
+		
 	}
 }

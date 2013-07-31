@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Products")]
+	[ETag("Id", "LastUpdated")]
 	public partial class ProductEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
@@ -62,7 +63,9 @@ namespace Northwind.Data.Model
         public long ReorderLevel { get; set;}
         
 		[Required]
-        public long Discontinued { get; set;}		
+        public long Discontinued { get; set;}
+
+		public DateTime LastUpdated { get; set; }
     }
 }
 

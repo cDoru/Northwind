@@ -29,6 +29,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
+using ServiceStack.WebHost.Endpoints;
 using Northwind.Common;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
@@ -44,7 +45,7 @@ namespace Northwind.ServiceBase
 	/// </summary>
 	public abstract class ServiceBase<TEntity, TDto> : Service
 		where TEntity : IEntity, new()
-		where TDto : IDto, new()
+		where TDto : CommonDto, new()
 	{
 		#region Propiedades
 
@@ -65,7 +66,6 @@ namespace Northwind.ServiceBase
 		/// <returns></returns>
 		public virtual object Get( SingleRequest<TDto> request )
 		{
-			//var cacheKey = UrnId.Create<TDto>(request.Id.ToString());
 			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);			
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
@@ -88,24 +88,30 @@ namespace Northwind.ServiceBase
 		/// <returns>Collección de elementos</returns>
 		public virtual object Get( CollectionRequest<TDto> request )
 		{
-			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();			
+			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();
 
 			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, 
 				() =>
 				{
 					var query = (QueryExpression<TEntity>)request.Query;
 					var queryExpr = (query != null ? query.Select : null);
+					var requestUrl = Request.GetPathUrl();
 
 					FixOffsetAndLimit(request);
 
 					var result = Repository
 						.GetAll(queryExpr, request.Offset, request.Limit)
-						.Select(e => e.TranslateTo<TDto>()).ToList();
-
-					FixOffsetAndLimit(request);
+						.Select(e => 
+							{								
+								var dto = e.TranslateTo<TDto>();
+								//var restPath = EndpointHostConfig.Instance.Metadata.Routes.RestPaths.Single(r => r.RequestType == request.GetType());
+								dto.Link = new Uri(String.Format("{0}/{1}", requestUrl, dto.GetId<TDto>().ToString()));
+								return dto;
+							})
+						.ToList();
 
 					// Creación de la respuesta					
-					return new CollectionResponse<TDto>(result, request.Offset, request.Limit, Convert.ToInt32(Repository.Count()));
+					return new CollectionResponse<TDto>(result, request.Offset, request.Limit, Repository.Count());
 				});			
 		}
 
@@ -194,13 +200,13 @@ namespace Northwind.ServiceBase
 
 		#endregion		
 
-		#region Métodos privados
+		#region Métodos protegidos
 
 		/// <summary>
 		/// Establece los límites de recuperación de datos
 		/// </summary>
 		/// <param name="request"></param>
-		private void FixOffsetAndLimit( CollectionRequest<TDto> request )
+		protected void FixOffsetAndLimit( CollectionRequest<TDto> request )
 		{
 			if ( request.Offset < 1 ) request.Offset = 1;
 			if ( request.Limit < 1 ) request.Limit = 10;

@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Regions")]
+	[ETag("Id", "LastUpdated")]
 	public partial class RegionEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
@@ -37,6 +38,8 @@ namespace Northwind.Data.Model
 
         [StringLength(8000)]
         public string RegionDescription { get; set;}
+
+		public DateTime LastUpdated { get; set; }
 
     }
 }

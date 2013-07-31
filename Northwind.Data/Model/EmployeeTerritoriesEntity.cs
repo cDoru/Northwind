@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("EmployeeTerritories")]
+	[ETag("Id", "LastUpdated")]
 	public partial class EmployeeTerritoryEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]
@@ -42,6 +43,8 @@ namespace Northwind.Data.Model
         
 		[StringLength(8000)]
 		[References(typeof(TerritoryEntity))]
-        public string TerritoryId { get; set;}		
+        public string TerritoryId { get; set;}
+
+		public DateTime LastUpdated { get; set; }
     }
 }

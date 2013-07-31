@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Customers")]
+	[ETag("Id", "LastUpdated")]
 	public partial class CustomerEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]
@@ -64,7 +65,9 @@ namespace Northwind.Data.Model
         public string Phone { get; set; }
 
         [StringLength(8000)]
-        public string Fax { get; set; }		
+        public string Fax { get; set; }
+
+		public DateTime LastUpdated { get; set; }
 
 		public virtual List<OrderEntity> Orders { get; set; }
     }

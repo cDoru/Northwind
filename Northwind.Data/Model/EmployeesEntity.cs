@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Employees")]
+	[ETag("Id", "LastUpdated")]
 	public partial class EmployeeEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]
@@ -82,7 +83,9 @@ namespace Northwind.Data.Model
         public long? ReportsTo { get; set;}
 
         [StringLength(8000)]
-        public string PhotoPath { get; set;}		
+        public string PhotoPath { get; set;}
+
+		public DateTime LastUpdated { get; set; }
     }
 }
 

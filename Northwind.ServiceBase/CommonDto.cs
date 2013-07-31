@@ -31,7 +31,10 @@ namespace Northwind.ServiceBase
 	{
 		#region Miembros de IDto
 
-		public Uri Link { get; set; }
+		/// <summary>
+		/// Enlace a la entidad
+		/// </summary>
+		public Uri Link { get; internal set; }		
 
 		#endregion
 	}

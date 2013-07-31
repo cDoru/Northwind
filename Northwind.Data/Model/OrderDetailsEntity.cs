@@ -29,6 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("OrderDetails")]
+	[ETag("Id", "LastUpdated")]
 	public partial class OrderDetailEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]
@@ -52,6 +53,8 @@ namespace Northwind.Data.Model
         
 		[Required]
         public double Discount { get; set;}
+
+		public DateTime LastUpdated { get; set; }
 		
     }
 }
