@@ -32,7 +32,7 @@ namespace Northwind.Data
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class ETagAttribute : Attribute
 	{
-		public readonly ReadOnlyCollection<string> PropertyNames { get; private set; }
+		public ReadOnlyCollection<string> PropertyNames { get; private set; }
 
 		/// <summary>
 		/// Constructor de la clase

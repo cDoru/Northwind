@@ -16,7 +16,7 @@ namespace Northwind.Test
     ///Se trata de una clase de prueba para CustomersServiceTest y se pretende que
     ///contenga todas las pruebas unitarias CustomersServiceTest.
     ///</summary>
-	[TestClass()]
+	[TestClass]
 	public class CustomersServiceTest
 	{
 		private static TestAppHost _appHost = null;
@@ -78,13 +78,17 @@ namespace Northwind.Test
 		//
 		#endregion		
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="response"></param>
 		public void AssertCollectionResponseIsValid( CollectionResponse<Customer> response )
 		{
 			Assert.IsNotNull(response);
 			Assert.IsFalse(response.IsErrorResponse());
 			Assert.IsNotNull(response.Result);
 			Assert.IsTrue(response.Result.Count > 0);
-		}		
+		}
 
 		[TestMethod]
 		public void GetAllCustomers()

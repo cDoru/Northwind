@@ -23,6 +23,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Text;
+using System.Security.Cryptography;
 using ServiceStack.Common;
 using ServiceStack.Common.Utils;
 using ServiceStack.Common.Web;
@@ -31,6 +32,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using Northwind.Common;
+using Northwind.Data;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
 using Northwind.ServiceBase.Common;
@@ -52,9 +54,11 @@ namespace Northwind.ServiceBase
 		/// <summary>
 		/// Repositorio
 		/// </summary>
-		public IRepository<TEntity> Repository { get; set; }			// Se establecerá mediante IoC			
+		public IRepository<TEntity> Repository { get; set; }			// Se establecerá mediante IoC
 
-		#endregion
+		#endregion		
+
+		private static readonly HttpResultFactory ResultFactory = new HttpResultFactory();
 
 		#region Métodos CRUD
 
@@ -67,8 +71,9 @@ namespace Northwind.ServiceBase
 		public virtual object Get( SingleRequest<TDto> request )
 		{
 			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);			
+			var ifNoneMatch = Request.Headers.Get(HttpHeaders.IfNoneMatch);
 
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+			return RequestContext.ToOptimizedResultUsingCache<object>(base.Cache, cacheKey, () =>
 				{
 					var result = Repository.Get(request.Id);
 
@@ -76,6 +81,16 @@ namespace Northwind.ServiceBase
 					{
 						throw HttpError.NotFound("Not found");
 					}
+
+					var etag = result.GetETagValue();
+
+					if ( etag == Request.Headers.Get(HttpHeaders.IfNoneMatch) )
+					{
+						return new HttpResult(new SingleResponse<TDto>(), HttpStatusCode.NotModified);						
+					}
+
+					Response.AddHeaderLastModified(result.LastUpdated);
+					Response.AddHeader(HttpHeaders.ETag, etag);
 
 					return new SingleResponse<TDto> { Result = result.TranslateTo<TDto>() };
 				});
@@ -210,7 +225,7 @@ namespace Northwind.ServiceBase
 		{
 			if ( request.Offset < 1 ) request.Offset = 1;
 			if ( request.Limit < 1 ) request.Limit = 10;
-		}
+		}		
 
 		#endregion
 

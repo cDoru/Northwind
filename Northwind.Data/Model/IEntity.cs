@@ -29,6 +29,9 @@ namespace Northwind.Data.Model
 	/// </summary>
 	public interface IEntity
 	{
-
+		/// <summary>
+		/// Fecha de última modificación
+		/// </summary>
+		DateTime LastUpdated { get; set;  }
 	}
 }

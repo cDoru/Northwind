@@ -22,7 +22,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Security.Cryptography;
 using ServiceStack.DataAnnotations;
+using Northwind.Common;
 
 namespace Northwind.Data.Model
 {
@@ -62,6 +64,28 @@ namespace Northwind.Data.Model
 				});
 
 			return relations;
+		}
+
+		/// <summary>
+		/// Obtiene el valor de ETag corresondiente a <see cref="IEntity"/>
+		/// </summary>
+		/// <param name="entity"><see cref="IEntity"/></param>
+		/// <returns>El valor de ETag correspondiente</returns>
+		public static String GetETagValue( this IEntity entity )
+		{
+			Verify.ArgumentNotNull(entity, "entity");
+
+			var etagAttr = entity.GetType().GetCustomAttributes(typeof(ETagAttribute), true).Cast<ETagAttribute>().First();
+			var etagString = String.Empty;
+
+			if ( etagAttr != null )
+			{
+				etagString = String.Join("-", etagAttr.PropertyNames.Select(p => entity.GetType().GetProperty(p).GetValue(entity, null).ToString()));
+			}
+
+			var crypto = new MD5CryptoServiceProvider();
+
+			return BitConverter.ToString(crypto.ComputeHash(System.Text.Encoding.UTF8.GetBytes(etagString))).Replace("-", String.Empty).ToLower();
 		}
 	}
 }
