@@ -58,8 +58,6 @@ namespace Northwind.ServiceBase
 
 		#endregion		
 
-		private static readonly HttpResultFactory ResultFactory = new HttpResultFactory();
-
 		#region Métodos CRUD
 
 		#region GET
@@ -70,30 +68,22 @@ namespace Northwind.ServiceBase
 		/// <returns></returns>
 		public virtual object Get( SingleRequest<TDto> request )
 		{
-			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);			
-			var ifNoneMatch = Request.Headers.Get(HttpHeaders.IfNoneMatch);
+			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);
 
-			return RequestContext.ToOptimizedResultUsingCache<object>(base.Cache, cacheKey, () =>
+			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+			{
+				var result = Repository.Get(request.Id);
+
+				if ( result == null )
 				{
-					var result = Repository.Get(request.Id);
+					throw HttpError.NotFound("Not found");
+				}
 
-					if ( result == null )
-					{
-						throw HttpError.NotFound("Not found");
-					}
+				Response.AddHeaderLastModified(result.LastUpdated);
+				Response.AddHeader(HttpHeaders.ETag, result.GetETagValue());
 
-					var etag = result.GetETagValue();
-
-					if ( etag == Request.Headers.Get(HttpHeaders.IfNoneMatch) )
-					{
-						return new HttpResult(new SingleResponse<TDto>(), HttpStatusCode.NotModified);						
-					}
-
-					Response.AddHeaderLastModified(result.LastUpdated);
-					Response.AddHeader(HttpHeaders.ETag, etag);
-
-					return new SingleResponse<TDto> { Result = result.TranslateTo<TDto>() };
-				});
+				return new SingleResponse<TDto> { Result = result.TranslateTo<TDto>() };
+			});
 		}
 
 		/// <summary>

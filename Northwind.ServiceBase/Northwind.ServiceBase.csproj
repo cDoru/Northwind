@@ -80,7 +80,6 @@
     <Compile Include="CommonDto.cs" />
     <Compile Include="Common\ServiceOperations.cs" />
     <Compile Include="Formats\AtomFeed\AtomFeedFormat.cs" />
-    <Compile Include="HttpResultFactory.cs" />
     <Compile Include="ICollectionRequest.cs" />
     <Compile Include="ICollectionResponse.cs" />
     <Compile Include="IDto.cs" />
