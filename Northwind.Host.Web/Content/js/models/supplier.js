@@ -1,12 +1,12 @@
 /**
-	@class		Customer
-	@extends	Em.Model
+	@class		Supplier
+	@extends	DS.Model
 	@namespace	Northwind
 	@module		@Northwind
 **/
 
-Northwind.Customer = Ember.Model.extend({
-	id: DS.attrib('string'),
+Northwind.Supplier = Northwind.Model.extend({
+	id: DS.attrib('long'),
 	companyName: DS.attrib('string'),
 	contactName: DS.attrib('string'),
 	contactTitle: DS.attrib('string'),
@@ -16,6 +16,7 @@ Northwind.Customer = Ember.Model.extend({
 	postalCode: DS.attrib('string'),
 	country: DS.attrib('string'),
 	phone: DS.attrib('string'),
-	fax: DS.attrib('string')
+	fax: DS.attrib('string'),
+	homePage: DS.attrib('string')
 	
 });
