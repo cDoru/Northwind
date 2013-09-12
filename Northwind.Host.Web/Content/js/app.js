@@ -15,13 +15,17 @@ Northwind.Router.map(function () {
 
 Northwind.CustomersRoute = Ember.Route.extend({
     model: function () {
-        return Ember.$.getJSON('http://localhost:2828/customers').property('results');
+        return $.getJSON('http://localhost:2828/customers').then(function(data) {
+        	return data.result;
+        });
     }
 });
 
 Northwind.CustomerRoute = Ember.Route.extend({
     model: function (params) {
-        return Ember.$.getJSON('http://localhost:2828/customers/' + params.customer_id);
+        return Ember.$.getJSON('http://localhost:2828/customers/' + params.customer_id).then(function(data) {
+            return data.result;
+        });
     }
 });
 
@@ -61,7 +65,7 @@ Ember.Handlebars.helper('format-date', function(date) {
 
 **/
 
-Northwind.Model = DS.Model.extend();
+Northwind.Model = Ember.Model.extend();
 
 // Customer
 Northwind.Customer = Northwind.Model.extend({
@@ -78,4 +82,3 @@ Northwind.Customer = Northwind.Model.extend({
     fax: DS.attrib('string')
 });
 
-/**
