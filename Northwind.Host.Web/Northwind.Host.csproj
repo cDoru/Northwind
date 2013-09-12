@@ -115,6 +115,7 @@
     <Content Include="Content\css\normalize.css" />
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\libs\ember-1.0.0.js" />
+    <Content Include="Content\js\libs\ember-data.js" />
     <Content Include="Content\js\libs\handlebars-1.0.0.js" />
     <Content Include="Content\js\models\customer.js" />
     <Content Include="Content\js\models\order.js" />

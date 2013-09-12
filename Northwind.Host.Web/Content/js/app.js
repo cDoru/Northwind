@@ -1,5 +1,12 @@
 ﻿Northwind = Ember.Application.create();
 
+Northwind.ApplicationAdapter = DS.RESTAdapter.extend({
+    host: 'http://localhost:2828'
+});
+
+Northwind.Store = DS.Store.extend({
+});
+
 /**
 
     Routes
@@ -15,17 +22,19 @@ Northwind.Router.map(function () {
 
 Northwind.CustomersRoute = Ember.Route.extend({
     model: function () {
-        return $.getJSON('http://localhost:2828/customers').then(function(data) {
-        	return data.result;
-        });
+        //return $.getJSON('http://localhost:2828/customers').then(function(data) {
+        //	return data.result;        
+        //});        
+        return Northwind.Customer.find();
     }
 });
 
 Northwind.CustomerRoute = Ember.Route.extend({
     model: function (params) {
-        return Ember.$.getJSON('http://localhost:2828/customers/' + params.customer_id).then(function(data) {
-            return data.result;
-        });
+        //return Ember.$.getJSON('http://localhost:2828/customers/' + params.customer_id).then(function(data) {
+        //    return data.result;
+        //});
+        return Northwind.Customer.find(params.customer_id);
     }
 });
 
@@ -61,14 +70,12 @@ Ember.Handlebars.helper('format-date', function(date) {
 
 /**
 
-    Model
+Model
 
 **/
 
-Northwind.Model = Ember.Model.extend();
-
 // Customer
-Northwind.Customer = Northwind.Model.extend({
+Northwind.Customer = DS.Model.extend({
     id: DS.attrib('string'),
     companyName: DS.attrib('string'),
     contactName: DS.attrib('string'),
@@ -81,4 +88,3 @@ Northwind.Customer = Northwind.Model.extend({
     phone: DS.attrib('string'),
     fax: DS.attrib('string')
 });
-
