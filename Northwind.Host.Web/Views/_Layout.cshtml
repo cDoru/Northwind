@@ -62,19 +62,26 @@
     </script>    
 
     <script type="text/x-handlebars" id="customer">
+        <!--
         {{#if isEditing}}
             {{partial 'customer/edit'}}
             <button {{action 'doneEditing'}}>Done</button>
         {{else}}
             <button {{action 'edit'}}>Edit</button>
         {{/if}}
+        //-->
 
-        <div class="col-md-5 well">
-            <div class="">
-
+        <div id="customerThumbnail">
+                    
         </div>
-        <h1>{{contactName}}</h1>
-        <h2>{{companyName}}</h2>
+
+        <div id="customerDetail">
+            <h1>{{contactName}}</h1>
+            <h4>{{companyName}}</h2>
+            <p>{{address}}</p>
+            <p>{{postalCode}} {{city}}</p>
+            <p>{{country}}</p>
+        </div>    
     </script>        
 
     <script type="text/x-handlebars" id="post/_edit">
