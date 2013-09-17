@@ -35,7 +35,7 @@
                                 <th>Id</th>
                                 <th>Contact Name</th>
                                 <th>Company Name</th>
-                                <th>Company Title</th>
+                                <th>Contact Title</th>
                             </tr>
                         </thead>                 
                         <tbody>       
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>{{contactName}}</td>
                                 <td>{{companyName}}</td>
-                                <td>{{companyTitle}}</td>
+                                <td>{{contactTitle}}</td>
                             </tr>
                         {{/each}}
                         </tbody>
@@ -70,14 +70,13 @@
             <button {{action 'edit'}}>Edit</button>
         {{/if}}
         //-->
-
-        <div id="customerThumbnail">
-                    
-        </div>
-
-        <div id="customerDetail">
+        
+        <div>
             <h1>{{contactName}}</h1>
-            <h4>{{companyName}}</h2>
+            <h4>{{companyName}}</h4>
+            <h5>{{contactTitle}}</h5>
+        </div>
+        <div>
             <p>{{address}}</p>
             <p>{{postalCode}} {{city}}</p>
             <p>{{country}}</p>
