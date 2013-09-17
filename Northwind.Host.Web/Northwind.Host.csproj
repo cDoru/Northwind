@@ -429,7 +429,9 @@
     <Content Include="bundler\node_modules\uglify-js.js" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\css\normalize.css" />
-    <Content Include="Content\js\app.js" />
+    <Content Include="Content\js\adapters\application_adapter.js" />
+    <Content Include="Content\js\application.js" />
+    <Content Include="Content\js\controllers\customer_controller.js" />
     <Content Include="Content\js\libs\ember-1.0.0.js" />
     <Content Include="Content\js\libs\ember-data.js" />
     <Content Include="Content\js\libs\handlebars-1.0.0.js" />
@@ -437,8 +439,11 @@
     <Content Include="Content\js\models\order.js" />
     <Content Include="Content\js\models\orderdetail.js" />
     <Content Include="Content\js\models\supplier.js" />
+    <Content Include="Content\js\routes\customer_route.js" />
+    <Content Include="Content\js\routes\customers_route.js" />
+    <Content Include="Content\js\routes\application_route.js" />
+    <Content Include="Content\js\serializers\application_serializer.js" />
     <Content Include="Global.asax" />
-    <Content Include="Content\js\app-old.js" />
     <Content Include="Content\js\libs\jquery-1.9.1.js" />
     <None Include="bundler\bundler.cmd" />
     <None Include="bundler\coffee.cmd" />
@@ -527,6 +532,7 @@
     <None Include="bundler\node_modules\stylus\package.json" />
     <None Include="bundler\node_modules\stylus\Readme.md" />
     <None Include="bundler\uglifyjs" />
+    <None Include="Content\js\app.js.bundle" />
     <None Include="default.cshtml" />
     <Content Include="packages.config" />
     <Content Include="README.txt" />
@@ -587,11 +593,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\js\adapters\" />
-    <Folder Include="Content\js\controllers\" />
     <Folder Include="Content\js\mixins\" />
-    <Folder Include="Content\js\routes\" />
-    <Folder Include="Content\js\serializers\" />
     <Folder Include="Content\js\views\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
@@ -619,6 +621,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

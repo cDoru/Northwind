@@ -5,18 +5,18 @@
 	@module		@Northwind
 **/
 
-Northwind.Supplier = Northwind.Model.extend({
-	id: DS.attrib('long'),
-	companyName: DS.attrib('string'),
-	contactName: DS.attrib('string'),
-	contactTitle: DS.attrib('string'),
-	address: DS.attrib('string'),
-	city: DS.attrib('string'),
-	region: DS.attrib('string'),
-	postalCode: DS.attrib('string'),
-	country: DS.attrib('string'),
-	phone: DS.attrib('string'),
-	fax: DS.attrib('string'),
-	homePage: DS.attrib('string')
+Northwind.Supplier = DS.Model.extend({
+//	id: DS.attr('long'),
+	companyName: DS.attr('string'),
+	contactName: DS.attr('string'),
+	contactTitle: DS.attr('string'),
+	address: DS.attr('string'),
+	city: DS.attr('string'),
+	region: DS.attr('string'),
+	postalCode: DS.attr('string'),
+	country: DS.attr('string'),
+	phone: DS.attr('string'),
+	fax: DS.attr('string'),
+	homePage: DS.attr('string')
 	
 });
