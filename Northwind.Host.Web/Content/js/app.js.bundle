@@ -1,5 +1,7 @@
 ﻿application.js
 
+mixins/pagination.js
+
 adapters/application_adapter.js
 
 serializers/application_serializer.js
@@ -8,7 +10,11 @@ routes/application_route.js
 routes/customers_route.js
 routes/customer_route.js
 
+controllers/array_controller.js
 controllers/customer_controller.js
+controllers/customers_controller.js
+
+views/pager_view.js
 
 models/customer.js
 models/order.js

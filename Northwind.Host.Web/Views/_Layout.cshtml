@@ -11,7 +11,7 @@
     <script type="text/x-handlebars">        
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Northwind</a>                
+                Northwind
             </div>
             
             <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -25,7 +25,7 @@
     {{outlet}}
     </script>      
 
-    <script type="text/x-handlebars" id="customers">
+    <script type="text/x-handlebars" id="customers" data-template-name="customers">
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
@@ -39,7 +39,7 @@
                             </tr>
                         </thead>                 
                         <tbody>       
-                        {{#each model}}
+                        {{#each}}
                             <tr>
                                 <td>
                                     {{#link-to 'customer' this}}
@@ -52,6 +52,13 @@
                             </tr>
                         {{/each}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    {{view Northwind.PagerView}}
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <div class="col-md-5">
@@ -61,7 +68,19 @@
         </div>
     </script>    
 
-    <script type="text/x-handlebars" id="customer">
+    <script type="text/x-handlebars" id="pager" data-template-name="pager">        
+        {{#with view}}
+            {{#if previous}}
+            <li class="previous"><a {{bindAttr href="previous"}}>Previous</a></li>
+            {{/if}}
+
+            {{#if next}}
+            <li class="next"><a {{bindAttr href="next"}}>Next</a></li>
+            {{/if}}
+        {{/with}}
+    </script>
+
+    <script type="text/x-handlebars" id="customer" data-template-name="customer">
         <!--
         {{#if isEditing}}
             {{partial 'customer/edit'}}
@@ -117,9 +136,6 @@
     <script src="/content/js/libs/handlebars-1.0.0.js"></script>
     <script src="/content/js/libs/ember-1.0.0.js"></script>
     <script src="/content/js/libs/ember-data.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
-    <!--<script src="/content/js/app.js"></script>-->
     @Html.RenderJsBundle("~/Content/js/app.js.bundle", BundleOptions.MinifiedAndCombined)
 
 </body>
