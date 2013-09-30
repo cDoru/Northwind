@@ -1,13 +1,11 @@
-﻿Northwind.CustomerController = Ember.ObjectController.extend({
-    isEditing: false,
+﻿/**
+    `CustomerController` 
 
-    actions: {
-        edit: function () {
-            this.set('isEditing', true);
-        },
+    @class 		CustomerController
+    @namespace 	Northwind
+    @extends 	Ember.Object
 
-        doneEditing: function () {
-            this.set('isEditing', false);
-        }
-    }
+*/
+Northwind.CustomerController = Ember.ObjectController.extend({
+
 });

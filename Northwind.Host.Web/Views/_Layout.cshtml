@@ -11,85 +11,25 @@
     <script type="text/x-handlebars">        
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
-                Northwind
+                <span class="navbar-brand">Northwind</span>
             </div>
             
             <div class="collapse navbar-collapse navbar-ex1-collapse">
             	<ul class="nav navbar-nav">
-                    <li>{{#link-to 'customers'}}Customers{{/link-to}}</li>
+                    <li>{{#link-to 'customers' offset=1 limit=10 }}Customers{{/link-to}}</li>
                     <li>{{#link-to 'about'}}About{{/link-to}}</li>
                 </ul>
             </div>
         </nav>
+        
+        {{outlet}}        
+    </script>        
 
-    {{outlet}}
-    </script>      
-
-    <script type="text/x-handlebars" id="customers" data-template-name="customers">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7">
-                    <table class="table table-striped table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Contact Name</th>
-                                <th>Company Name</th>
-                                <th>Contact Title</th>
-                            </tr>
-                        </thead>                 
-                        <tbody>       
-                        {{#each}}
-                            <tr>
-                                <td>
-                                    {{#link-to 'customer' this}}
-                                        {{id}}
-                                    {{/link-to}}
-                                </td>
-                                <td>{{contactName}}</td>
-                                <td>{{companyName}}</td>
-                                <td>{{contactTitle}}</td>
-                            </tr>
-                        {{/each}}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    {{view Northwind.PagerView}}
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-md-5">
-                    {{outlet}}
-                </div>        
-            </div>
-        </div>
+    <script type="text/x-handlebars" id="customers" data-template-name="customers">        
+        {{outlet}}
     </script>    
 
-    <script type="text/x-handlebars" id="pager" data-template-name="pager">        
-        {{#with view}}
-            {{#if previous}}
-            <li class="previous"><a {{bindAttr href="previous"}}>Previous</a></li>
-            {{/if}}
-
-            {{#if next}}
-            <li class="next"><a {{bindAttr href="next"}}>Next</a></li>
-            {{/if}}
-        {{/with}}
-    </script>
-
-    <script type="text/x-handlebars" id="customer" data-template-name="customer">
-        <!--
-        {{#if isEditing}}
-            {{partial 'customer/edit'}}
-            <button {{action 'doneEditing'}}>Done</button>
-        {{else}}
-            <button {{action 'edit'}}>Edit</button>
-        {{/if}}
-        //-->
-        
+    <script type="text/x-handlebars" id="customer" data-template-name="customer">   
         <div>
             <h1>{{contactName}}</h1>
             <h4>{{companyName}}</h4>
@@ -100,11 +40,7 @@
             <p>{{postalCode}} {{city}}</p>
             <p>{{country}}</p>
         </div>    
-    </script>        
-
-    <script type="text/x-handlebars" id="post/_edit">
-        <p>{{input type="text" value=contactName}}</p>        
-    </script>
+    </script>    
 
     <script type="text/x-handlebars" id="about">
         <div class="about">
@@ -128,7 +64,9 @@
             Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. 
             Curabitur sit amet mauris. Morbi in dui quis est pulvinar ullamcorper.</p>
 
-            <p>Nulla facilisi. Integer lacinia sollicitudin massa. Cras metus. Sed aliquet risus a tortor. Integer id quam. Morbi mi. Quisque nisl felis, venenatis tristique, dignissim in, ultrices sit amet, augue. Proin sodales libero eget ante. Nulla quam. Aenean laoreet. Vestibulum nisi lectus, commodo ac, facilisis ac, ultricies eu, pede. Ut orci risus, accumsan porttitor, cursus quis, aliquet eget, justo. </p>
+            <p>Nulla facilisi. Integer lacinia sollicitudin massa. Cras metus. Sed aliquet risus a tortor. Integer id quam. Morbi mi. 
+		    Quisque nisl felis, venenatis tristique, dignissim in, ultrices sit amet, augue. Proin sodales libero eget ante. Nulla quam. 
+		    Aenean laoreet. Vestibulum nisi lectus, commodo ac, facilisis ac, ultricies eu, pede. Ut orci risus, accumsan porttitor, cursus quis, aliquet eget, justo.</p>
         </div>
     </script>
 

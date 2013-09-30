@@ -80,7 +80,7 @@ namespace Northwind.ServiceBase
 				}
 
 				Response.AddHeaderLastModified(result.LastUpdated);
-				Response.AddHeader(HttpHeaders.ETag, result.GetETagValue());
+				Response.AddHeader(HttpHeaders.ETag, result.GetETagValue());				
 
 				return new SingleResponse<TDto> { Result = result.TranslateTo<TDto>() };
 			});

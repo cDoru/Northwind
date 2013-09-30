@@ -1,9 +1,715 @@
-;Northwind = Ember.Application.create();
+;Ember.FEATURES["query-params"] = true;
 
+/**
+**/
+Northwind = Ember.Application.create();
+
+/**
+**/
 Northwind.store = DS.Store.extend();
 
 
 
+;/**
+    @extends	Ember.Namespace
+    @namespace	Northwind
+    @module		@Northwind
+**/
+
+Northwind.Common = Ember.Namespace.create({
+    Utils: Ember.Namespace.create()
+});
+
+/**
+    @class      UriUtis
+    @extends	Ember.Namespace
+    @namespace	Northwind.Common.Utils
+    @module		Northwind
+**/
+Northwind.Common.Utils.UriUtils = Ember.Object.extend({
+
+    /**
+    Extrae los argumentos de una Url en forma de objeto
+
+    @see https://gist.github.com/simonsmith/5152680
+    **/
+    parseQueryParams: function (uri) {
+        var queryParams = {};
+
+        if (uri) {
+            var reg = /\\?([^?=&]+)(=([^&#]*))?/g;
+
+            uri.replace(reg, function ($0, $1, $2, $3) {
+                if (typeof $3 == 'string') {
+                    queryParams[$1] = decodeURIComponent($3);
+                }
+            });
+        }
+
+        return queryParams;
+
+    }
+});
+
+Northwind.uriUtils = Northwind.Common.Utils.UriUtils.create();
+
+/**
+**/
+Northwind.Common.PaginationMetadata = Ember.Object.extend({
+    rel: null,
+    offset: 0,
+    limit: 0    
+});
+
+;/**
+    @class      ArrayController
+    @namespace  Northwind
+    @extends    Ember.ArrayController
+**/
+Northwind.ArrayController = Ember.ArrayController.extend({
+    /**
+        offset
+    **/
+    offset: 0,
+
+    /**
+        limit
+    **/
+    limit: 0,    
+
+    /**
+    metadata
+    **/
+    metadata: null
+
+});
+;/**
+**/
+Northwind.Common.Components = Ember.Namespace.create({
+    Grid: Ember.Namespace.create()
+});
+;/**
+	PaginationMixin
+ **/
+Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
+    /**
+    totalCount
+    **/
+    totalCount: 0,
+
+    /**
+    offset
+    **/
+    offset: 0,
+
+    /**
+    limit
+    **/
+    limit: 10,
+
+    /**
+    limit
+    **/
+    page: 0,
+
+    /**
+    metadata
+    **/
+    metadata: null,
+
+    /**
+    paginableContentBinding
+    **/
+    paginableContentBinding: 'content',
+
+
+    /**
+    paginatedContent
+    **/
+    paginatedContent: Ember.computed(function () {
+
+        if (this.get('page') >= this.get('pages')) {
+            this.set('page', 0);
+        }
+
+        return this.get('paginableContent').slice(this.get('offset'), this.get('offset') + this.get('limit'));
+
+    }).property('@each', 'page', 'limit', 'paginableContent'),
+
+
+    /**
+        pages
+    **/
+    pages: Ember.computed(function () {
+
+        console.log('pages: ' + Math.ceil(this.get('totalCount') / this.get('limit')));
+
+        return Math.ceil(this.get('totalCount') / this.get('limit'));
+
+    }).property('totalCount', 'limit'),
+
+    /**
+        firstPage
+    **/
+    firstPage: function () {
+
+        this.set('page', 0);
+
+    },
+
+    /**
+        previousPage
+    **/
+    previousPage: function () {
+
+        this.set('page', Math.max(this.get('page') - 1, 0));
+
+    },
+
+    /**
+        nextPage
+    **/
+    nextPage: function () {
+
+        this.set('page', Math.min(this.get('page') + 1, this.get('pages') - 1));
+
+    },
+
+    /**
+        lastPage
+    **/
+    lastPage: function () {
+
+        this.set('page', this.get('pages') - 1);
+
+    }
+
+});
+;/**
+    `TableView` 
+
+    @class 		Column
+    @namespace 	Northwind.Common.Components.Grid
+    @extends 	Ember.Object
+
+*/
+
+Northwind.Common.Components.Grid.Column = Ember.Object.extend({
+
+    property: null,
+
+    display: true,
+
+    formatter: '{{view.content.%@}}',
+
+    /**
+        header
+    **/
+    header: function () {
+
+        if (!this.get('property')) return '';
+
+        return this.get('property').capitalize();
+
+    } .property('property'),
+
+    /**
+        visible
+    **/
+    visible: function () {
+
+        return this.get('display') != false;
+
+    }.property('display'),
+
+    /**
+        always
+    **/
+    always: function () {
+
+        return this.get('display') === 'always';
+
+    }.property('display'),    
+
+    /**
+        viewClass
+    **/
+    viewClass: function () {
+        var formatter = this.get('formatter');
+
+        if (Northwind.Common.Components.Grid.CellView.detect(formatter)) {
+            return formatter;
+        } else {
+            Ember.assert('Formatter has to extend CellView or Handlebar template', Ember.typeOf(formatter) === 'string');
+
+            var property = this.get('property');
+
+            if (!property) {
+                property = 'constructor';
+            }
+
+            var template = this.get('formatter').fmt(property);
+
+            return Northwind.Common.Components.Grid.CellView.extend({
+                template: Ember.Handlebars.compile(template)
+            });
+        };
+    }
+
+});
+
+/**
+    `TableView` 
+
+    @class      Column
+    @namespace  Northwind.Common.Components.Grid
+    @extends    Ember.Object
+
+*/
+
+Northwind.Common.Components.Grid.column = function (property, options) {
+    if (Ember.typeOf(property) === 'object') {
+        options = property;
+        property = null;
+    }
+
+    var column = Northwind.Common.Components.Grid.Column.create({
+        property: property
+    });
+
+    if (options) {
+        for (var key in options) {
+            column.set(key, options[key]);
+        };
+    }
+
+    return column;
+};
+;/**
+	`TableView` 
+
+	@class 		TableView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.TableView = Ember.View.extend({
+
+ 	tagName: 'table',
+
+ 	classNames: ['table', 'table-striped', 'table-condensed'],
+
+ 	defaultTemplate: Ember.Handlebars.compile('<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>{{view Northwind.Common.Components.Grid.BodyView}}')
+
+ });
+;/**
+	`BodyView` 
+
+	@class 		BodyView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.BodyView = Ember.CollectionView.extend({
+
+ 	tagName: 'tbody',
+
+ 	contentBinding: 'controller.rows',
+
+ 	classNames: ['table-body'],
+
+ 	itemViewClass: 'Northwind.Common.Components.Grid.RowView',
+
+ 	emptyView: Ember.View.extend({
+ 		tagName: 'tr',
+ 		template: Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}} class="muted">No hay elementos</td>')
+ 	})
+
+ });
+;/**
+	`RowView` 
+
+	@class 		RowView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.RowView = Ember.ContainerView.extend({
+
+    tagName: 'tr',
+
+    classNames: ['table-row'],
+
+    rowBinding: 'content',
+
+    columnsBinding: 'controller.visibleColumns',
+
+    /**
+        columnsDidChange
+    **/
+    columnsDidChange: function () {
+
+        if (this.get('columns')) {
+            this.clear();
+            this.get('columns').forEach(function (column) {
+                var cell = columns.get('viewClass').create({
+                    column: column,
+                    content: this.get('row')
+                });
+            }, this);
+        }
+
+    } .observes('columns.@each'),
+
+    /**
+        init
+    **/
+    init: function () {
+        this._super();
+        this.columnsDidChange();
+    }
+
+});
+;/**
+	`TableView` 
+
+	@class 		CellView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.CellView = Ember.View.extend({
+
+ 	tagName: 'td'
+
+ });
+;/**
+	`FooterView` 
+
+	@class 		FooterView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
+
+ 	tagName: 'tfoot',
+
+ 	classNames: ['table-footer'],
+
+ 	defaultTemplate: function () {
+ 		
+ 		return Ember.Handlebars.compile('<tr><td {{bindAttr colspan="controller.columns.length"}}>{{view Northwind.Common.Components.Grid.PaginationView</td></tr>');
+
+ 	}.property()
+
+ });
+;/**
+	`GridController` ofrece una manera de listar elementos de una colección de 
+  	objetos con la posibilidad de mostrar los datos mediante lista paginada
+
+	@class 		GridController
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.ArrayController
+	@uses		Northwind.Common.Components.Grid.PaginationMixin		
+ */
+
+//Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend(Northwind.Common.Components.Grid.PaginationMixin, {
+Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend({
+
+    columns: [],
+
+    paginableContentBinding: 'content',
+
+    rowsBinding: 'paginatedContent',
+
+    visibleColumns: function () {
+
+        return this.get('columns').filterProperty('visible', true);
+
+    }.property('columns.@each.visible')
+
+});
+;/**
+	`TableView` 
+
+	@class 		GridView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+ Northwind.Common.Components.Grid.GridView = Ember.View.extend({   
+
+ 	classNames: ['grid'],
+
+ 	defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}')
+
+ });
+;/**
+	`HeaderView` 
+
+	@class 		HeaderView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.HeaderView = Ember.CollectionView.extend({
+
+ 	tagName: 'tr',
+
+    contentBinding: 'controller.visibleColumns',
+
+ 	itemViewClass: Ember.View.extend({
+ 	    tagName: 'th',
+        classNames: ['table-header-cell'],
+ 		template: Ember.Handlebars.compile('{{view.content.header}}')        
+ 	})
+
+ });
+;/**
+	`PageListView` 
+
+	@class 		PageListView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.ContainerView
+
+ */
+
+Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
+
+	tagName: 'ul',
+
+	pages: [],
+
+	visiblePages: 3, 
+
+	/**
+		firstPageView
+	 **/
+	firstPageView: Ember.View.extend({
+
+		tagName: 'li',
+		classNames: ['parent.hasFirstPage::disabled'],
+		template: Ember.Handlebars.compile('<a href="javascript:void(0);" {{action firstPage target="view.parentView"}}>&laquo;</a>')
+
+	 }),
+
+	/**
+		prevPageView
+	 **/
+	prevPageView: Ember.View.extend({
+		tagName: 'li',
+		classNameBindings: ['parent.hasPreviousPage::disabled'],
+		template: Ember.Handlebars.compile('<a href="javascript:void(0);" {{action prevPage target="view.parentView"}}>&lsquo;</a>')
+	}),
+
+	/**
+		pageView
+	 **/
+	pageView: Ember.View.extend({
+		tagName: 'li',
+		classNameBindings: ['content.isActive:active'],
+		template: Ember.Handlebars.compile('<a href="javascript:void(0);" {{action setPage view.content target="view.parentView"}}>{{view.content.page}}</a>')
+	}),
+
+	/**
+		nextPageView
+	**/
+	nextPageView: Ember.View.extend({
+		tagName: 'li',
+		classNameBindings: ['parentView.hasNextPage::disabled'],
+		templage: Ember.Handlebars.compile('<a href="javascript:void(0);" {{action nextPage target="view.parentView"}}>&rsquo;</a>')
+	}),
+
+	/**
+		nextPageView
+	**/
+	lastPageView: Ember.View.extend({
+		tagName: 'li',
+		classNameBindings: ['parentView.hasLastPage::disabled'],
+		template: Ember.Handlebars.compile('<a href="javascript:void(0);" {{action lastPage target="view.parentView"}}>&raquo;</a>')
+	}),
+
+	/**
+		refreshPageListItems
+	**/
+	refreshPageListItems: function () {
+		var pages =  this.get('pages');
+		if (!pages.get('length')) return;
+
+		this.clear();
+		this.pushObject(this.get('firstPageView').create());
+		this.pushObject(this.get('prevPageView').create());
+
+		var self = this;
+
+		this.get('pages').forEach(function (page) {
+			var pageView = self.get('pageView').create({
+				content: page
+			});
+		});
+
+		this.pushObject(this.get('nextPageView').create());
+		this.pushObject(this.get('lastPageView').create());
+	}.observes('pages'),
+
+	/**
+		createPages
+	**/
+	createPages: function () {
+		if (!this.get('controller')) return [];
+
+		var page = this.get('controller.page');
+		var pages = this.get('controller.pages');
+		var pagesFrom = Math.max(0, page - this.visiblePages);
+		var pagesTo = Math.min(pages, page + this.visiblePages + 1);
+		var limit = this.get('controller.limit');
+
+		var pages = [];
+
+		for (var i = pagesFrom; i < pagesTo; i++) {
+			pages.push({
+				index: i, 
+				page: i + 1,
+				isActive: (i == page)
+			});
+		}
+
+		this.set('pages', pages);
+	},
+
+	/**
+		didControllerContentChanged
+	**/
+	didControllerContentChanged: function () {
+		this.createPages();
+
+		var pages = this.get('controller.pages');
+		var page = this.get('controller.page');
+
+		this.set('pagesCount', pages);
+		this.set('hasNextPage', page + 1 < pages);
+		this.set('hasPrevPage', page > 0);
+		this.set('hasFirstPage', page > 0);
+		this.set('hasLastPage', page + 1 < pages);
+	}.observes('controller', 'controller.pages', 'controller.page'),
+
+	/**
+		setPage
+	**/
+	setPage: function () {
+		this.get('controller').set('page', context.index);
+	},
+
+	/**
+		firstPage
+	**/		
+	firstPage: function () {
+		if (!this.get('hasFirstPage')) return;
+
+		this.get('controller').firstPage();
+	},
+
+	/**
+		lastPage
+	**/
+	lastPage: function () {
+		if (!this.get('hasLastPage')) return;
+
+		this.get('controller').lastPage();
+	},
+
+	/**
+		lastPage
+	**/
+	prevPage: function () {
+		if (!this.get('hasPrevPage')) return;
+
+		this.get('controller').previousPage();
+	},
+
+	/**
+		nextPage
+	**/
+	nextPage: function () {
+		if (!this.get('hasNextPage')) return;
+
+		this.get('controller').nextPage();
+	},
+
+	/**
+		init
+	**/
+	init: function () {
+		this._super();
+		this.refreshPageListItems();
+	}
+
+ });
+;/**
+	`PageView` 
+
+	@class 		PageView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.PageView = Ember.View.extend({
+
+	classNames: ['pull-left', 'table-page'],
+
+	defaultTemplate: Ember.Handlebars.compile('Showing {{view.first}} - {{view.last}} from {{filteredContent.length}}'),
+
+	/**
+		didPageChange
+	**/
+	didPageChange: function () {
+
+		var page = this.get('controller.page');
+		var limit = this.get('controller.limit');
+		var length = this.get('controller.filteredContent.length');
+
+		this.set('first', page * limit + 1);
+		this.set('last', Math.min(length, page * limit + limit))
+
+	}.observes('controller.page', 'controller.filteredContent.length')
+
+});
+;/**
+	`PaginationView` 
+
+	@class 		PageListView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.ContainerView
+
+ */
+
+Northwind.Common.Components.Grid.PaginationView = Ember.ContainerView.extend({
+
+	tagName: 'div',
+
+	classNames: ['pagination', 'pagination-small', 'pagination-right', 'table-pagination'],
+
+	childView: ['pageList'],
+
+	/**
+		pageList
+	**/
+	pageList: function () {
+
+		return Northwind.Common.Components.Grid.PageListView.create();
+
+	}.property()
+
+});
 ;var get = Ember.get;
 var set = Ember.set;
 var forEach = Ember.EnumerableUtils.forEach;
@@ -86,7 +792,7 @@ Ember.Pagination = Ember.Mixin.create({
 
         return Math.ceil((this.get('content.length') / this.get('limit')) || 1);
 
-    } .property('content.length'),
+    }.property('content.length'),
 
     /**
         paginatedContent
@@ -242,7 +948,7 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 ;/**
 **/
 Northwind.Router.map(function () {
-    this.resource('customers', function () {
+    this.resource('customers', { queryParams: ['offset', 'limit'] }, function () {
         this.resource('customer', { path: ':customer_id' });
     });
     this.resource('about');
@@ -253,10 +959,59 @@ Northwind.Router.map(function () {
 Northwind.Router.reopen({
     location: 'history'
 });
-;Northwind.CustomersRoute = Ember.Route.extend({
+;/**
+    CustomersRoute
+**/
+Northwind.CustomersRoute = Ember.Route.extend({
+    /**
+    model
+    **/
     model: function () {
-        return this.store.find('customer');
-    }    
+
+        var queryParams = this.get('queryParams');
+        var offset;
+        var limit;
+
+        if (queryParams) {
+            limit = queryParams.limit;
+            offset = queryParams.offset + limit;
+        }
+
+        //return this.get('store').find('customer');
+        return this.get('store').findQuery('customer', { offset: offset, limit: limit });
+
+    },
+
+    /**
+        setupController
+    **/
+    setupController: function (controller, model, queryParams) {
+
+        controller.set('model', model);
+        controller.set('offset', queryParams.offset);
+        controller.set('limit', queryParams.limit);
+
+        var meta = this.get('store').metadataFor(model.type);
+
+        if (meta) {
+            var metadata = Ember.Object.create({
+                offset: meta.offset,
+                limit: meta.limit,
+                totalCount: meta.totalCount,
+                links: Ember.makeArray([
+                        Northwind.Common.PaginationMetadata.create({ rel: "previous", href: Northwind.uriUtils.parseQueryParams(meta.links.previous) }),
+                        Northwind.Common.PaginationMetadata.create({ rel: "next", href: Northwind.uriUtils.parseQueryParams(meta.links.next) }),
+                        Northwind.Common.PaginationMetadata.create({ rel: "fist", href: Northwind.uriUtils.parseQueryParams(meta.links.first) }),
+                        Northwind.Common.PaginationMetadata.create({ rel: "last", href: Northwind.uriUtils.parseQueryParams(meta.links.last) })
+                ])
+            });
+
+            controller.set('metadata', metadata);
+            controller.set('totalCount', metadata.totalCount);
+        }
+
+    }
+
 });
 ;Northwind.CustomerRoute = Ember.Route.extend({
     model: function (params) {
@@ -264,45 +1019,31 @@ Northwind.Router.reopen({
     }
 });
 ;/**
-    @class  ArrayController
-**/
-Northwind.ArrayController = Ember.ArrayController.extend(Ember.Pagination, {
-    offset: 1,
-    limit: 10,
+    `CustomerController` 
 
-    metadata: function () {
+    @class 		CustomerController
+    @namespace 	Northwind
+    @extends 	Ember.Object
 
-        if (this.get('model.isLoaded')) {
-            var modelType = this.get('model.type');
-            //var meta = this.get('store').typeMapFor(modelType).metadata;           
-            var meta = this.get('store').metadataFor(modelType);
+*/
+Northwind.CustomerController = Ember.ObjectController.extend({
 
-            for (var prop in meta) {
-                console.log(prop + ': ' + meta[prop]);
-            }
-
-            return meta;
-        }
-
-    }.property('model.isLoaded')
-});
-;Northwind.CustomerController = Ember.ObjectController.extend({
-    isEditing: false,
-
-    actions: {
-        edit: function () {
-            this.set('isEditing', true);
-        },
-
-        doneEditing: function () {
-            this.set('isEditing', false);
-        }
-    }
 });
 ;/**
+    @class      CustomersController
+    @namespace  Northwind
+    @extends    Northwind.ArrayController
 **/
-Northwind.CustomersController = Northwind.ArrayController.extend({
-    limit: 20
+//Northwind.CustomersController = Northwind.ArrayController.extend({
+Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({
+
+    columns: [
+		Northwind.Common.Components.Grid.column('id'),        
+		Northwind.Common.Components.Grid.column('contactName'),
+		Northwind.Common.Components.Grid.column('companyName'),
+		Northwind.Common.Components.Grid.column('contactTitle')
+	]
+
 });
 ;/**
     @class PagerView
@@ -311,52 +1052,18 @@ Northwind.CustomersController = Northwind.ArrayController.extend({
 Northwind.PagerView = Ember.View.extend({
     templateName: 'pager',
     tagName: 'ul',
-    classNames: ['pager'],
+    classNames: ['pager']   
+});
+;/**
+    `CustomersView` 
 
-    /**
-        self
-    **/
-    self: function () {
+    @class 		CustomersView
+    @namespace 	Northwind
+    @extends 	Northwind.Common.Components.Grid.GridView
 
-        return this.get('controller.metadata.links.self');
-
-    }.property(),
-
-    /**
-        previous
-    **/
-    previous: function () {
-
-        return this.get('controller.metadata.links.previous');
-
-    }.property(),
-
-    /**
-        next
-    **/
-    next: function () {        
-
-        return this.get('controller.metadata.links.next');
-
-    }.property(),
-
-    /**
-        first
-    **/
-    first: function () {
-
-        return this.get('controller.metadata.links.first');
-
-    }.property(),
-
-    /**
-        last
-    **/
-    last: function () {
-
-        return this.get('controller.metadata.links.last');
-
-    }.property()
+*/
+Northwind.CustomersView = Northwind.Common.Components.Grid.GridView.extend({
+    templateName: 'customers'
 });
 ;/**
 	@class		Customer

@@ -1,5 +1,23 @@
 ﻿application.js
 
+common/utils.js
+common/array_controller.js
+
+components/grid/main.js
+components/grid/pagination_mixin.js
+components/grid/column.js
+components/grid/table_view.js
+components/grid/body_view.js
+components/grid/row_view.js
+components/grid/cell_view.js
+components/grid/footer_view.js
+components/grid/grid_controller.js
+components/grid/grid_view.js
+components/grid/header_view.js
+components/grid/pagelist_view.js
+components/grid/page_view.js
+components/grid/pagination_view.js
+
 mixins/pagination.js
 
 adapters/application_adapter.js
@@ -10,13 +28,14 @@ routes/application_route.js
 routes/customers_route.js
 routes/customer_route.js
 
-controllers/array_controller.js
 controllers/customer_controller.js
 controllers/customers_controller.js
 
 views/pager_view.js
+views/customers_view.js
 
 models/customer.js
 models/order.js
 models/orderdetail.js
 models/supplier.js
+

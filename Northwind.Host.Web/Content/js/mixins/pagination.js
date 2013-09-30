@@ -80,7 +80,7 @@ Ember.Pagination = Ember.Mixin.create({
 
         return Math.ceil((this.get('content.length') / this.get('limit')) || 1);
 
-    } .property('content.length'),
+    }.property('content.length'),
 
     /**
         paginatedContent
