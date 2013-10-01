@@ -25,11 +25,20 @@
         {{outlet}}        
     </script>        
 
-    <script type="text/x-handlebars" id="customers" data-template-name="customers">        
-        {{outlet}}
+    <script type="text/x-handlebars" id="customers" data-template-name="customers">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    {{view Northwind.Common.Components.Grid.GridView}}
+                </div>
+                <div class="col-md-5">
+                    {{outlet}}                  
+                </div>
+            </div>
+        </div>
     </script>    
 
-    <script type="text/x-handlebars" id="customer" data-template-name="customer">   
+    <script type="text/x-handlebars" id="customer" data-template-name="customer">           
         <div>
             <h1>{{contactName}}</h1>
             <h4>{{companyName}}</h4>
@@ -39,7 +48,7 @@
             <p>{{address}}</p>
             <p>{{postalCode}} {{city}}</p>
             <p>{{country}}</p>
-        </div>    
+        </div>
     </script>    
 
     <script type="text/x-handlebars" id="about">

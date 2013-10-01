@@ -17,6 +17,9 @@ Northwind.Common.Components.Grid.BodyView = Ember.CollectionView.extend({
 
  	itemViewClass: 'Northwind.Common.Components.Grid.RowView',
 
+ 	/**
+        emptyView
+ 	**/
  	emptyView: Ember.View.extend({
  		tagName: 'tr',
  		template: Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}} class="muted">No hay elementos</td>')

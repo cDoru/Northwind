@@ -9,10 +9,18 @@
 
 Northwind.Common.Components.Grid.TableView = Ember.View.extend({
 
- 	tagName: 'table',
+    tagName: 'table',
 
- 	classNames: ['table', 'table-striped', 'table-condensed'],
+    classNames: ['table', 'table-striped', 'table-condensed'],
 
- 	defaultTemplate: Ember.Handlebars.compile('<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>{{view Northwind.Common.Components.Grid.BodyView}}')
+    defaultTemplate: function () {
 
- });
+        var headerView = '<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>';
+        var bodyView = '{{view Northwind.Common.Components.Grid.BodyView}}';
+        //var footerView = '{{view Northwind.Common.Components.Grid.FooterView}}';
+
+        return Ember.Handlebars.compile(headerView + bodyView/* + footerView*/);
+
+    }.property()
+
+});

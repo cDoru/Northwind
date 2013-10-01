@@ -25,17 +25,20 @@ Northwind.Common.Components.Grid.RowView = Ember.ContainerView.extend({
         if (this.get('columns')) {
             this.clear();
             this.get('columns').forEach(function (column) {
-                var cell = columns.get('viewClass').create({
+                var cell = column.get('viewClass').create({
                     column: column,
                     content: this.get('row')
                 });
+
+                this.pushObject(cell);
+
             }, this);
         }
 
-    } .observes('columns.@each'),
+    }.observes('columns.@each'),
 
     /**
-        init
+    init
     **/
     init: function () {
         this._super();

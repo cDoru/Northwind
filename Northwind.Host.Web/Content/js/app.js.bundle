@@ -6,17 +6,17 @@ common/array_controller.js
 components/grid/main.js
 components/grid/pagination_mixin.js
 components/grid/column.js
+components/grid/grid_controller.js
+components/grid/grid_view.js
+components/grid/pagelist_view.js
+components/grid/page_view.js
+components/grid/pagination_view.js
 components/grid/table_view.js
+components/grid/header_view.js
 components/grid/body_view.js
 components/grid/row_view.js
 components/grid/cell_view.js
 components/grid/footer_view.js
-components/grid/grid_controller.js
-components/grid/grid_view.js
-components/grid/header_view.js
-components/grid/pagelist_view.js
-components/grid/page_view.js
-components/grid/pagination_view.js
 
 mixins/pagination.js
 

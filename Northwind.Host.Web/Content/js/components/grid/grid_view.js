@@ -7,10 +7,10 @@
 
  */
 
- Northwind.Common.Components.Grid.GridView = Ember.View.extend({   
+Northwind.Common.Components.Grid.GridView = Ember.View.extend({
 
- 	classNames: ['grid'],
+    classNames: ['grid'],
 
- 	defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}')
+    defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}{{view Northwind.Common.Components.Grid.FooterView}}')    
 
- });
+});

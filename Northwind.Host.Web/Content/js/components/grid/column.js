@@ -67,7 +67,7 @@ Northwind.Common.Components.Grid.Column = Ember.Object.extend({
                 template: Ember.Handlebars.compile(template)
             });
         };
-    }
+    }.property()
 
 });
 
@@ -81,6 +81,7 @@ Northwind.Common.Components.Grid.Column = Ember.Object.extend({
 */
 
 Northwind.Common.Components.Grid.column = function (property, options) {
+
     if (Ember.typeOf(property) === 'object') {
         options = property;
         property = null;

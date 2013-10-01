@@ -254,7 +254,7 @@ Northwind.Common.Components.Grid.Column = Ember.Object.extend({
                 template: Ember.Handlebars.compile(template)
             });
         };
-    }
+    }.property()
 
 });
 
@@ -268,6 +268,7 @@ Northwind.Common.Components.Grid.Column = Ember.Object.extend({
 */
 
 Northwind.Common.Components.Grid.column = function (property, options) {
+
     if (Ember.typeOf(property) === 'object') {
         options = property;
         property = null;
@@ -286,130 +287,6 @@ Northwind.Common.Components.Grid.column = function (property, options) {
     return column;
 };
 ;/**
-	`TableView` 
-
-	@class 		TableView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.View
-
- */
-
-Northwind.Common.Components.Grid.TableView = Ember.View.extend({
-
- 	tagName: 'table',
-
- 	classNames: ['table', 'table-striped', 'table-condensed'],
-
- 	defaultTemplate: Ember.Handlebars.compile('<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>{{view Northwind.Common.Components.Grid.BodyView}}')
-
- });
-;/**
-	`BodyView` 
-
-	@class 		BodyView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.CollectionView
-
- */
-
-Northwind.Common.Components.Grid.BodyView = Ember.CollectionView.extend({
-
- 	tagName: 'tbody',
-
- 	contentBinding: 'controller.rows',
-
- 	classNames: ['table-body'],
-
- 	itemViewClass: 'Northwind.Common.Components.Grid.RowView',
-
- 	emptyView: Ember.View.extend({
- 		tagName: 'tr',
- 		template: Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}} class="muted">No hay elementos</td>')
- 	})
-
- });
-;/**
-	`RowView` 
-
-	@class 		RowView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.View
-
- */
-
-Northwind.Common.Components.Grid.RowView = Ember.ContainerView.extend({
-
-    tagName: 'tr',
-
-    classNames: ['table-row'],
-
-    rowBinding: 'content',
-
-    columnsBinding: 'controller.visibleColumns',
-
-    /**
-        columnsDidChange
-    **/
-    columnsDidChange: function () {
-
-        if (this.get('columns')) {
-            this.clear();
-            this.get('columns').forEach(function (column) {
-                var cell = columns.get('viewClass').create({
-                    column: column,
-                    content: this.get('row')
-                });
-            }, this);
-        }
-
-    } .observes('columns.@each'),
-
-    /**
-        init
-    **/
-    init: function () {
-        this._super();
-        this.columnsDidChange();
-    }
-
-});
-;/**
-	`TableView` 
-
-	@class 		CellView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.View
-
- */
-
-Northwind.Common.Components.Grid.CellView = Ember.View.extend({
-
- 	tagName: 'td'
-
- });
-;/**
-	`FooterView` 
-
-	@class 		FooterView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.CollectionView
-
- */
-
-Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
-
- 	tagName: 'tfoot',
-
- 	classNames: ['table-footer'],
-
- 	defaultTemplate: function () {
- 		
- 		return Ember.Handlebars.compile('<tr><td {{bindAttr colspan="controller.columns.length"}}>{{view Northwind.Common.Components.Grid.PaginationView</td></tr>');
-
- 	}.property()
-
- });
-;/**
 	`GridController` ofrece una manera de listar elementos de una colección de 
   	objetos con la posibilidad de mostrar los datos mediante lista paginada
 
@@ -419,8 +296,7 @@ Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
 	@uses		Northwind.Common.Components.Grid.PaginationMixin		
  */
 
-//Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend(Northwind.Common.Components.Grid.PaginationMixin, {
-Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend({
+Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend(Northwind.Common.Components.Grid.PaginationMixin, {
 
     columns: [],
 
@@ -444,35 +320,13 @@ Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend({
 
  */
 
- Northwind.Common.Components.Grid.GridView = Ember.View.extend({   
+Northwind.Common.Components.Grid.GridView = Ember.View.extend({
 
- 	classNames: ['grid'],
+    classNames: ['grid'],
 
- 	defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}')
+    defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}{{view Northwind.Common.Components.Grid.FooterView}}')    
 
- });
-;/**
-	`HeaderView` 
-
-	@class 		HeaderView
-	@namespace 	Northwind.Common.Components.Grid
-	@extends 	Ember.CollectionView
-
- */
-
-Northwind.Common.Components.Grid.HeaderView = Ember.CollectionView.extend({
-
- 	tagName: 'tr',
-
-    contentBinding: 'controller.visibleColumns',
-
- 	itemViewClass: Ember.View.extend({
- 	    tagName: 'th',
-        classNames: ['table-header-cell'],
- 		template: Ember.Handlebars.compile('{{view.content.header}}')        
- 	})
-
- });
+});
 ;/**
 	`PageListView` 
 
@@ -708,6 +562,170 @@ Northwind.Common.Components.Grid.PaginationView = Ember.ContainerView.extend({
 		return Northwind.Common.Components.Grid.PageListView.create();
 
 	}.property()
+
+});
+;/**
+	`TableView` 
+
+	@class 		TableView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.TableView = Ember.View.extend({
+
+    tagName: 'table',
+
+    classNames: ['table', 'table-striped', 'table-condensed'],
+
+    defaultTemplate: function () {
+
+        var headerView = '<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>';
+        var bodyView = '{{view Northwind.Common.Components.Grid.BodyView}}';
+        //var footerView = '{{view Northwind.Common.Components.Grid.FooterView}}';
+
+        return Ember.Handlebars.compile(headerView + bodyView/* + footerView*/);
+
+    }.property()
+
+});
+
+;/**
+	`HeaderView` 
+
+	@class 		HeaderView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.HeaderView = Ember.CollectionView.extend({
+
+ 	tagName: 'tr',
+
+    contentBinding: 'controller.visibleColumns',
+
+ 	itemViewClass: Ember.View.extend({
+ 	    tagName: 'th',
+        classNames: ['table-header-cell'],
+ 		template: Ember.Handlebars.compile('{{view.content.header}}')        
+ 	})
+
+ });
+;/**
+	`BodyView` 
+
+	@class 		BodyView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.BodyView = Ember.CollectionView.extend({
+
+ 	tagName: 'tbody',
+
+ 	contentBinding: 'controller.rows',
+
+ 	classNames: ['table-body'],
+
+ 	itemViewClass: 'Northwind.Common.Components.Grid.RowView',
+
+ 	/**
+        emptyView
+ 	**/
+ 	emptyView: Ember.View.extend({
+ 		tagName: 'tr',
+ 		template: Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}} class="muted">No hay elementos</td>')
+ 	})
+
+ });
+;/**
+	`RowView` 
+
+	@class 		RowView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.RowView = Ember.ContainerView.extend({
+
+    tagName: 'tr',
+
+    classNames: ['table-row'],
+
+    rowBinding: 'content',
+
+    columnsBinding: 'controller.visibleColumns',
+
+    /**
+        columnsDidChange
+    **/
+    columnsDidChange: function () {
+
+        if (this.get('columns')) {
+            this.clear();
+            this.get('columns').forEach(function (column) {
+                var cell = column.get('viewClass').create({
+                    column: column,
+                    content: this.get('row')
+                });
+
+                this.pushObject(cell);
+
+            }, this);
+        }
+
+    }.observes('columns.@each'),
+
+    /**
+    init
+    **/
+    init: function () {
+        this._super();
+        this.columnsDidChange();
+    }
+
+});
+;/**
+	`TableView` 
+
+	@class 		CellView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.View
+
+ */
+
+Northwind.Common.Components.Grid.CellView = Ember.View.extend({
+
+ 	tagName: 'td'
+
+ });
+;/**
+	`FooterView` 
+
+	@class 		FooterView
+	@namespace 	Northwind.Common.Components.Grid
+	@extends 	Ember.CollectionView
+
+ */
+
+Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
+
+    //tagName: 'tfoot',
+
+    classNames: ['table-footer'],
+
+    defaultTemplate: function () {
+
+        var pageView = '{{view Northwind.Common.Components.Grid.PageView}}';
+        var paginationView = '{{view Northwind.Common.Components.Grid.PaginationView}}';
+
+        //return Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}}>' + pageView + paginationView + '</td>');
+        return Ember.Handlebars.compile(pageView + paginationView);
+    }          
 
 });
 ;var get = Ember.get;
@@ -1034,11 +1052,10 @@ Northwind.CustomerController = Ember.ObjectController.extend({
     @namespace  Northwind
     @extends    Northwind.ArrayController
 **/
-//Northwind.CustomersController = Northwind.ArrayController.extend({
 Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({
 
     columns: [
-		Northwind.Common.Components.Grid.column('id'),        
+		Northwind.Common.Components.Grid.column('id', { formatter: '{{#link-to \'customer\' view.content}}{{view.content.id}}{{/link-to}}' }),
 		Northwind.Common.Components.Grid.column('contactName'),
 		Northwind.Common.Components.Grid.column('companyName'),
 		Northwind.Common.Components.Grid.column('contactTitle')
