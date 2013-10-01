@@ -452,7 +452,6 @@
     <Content Include="Content\js\libs\ember-1.0.0.js" />
     <Content Include="Content\js\libs\ember-data.js" />
     <Content Include="Content\js\libs\handlebars-1.0.0.js" />
-    <Content Include="Content\js\mixins\pagination.js" />
     <Content Include="Content\js\models\customer.js" />
     <Content Include="Content\js\models\order.js" />
     <Content Include="Content\js\models\orderdetail.js" />
@@ -613,6 +612,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\js\helpers\" />
+    <Folder Include="Content\js\mixins\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>

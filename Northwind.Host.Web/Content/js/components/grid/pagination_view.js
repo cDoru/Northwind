@@ -13,15 +13,11 @@ Northwind.Common.Components.Grid.PaginationView = Ember.ContainerView.extend({
 
 	classNames: ['pagination', 'pagination-small', 'pagination-right', 'table-pagination'],
 
-	childView: ['pageList'],
+	childViews: ['pageList'],
 
 	/**
 		pageList
 	**/
-	pageList: function () {
-
-		return Northwind.Common.Components.Grid.PageListView.create();
-
-	}.property()
+	pageList: Northwind.Common.Components.Grid.PageListView.create()
 
 });

@@ -7,19 +7,25 @@
 
  */
 
-Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
+Northwind.Common.Components.Grid.FooterView = Ember.ContainerView.extend({
 
-    //tagName: 'tfoot',
+    tagName: 'tfoot',
 
     classNames: ['table-footer'],
 
-    defaultTemplate: function () {
+    childViews: ['gridFooter'],
 
-        var pageView = '{{view Northwind.Common.Components.Grid.PageView}}';
-        var paginationView = '{{view Northwind.Common.Components.Grid.PaginationView}}';
+    gridFooter: Ember.View.create({
 
-        //return Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}}>' + pageView + paginationView + '</td>');
-        return Ember.Handlebars.compile(pageView + paginationView);
-    }          
+        tagName: 'tr',
+
+        template: Ember.Handlebars.compile(
+            '<td {{bindAttr colspan="controller.columns.length"}}>' + 
+                '{{view Northwind.Common.Components.Grid.PageView}}' + 
+                '{{view Northwind.Common.Components.Grid.PaginationView}}' + 
+            '</td>'
+        )
+
+    })
 
 });

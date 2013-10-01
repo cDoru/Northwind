@@ -93,38 +93,38 @@ Northwind.Common.Components = Ember.Namespace.create({
  **/
 Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
     /**
-    totalCount
+        totalCount
     **/
     totalCount: 0,
 
     /**
-    offset
+        offset
     **/
     offset: 0,
 
     /**
-    limit
+        limit
     **/
     limit: 10,
 
     /**
-    limit
+        limit
     **/
     page: 0,
 
     /**
-    metadata
+        metadata
     **/
     metadata: null,
 
     /**
-    paginableContentBinding
+        paginableContentBinding
     **/
     paginableContentBinding: 'content',
 
 
     /**
-    paginatedContent
+        paginatedContent
     **/
     paginatedContent: Ember.computed(function () {
 
@@ -132,7 +132,8 @@ Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
             this.set('page', 0);
         }
 
-        return this.get('paginableContent').slice(this.get('offset'), this.get('offset') + this.get('limit'));
+        //return this.get('paginableContent').slice(this.get('offset'), this.get('offset') + this.get('limit'));
+        return this.get('paginableContent');
 
     }).property('@each', 'page', 'limit', 'paginableContent'),
 
@@ -140,9 +141,7 @@ Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
     /**
         pages
     **/
-    pages: Ember.computed(function () {
-
-        console.log('pages: ' + Math.ceil(this.get('totalCount') / this.get('limit')));
+    pages: Ember.computed(function () {        
 
         return Math.ceil(this.get('totalCount') / this.get('limit'));
 
@@ -324,7 +323,7 @@ Northwind.Common.Components.Grid.GridView = Ember.View.extend({
 
     classNames: ['grid'],
 
-    defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}{{view Northwind.Common.Components.Grid.FooterView}}')    
+    defaultTemplate: Ember.Handlebars.compile('{{view Northwind.Common.Components.Grid.TableView}}')
 
 });
 ;/**
@@ -518,23 +517,29 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
 Northwind.Common.Components.Grid.PageView = Ember.View.extend({
 
-	classNames: ['pull-left', 'table-page'],
+    classNames: ['pull-left', 'table-page'],
 
-	defaultTemplate: Ember.Handlebars.compile('Showing {{view.first}} - {{view.last}} from {{filteredContent.length}}'),
+    first: 0,
 
-	/**
-		didPageChange
-	**/
-	didPageChange: function () {
+    last: 0,
 
-		var page = this.get('controller.page');
-		var limit = this.get('controller.limit');
-		var length = this.get('controller.filteredContent.length');
+    defaultTemplate: Ember.Handlebars.compile('Showing {{view.first}} - {{view.last}} from {{controller.totalCount}}'),
 
-		this.set('first', page * limit + 1);
-		this.set('last', Math.min(length, page * limit + limit))
+    /**
+    didPageChange
+    **/
+    didPageChange: function () {
 
-	}.observes('controller.page', 'controller.filteredContent.length')
+        console.log('PageView.didPageChange');
+
+        var limit = this.get('controller.limit');
+        var length = this.get('controller.totalCount');
+        var offset = this.get('controller.offset');
+
+        this.set('first', offset);
+        this.set('last', Math.min(length, offset + limit));
+
+    }.observes('controller.page', 'controller.totalCount')
 
 });
 ;/**
@@ -552,16 +557,12 @@ Northwind.Common.Components.Grid.PaginationView = Ember.ContainerView.extend({
 
 	classNames: ['pagination', 'pagination-small', 'pagination-right', 'table-pagination'],
 
-	childView: ['pageList'],
+	childViews: ['pageList'],
 
 	/**
 		pageList
 	**/
-	pageList: function () {
-
-		return Northwind.Common.Components.Grid.PageListView.create();
-
-	}.property()
+	pageList: Northwind.Common.Components.Grid.PageListView.create()
 
 });
 ;/**
@@ -579,13 +580,13 @@ Northwind.Common.Components.Grid.TableView = Ember.View.extend({
 
     classNames: ['table', 'table-striped', 'table-condensed'],
 
-    defaultTemplate: function () {
+    defaultTemplate: function () {        
 
         var headerView = '<thead>{{view Northwind.Common.Components.Grid.HeaderView}}</thead>';
         var bodyView = '{{view Northwind.Common.Components.Grid.BodyView}}';
-        //var footerView = '{{view Northwind.Common.Components.Grid.FooterView}}';
+        var footerView = '{{view Northwind.Common.Components.Grid.FooterView}}';
 
-        return Ember.Handlebars.compile(headerView + bodyView/* + footerView*/);
+        return Ember.Handlebars.compile(headerView + bodyView + footerView);
 
     }.property()
 
@@ -712,119 +713,26 @@ Northwind.Common.Components.Grid.CellView = Ember.View.extend({
 
  */
 
-Northwind.Common.Components.Grid.FooterView = Ember.CollectionView.extend({
+Northwind.Common.Components.Grid.FooterView = Ember.ContainerView.extend({
 
-    //tagName: 'tfoot',
+    tagName: 'tfoot',
 
     classNames: ['table-footer'],
 
-    defaultTemplate: function () {
+    childViews: ['gridFooter'],
 
-        var pageView = '{{view Northwind.Common.Components.Grid.PageView}}';
-        var paginationView = '{{view Northwind.Common.Components.Grid.PaginationView}}';
+    gridFooter: Ember.View.create({
 
-        //return Ember.Handlebars.compile('<td {{bindAttr colspan="controller.columns.length"}}>' + pageView + paginationView + '</td>');
-        return Ember.Handlebars.compile(pageView + paginationView);
-    }          
+        tagName: 'tr',
 
-});
-;var get = Ember.get;
-var set = Ember.set;
-var forEach = Ember.EnumerableUtils.forEach;
+        template: Ember.Handlebars.compile(
+            '<td {{bindAttr colspan="controller.columns.length"}}>' + 
+                '{{view Northwind.Common.Components.Grid.PageView}}' + 
+                '{{view Northwind.Common.Components.Grid.PaginationView}}' + 
+            '</td>'
+        )
 
-/**
-    
-    @class Pagination
-    @namespace Ember
-    @extends Ember.Mixin
-
-        Implementa paginación para ArrayController
-
-**/
-
-Ember.Pagination = Ember.Mixin.create({
-
-    /**
-        pages
-    **/
-    pages: function () {
-
-        var pages = [];
-        var page = 0;
-        var totalPages = this.get('totalPages');
-
-        for (i = 0; i < totalPages; i++) {
-            page = i + 1;
-            pages.push({ page_id: page.toString() });
-        }
-
-        return pages;
-
-    }.property('totalPages'),
-
-
-    /**
-        currentPage
-    **/
-    currentPage: function () {
-
-        return parseInt(this.get('selectedPage'), 10) || 1;
-
-    }.property('selectedPage'),
-
-    /**
-        nextPage
-    **/
-    nextPage: function () {
-
-        var nextPage = this.get('currentPage') + 1;
-        var totalPages = this.get('totalPages');
-
-        if (nextPage <= totalPages) {
-            return Ember.Object.create({ id: nextPage });
-        } else {
-            return Ember.Object.create({ id: this.get('currentPage') });
-        }
-
-    }.property('currentPage', 'totalPages'),
-
-    /**
-        previousPage
-    **/
-    previousPage: function () {
-
-        var prevPage = this.get('currentPage') - 1;
-
-        if (prevPage > 0) {
-            return Ember.Object.create({ id: prevPage });
-        } else {
-            return Ember.Object.create({ id: this.get('currentPage') });
-        }
-
-    }.property('currentPage'),
-
-    /**
-        totalPages
-    **/
-    totalPages: function () {
-
-        return Math.ceil((this.get('content.length') / this.get('limit')) || 1);
-
-    }.property('content.length'),
-
-    /**
-        paginatedContent
-    **/
-    paginatedContent: function () {
-
-        var selectedPage = this.get('selectedPage') || 1;
-        var upperBound = (selectedPage * this.get('limit'));
-        var lowerBound = (selectedPage * this.get('limit') - this.get('limit'));
-        var models = this.get('content');
-
-        return models.slice(lowerBound, upperBound);
-
-    }.property('selectedPage', 'content.@each')
+    })
 
 });
 ;// http://stackoverflow.com/questions/16037175/ember-data-serializer-data-mapping/16042261#16042261
@@ -982,7 +890,7 @@ Northwind.Router.reopen({
 **/
 Northwind.CustomersRoute = Ember.Route.extend({
     /**
-    model
+        model
     **/
     model: function () {
 
@@ -995,7 +903,6 @@ Northwind.CustomersRoute = Ember.Route.extend({
             offset = queryParams.offset + limit;
         }
 
-        //return this.get('store').find('customer');
         return this.get('store').findQuery('customer', { offset: offset, limit: limit });
 
     },
@@ -1033,7 +940,7 @@ Northwind.CustomersRoute = Ember.Route.extend({
 });
 ;Northwind.CustomerRoute = Ember.Route.extend({
     model: function (params) {
-        return this.store.find('customer', params.customer_id);
+        return this.get('store').find('customer', params.customer_id);
     }
 });
 ;/**
@@ -1079,9 +986,11 @@ Northwind.PagerView = Ember.View.extend({
     @extends 	Northwind.Common.Components.Grid.GridView
 
 */
+/*
 Northwind.CustomersView = Northwind.Common.Components.Grid.GridView.extend({
     templateName: 'customers'
 });
+*/
 ;/**
 	@class		Customer
 	@extends	Em.Model

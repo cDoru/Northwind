@@ -3,7 +3,7 @@
 **/
 Northwind.CustomersRoute = Ember.Route.extend({
     /**
-    model
+        model
     **/
     model: function () {
 
@@ -16,7 +16,6 @@ Northwind.CustomersRoute = Ember.Route.extend({
             offset = queryParams.offset + limit;
         }
 
-        //return this.get('store').find('customer');
         return this.get('store').findQuery('customer', { offset: offset, limit: limit });
 
     },

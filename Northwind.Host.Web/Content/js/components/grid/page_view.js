@@ -9,22 +9,28 @@
 
 Northwind.Common.Components.Grid.PageView = Ember.View.extend({
 
-	classNames: ['pull-left', 'table-page'],
+    classNames: ['pull-left', 'table-page'],
 
-	defaultTemplate: Ember.Handlebars.compile('Showing {{view.first}} - {{view.last}} from {{filteredContent.length}}'),
+    first: 0,
 
-	/**
-		didPageChange
-	**/
-	didPageChange: function () {
+    last: 0,
 
-		var page = this.get('controller.page');
-		var limit = this.get('controller.limit');
-		var length = this.get('controller.filteredContent.length');
+    defaultTemplate: Ember.Handlebars.compile('Showing {{view.first}} - {{view.last}} from {{controller.totalCount}}'),
 
-		this.set('first', page * limit + 1);
-		this.set('last', Math.min(length, page * limit + limit))
+    /**
+    didPageChange
+    **/
+    didPageChange: function () {
 
-	}.observes('controller.page', 'controller.filteredContent.length')
+        console.log('PageView.didPageChange');
+
+        var limit = this.get('controller.limit');
+        var length = this.get('controller.totalCount');
+        var offset = this.get('controller.offset');
+
+        this.set('first', offset);
+        this.set('last', Math.min(length, offset + limit));
+
+    }.observes('controller.page', 'controller.totalCount')
 
 });
