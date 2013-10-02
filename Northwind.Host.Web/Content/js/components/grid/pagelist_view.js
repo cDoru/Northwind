@@ -97,8 +97,6 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         if (!this.get('controller')) return [];
 
-        console.log('PageListView.createPages');
-
         var currentPage = this.get('controller.page');
         var pages = this.get('controller.pages');
         var pagesFrom = Math.max(0, currentPage - this.visiblePages);

@@ -1,6 +1,4 @@
-﻿Ember.FEATURES["query-params"] = true;
-
-/**
+﻿/**
 **/
 Northwind = Ember.Application.create();
 

@@ -1,4 +1,4 @@
-;Ember.FEATURES["query-params"] = true;
+;//Ember.FEATURES["query-params"] = false;
 
 /**
 **/
@@ -900,7 +900,7 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 ;/**
 **/
 Northwind.Router.map(function () {
-    this.resource('customers', { queryParams: ['offset', 'limit'] }, function () {
+    this.resource('customers', /*{ queryParams: ['offset', 'limit'] },*/ function () {
         this.resource('customer', { path: ':customer_id' });
     });
     this.resource('about');
@@ -920,13 +920,16 @@ Northwind.CustomersRoute = Ember.Route.extend({
     **/
     model: function () {
 
-        var queryParams = this.get('queryParams');
+        //var queryParams = this.get('queryParams');
         var offset;
         var limit;
 
-        if (queryParams) {
-            limit = queryParams.limit;
-            offset = queryParams.offset + limit;
+        var controller = this.controllerFor('customer');
+
+        //if (queryParams) {
+        if (controller.metadata) {
+            limit = controller.metadata.limit;
+            offset = controller.metadata.offset + limit;
         }
 
         return this.get('store').findQuery('customer', { offset: offset, limit: limit });
@@ -936,13 +939,12 @@ Northwind.CustomersRoute = Ember.Route.extend({
     /**
         setupController
     **/
-    setupController: function (controller, model, queryParams) {
-
-        controller.set('model', model);
-        controller.set('offset', queryParams.offset);
-        controller.set('limit', queryParams.limit);
+    //setupController: function (controller, model, queryParams) {
+    setupController: function (controller, model) {
 
         var meta = this.get('store').metadataFor(model.type);
+
+        controller.set('model', model);
 
         if (meta) {
             var metadata = Ember.Object.create({
@@ -958,6 +960,8 @@ Northwind.CustomersRoute = Ember.Route.extend({
             });
 
             controller.set('metadata', metadata);
+            controller.set('offset', metadata.offset);
+            controller.set('limit', metadata.limit);
             controller.set('totalCount', metadata.totalCount);
         }
 

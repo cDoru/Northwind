@@ -20,11 +20,7 @@ Northwind.Common.Components.Grid.PageView = Ember.View.extend({
 
         var limit = this.get('controller.limit');
         var length = this.get('controller.totalCount');
-        var offset = this.get('controller.offset');
-
-        console.log('offset: ' + offset);
-        console.log('limit: ' + limit);
-        console.log('length: ' + length);
+        var offset = this.get('controller.offset');        
 
         this.set('first', offset);
         this.set('last', Math.min(length, (offset - 1) + limit));
