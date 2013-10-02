@@ -36,6 +36,6 @@ namespace Northwind.Host.Web
 		protected void Application_Start( object sender, EventArgs e )
 		{
 			AppHost.Start();
-		}		
+		}
 	}
 }

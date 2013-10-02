@@ -78,6 +78,7 @@ namespace Northwind.Data.Model
 
 		public DateTime LastUpdated { get; set; }
 
+		[Ignore]
 		public virtual List<OrderDetailEntity> Details { get; set; }
     }
 }
