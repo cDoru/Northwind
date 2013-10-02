@@ -39,16 +39,19 @@
     </script>    
 
     <script type="text/x-handlebars" id="customer" data-template-name="customer">           
-        <div>
+        <p>
             <h1>{{contactName}}</h1>
             <h4>{{companyName}}</h4>
             <h5>{{contactTitle}}</h5>
-        </div>
-        <div>
-            <p>{{address}}</p>
-            <p>{{postalCode}} {{city}}</p>
-            <p>{{country}}</p>
-        </div>
+        </p>
+        <p>
+            <span class="glyphicon glyphicon-envelope"></span> {{address}} <br/>
+            {{postalCode}} {{city}} <br/>
+            {{country}} <br/>
+        </p>
+        <p>
+            <span class="glyphicon glyphicon-earphone"></span> {{phone}} <br/>
+        </p>
     </script>    
 
     <script type="text/x-handlebars" id="about">

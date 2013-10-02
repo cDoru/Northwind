@@ -8,7 +8,7 @@
 	@uses		Northwind.Common.Components.Grid.PaginationMixin		
  */
 
-Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend(Northwind.Common.Components.Grid.PaginationMixin, {
+Northwind.Common.Components.Grid.GridController = Ember.ArrayController.extend(Northwind.Common.Components.Grid.Pagination, {
 
     columns: [],
 

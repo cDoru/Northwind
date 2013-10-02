@@ -1,7 +1,7 @@
 ﻿/**
 	PaginationMixin
  **/
-Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
+Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     /**
         totalCount
     **/
@@ -15,7 +15,7 @@ Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
     /**
         limit
     **/
-    limit: 10,
+    limit: 0,
 
     /**
         limit
@@ -42,8 +42,10 @@ Northwind.Common.Components.Grid.PaginationMixin = Ember.Mixin.create({
             this.set('page', 0);
         }
 
-        //return this.get('paginableContent').slice(this.get('offset'), this.get('offset') + this.get('limit'));
-        return this.get('paginableContent');
+        var offset = this.get('offset') - 1;        
+
+        return this.get('paginableContent').slice(offset, offset + this.get('limit'));
+        //return this.get('paginableContent');
 
     }).property('@each', 'page', 'limit', 'paginableContent'),
 
