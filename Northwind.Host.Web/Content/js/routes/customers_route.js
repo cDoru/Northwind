@@ -7,13 +7,11 @@ Northwind.CustomersRoute = Ember.Route.extend({
     **/
     model: function () {
 
-        //var queryParams = this.get('queryParams');
         var offset;
         var limit;
 
         var controller = this.controllerFor('customer');
 
-        //if (queryParams) {
         if (controller.metadata) {
             limit = controller.metadata.limit;
             offset = controller.metadata.offset + limit;
@@ -26,7 +24,6 @@ Northwind.CustomersRoute = Ember.Route.extend({
     /**
         setupController
     **/
-    //setupController: function (controller, model, queryParams) {
     setupController: function (controller, model) {
 
         var meta = this.get('store').metadataFor(model.type);
@@ -34,17 +31,22 @@ Northwind.CustomersRoute = Ember.Route.extend({
         controller.set('model', model);
 
         if (meta) {
+            // Creamos el objeto de metadatos
             var metadata = Ember.Object.create({
                 offset: meta.offset,
                 limit: meta.limit,
                 totalCount: meta.totalCount,
-                links: Ember.makeArray([
-                        Northwind.Common.PaginationMetadata.create({ rel: "previous", href: Northwind.uriUtils.parseQueryParams(meta.links.previous) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "next", href: Northwind.uriUtils.parseQueryParams(meta.links.next) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "fist", href: Northwind.uriUtils.parseQueryParams(meta.links.first) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "last", href: Northwind.uriUtils.parseQueryParams(meta.links.last) })
-                ])
+                links: Ember.makeArray()
             });
+
+            // Se añaden los enlaces de paginación
+            if (meta.links) {
+                for (var link in meta.links) {
+                    var lnkObj = Ember.Object.create(Northwind.uriUtils.parseQueryParams(meta.links[link]));
+                    lnkObj.set('rel', link);
+                    metadata.links.pushObject(lnkObj);
+                }
+            }
 
             controller.set('metadata', metadata);
             controller.set('offset', metadata.offset);

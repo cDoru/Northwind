@@ -1,6 +1,4 @@
-;//Ember.FEATURES["query-params"] = false;
-
-/**
+;/**
 **/
 Northwind = Ember.Application.create();
 
@@ -52,14 +50,6 @@ Northwind.Common.Utils.UriUtils = Ember.Object.extend({
 });
 
 Northwind.uriUtils = Northwind.Common.Utils.UriUtils.create();
-
-/**
-**/
-Northwind.Common.PaginationMetadata = Ember.Object.extend({
-    rel: null,
-    offset: 0,
-    limit: 0    
-});
 
 ;/**
     @class      ArrayController
@@ -427,8 +417,6 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         if (!this.get('controller')) return [];
 
-        console.log('PageListView.createPages');
-
         var currentPage = this.get('controller.page');
         var pages = this.get('controller.pages');
         var pagesFrom = Math.max(0, currentPage - this.visiblePages);
@@ -556,11 +544,7 @@ Northwind.Common.Components.Grid.PageView = Ember.View.extend({
 
         var limit = this.get('controller.limit');
         var length = this.get('controller.totalCount');
-        var offset = this.get('controller.offset');
-
-        console.log('offset: ' + offset);
-        console.log('limit: ' + limit);
-        console.log('length: ' + length);
+        var offset = this.get('controller.offset');        
 
         this.set('first', offset);
         this.set('last', Math.min(length, (offset - 1) + limit));
@@ -920,13 +904,11 @@ Northwind.CustomersRoute = Ember.Route.extend({
     **/
     model: function () {
 
-        //var queryParams = this.get('queryParams');
         var offset;
         var limit;
 
         var controller = this.controllerFor('customer');
 
-        //if (queryParams) {
         if (controller.metadata) {
             limit = controller.metadata.limit;
             offset = controller.metadata.offset + limit;
@@ -939,7 +921,6 @@ Northwind.CustomersRoute = Ember.Route.extend({
     /**
         setupController
     **/
-    //setupController: function (controller, model, queryParams) {
     setupController: function (controller, model) {
 
         var meta = this.get('store').metadataFor(model.type);
@@ -947,17 +928,22 @@ Northwind.CustomersRoute = Ember.Route.extend({
         controller.set('model', model);
 
         if (meta) {
+            // Creamos el objeto de metadatos
             var metadata = Ember.Object.create({
                 offset: meta.offset,
                 limit: meta.limit,
                 totalCount: meta.totalCount,
-                links: Ember.makeArray([
-                        Northwind.Common.PaginationMetadata.create({ rel: "previous", href: Northwind.uriUtils.parseQueryParams(meta.links.previous) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "next", href: Northwind.uriUtils.parseQueryParams(meta.links.next) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "fist", href: Northwind.uriUtils.parseQueryParams(meta.links.first) }),
-                        Northwind.Common.PaginationMetadata.create({ rel: "last", href: Northwind.uriUtils.parseQueryParams(meta.links.last) })
-                ])
+                links: Ember.makeArray()
             });
+
+            // Se añaden los enlaces de paginación
+            if (meta.links) {
+                for (var link in meta.links) {
+                    var lnkObj = Ember.Object.create(Northwind.uriUtils.parseQueryParams(meta.links[link]));
+                    lnkObj.set('rel', link);
+                    metadata.links.pushObject(lnkObj);
+                }
+            }
 
             controller.set('metadata', metadata);
             controller.set('offset', metadata.offset);
@@ -991,12 +977,85 @@ Northwind.CustomerController = Ember.ObjectController.extend({
 **/
 Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({
 
+	/**
+		queryServer
+	**/
+	queryServer: function (offset, limit) {
+
+		//this.set('content', this.get('store').findQuery('customer', { offset: offset, limit: limit }));
+		var result = this.get('store').findQuery('customer', { offset: offset, limit: limit });		
+
+		result.then(
+			function(data) {
+				this.set('content.[]', result);
+			}
+		);
+	},
+
+	/**
+		getPaginationLink
+	**/
+	getPaginationLink: function (rel) {
+		var metadata = this.get('metadata');		
+
+		return metadata.links.findBy('rel', rel);		
+	},
+
+	/**
+		nextPage
+	**/
+	nextPage: function () {
+		var link = this.getPaginationLink('next');
+		
+		if (link) {			
+			this.queryServer(link.get('offset'), link.get('limit'));
+		}
+
+		this._super();
+	},
+
+	/**
+		didContentChange
+	**/
+	contentDidChange: function () {
+
+		console.log('contentDidChange');
+
+		var model = this.get('model');
+		var meta = this.get('store').metadataFor(model.type);		
+
+		if (meta) {
+            // Creamos el objeto de metadatos
+            var metadata = Ember.Object.create({
+                offset: meta.offset,
+                limit: meta.limit,
+                totalCount: meta.totalCount,
+                links: Ember.makeArray()
+            });
+
+            // Se añaden los enlaces de paginación
+            if (meta.links) {
+                for (var link in meta.links) {
+                    var lnkObj = Ember.Object.create(Northwind.uriUtils.parseQueryParams(meta.links[link]));
+                    lnkObj.set('rel', link);
+                    metadata.links.pushObject(lnkObj);
+                }
+            }
+
+            this.set('metadata', metadata);
+            this.set('offset', metadata.offset);
+            this.set('limit', metadata.limit);
+            this.set('totalCount', metadata.totalCount);
+        }
+
+	}.observes('content'),
+
     columns: [
 		Northwind.Common.Components.Grid.column('id', { formatter: '{{#link-to \'customer\' view.content}}{{view.content.id}}{{/link-to}}' }),
 		Northwind.Common.Components.Grid.column('contactName'),
 		Northwind.Common.Components.Grid.column('companyName'),
 		Northwind.Common.Components.Grid.column('contactTitle')
-	]
+	]	
 
 });
 ;/**

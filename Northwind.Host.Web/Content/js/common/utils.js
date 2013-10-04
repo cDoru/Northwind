@@ -40,11 +40,3 @@ Northwind.Common.Utils.UriUtils = Ember.Object.extend({
 });
 
 Northwind.uriUtils = Northwind.Common.Utils.UriUtils.create();
-
-/**
-**/
-Northwind.Common.PaginationMetadata = Ember.Object.extend({
-    rel: null,
-    offset: 0,
-    limit: 0    
-});
