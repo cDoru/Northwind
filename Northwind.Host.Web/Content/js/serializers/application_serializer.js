@@ -128,3 +128,4 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
     }
 
 });
+

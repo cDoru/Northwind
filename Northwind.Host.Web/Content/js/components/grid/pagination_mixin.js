@@ -5,12 +5,7 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     /**
         totalCount
     **/
-    totalCount: 0,
-
-    /**
-        offset
-    **/
-    offset: 0,
+    totalCount: 0,    
 
     /**
         limit
@@ -18,9 +13,9 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     limit: 0,
 
     /**
-        limit
+        page
     **/
-    page: 0,
+    page: 0,    
 
     /**
         metadata
@@ -32,39 +27,48 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     **/
     paginableContentBinding: 'content',
 
+    /**
+        offset
+    **/
+    offset: function () {
+
+        var page = this.get('page');
+        var limit = this.get('limit');
+
+        return (page * limit) + 1;
+
+    }.property('page'),
+
 
     /**
         paginatedContent
     **/
-    paginatedContent: Ember.computed(function () {
+    paginatedContent: function () {
 
         if (this.get('page') >= this.get('pages')) {
             this.set('page', 0);
         }
+        
+        return this.get('content');
 
-        var offset = this.get('offset') - 1;        
-
-        return this.get('paginableContent').slice(offset, offset + this.get('limit'));
-        //return this.get('paginableContent');
-
-    }).property('@each', 'page', 'limit', 'paginableContent'),
+    }.property('@each', 'page', 'limit'),
 
 
     /**
         pages
     **/
-    pages: Ember.computed(function () {        
+    pages: function () {        
 
         return Math.ceil(this.get('totalCount') / this.get('limit'));
 
-    }).property('totalCount', 'limit'),
+    }.property('totalCount', 'limit'),
 
     /**
         firstPage
     **/
     firstPage: function () {
 
-        this.set('page', 0);
+        this.set('page', 0);        
 
     },
 

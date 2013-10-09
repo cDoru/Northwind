@@ -85,12 +85,7 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     /**
         totalCount
     **/
-    totalCount: 0,
-
-    /**
-        offset
-    **/
-    offset: 0,
+    totalCount: 0,    
 
     /**
         limit
@@ -98,9 +93,9 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     limit: 0,
 
     /**
-        limit
+        page
     **/
-    page: 0,
+    page: 0,    
 
     /**
         metadata
@@ -112,39 +107,48 @@ Northwind.Common.Components.Grid.Pagination = Ember.Mixin.create({
     **/
     paginableContentBinding: 'content',
 
+    /**
+        offset
+    **/
+    offset: function () {
+
+        var page = this.get('page');
+        var limit = this.get('limit');
+
+        return (page * limit) + 1;
+
+    }.property('page'),
+
 
     /**
         paginatedContent
     **/
-    paginatedContent: Ember.computed(function () {
+    paginatedContent: function () {
 
         if (this.get('page') >= this.get('pages')) {
             this.set('page', 0);
         }
+        
+        return this.get('content');
 
-        var offset = this.get('offset') - 1;        
-
-        return this.get('paginableContent').slice(offset, offset + this.get('limit'));
-        //return this.get('paginableContent');
-
-    }).property('@each', 'page', 'limit', 'paginableContent'),
+    }.property('@each', 'page', 'limit'),
 
 
     /**
         pages
     **/
-    pages: Ember.computed(function () {        
+    pages: function () {        
 
         return Math.ceil(this.get('totalCount') / this.get('limit'));
 
-    }).property('totalCount', 'limit'),
+    }.property('totalCount', 'limit'),
 
     /**
         firstPage
     **/
     firstPage: function () {
 
-        this.set('page', 0);
+        this.set('page', 0);        
 
     },
 
@@ -881,6 +885,7 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 
 });
 
+
 ;/**
 **/
 Northwind.Router.map(function () {
@@ -898,59 +903,25 @@ Northwind.Router.reopen({
 ;/**
     CustomersRoute
 **/
-Northwind.CustomersRoute = Ember.Route.extend({
+Northwind.CustomersRoute = Ember.Route.extend({    
+
     /**
         model
     **/
     model: function () {
 
-        var offset;
-        var limit;
+        var controller = this.controllerFor('customer');        
 
-        var controller = this.controllerFor('customer');
+        return this.get('store').findQuery('customer', { offset: controller.offset, limit: controller.limit });
 
-        if (controller.metadata) {
-            limit = controller.metadata.limit;
-            offset = controller.metadata.offset + limit;
-        }
-
-        return this.get('store').findQuery('customer', { offset: offset, limit: limit });
-
-    },
+    },   
 
     /**
         setupController
     **/
     setupController: function (controller, model) {
-
-        var meta = this.get('store').metadataFor(model.type);
-
-        controller.set('model', model);
-
-        if (meta) {
-            // Creamos el objeto de metadatos
-            var metadata = Ember.Object.create({
-                offset: meta.offset,
-                limit: meta.limit,
-                totalCount: meta.totalCount,
-                links: Ember.makeArray()
-            });
-
-            // Se añaden los enlaces de paginación
-            if (meta.links) {
-                for (var link in meta.links) {
-                    var lnkObj = Ember.Object.create(Northwind.uriUtils.parseQueryParams(meta.links[link]));
-                    lnkObj.set('rel', link);
-                    metadata.links.pushObject(lnkObj);
-                }
-            }
-
-            controller.set('metadata', metadata);
-            controller.set('offset', metadata.offset);
-            controller.set('limit', metadata.limit);
-            controller.set('totalCount', metadata.totalCount);
-        }
-
+        controller.set('content', model);
+        controller.set('contentLoaded', true);
     }
 
 });
@@ -975,54 +946,21 @@ Northwind.CustomerController = Ember.ObjectController.extend({
     @namespace  Northwind
     @extends    Northwind.ArrayController
 **/
-Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({
+Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({		
 
+	contentLoaded: false,
+	
 	/**
-		queryServer
+		contentDidChange
 	**/
-	queryServer: function (offset, limit) {
+	loadMetadata: function () {	
 
-		//this.set('content', this.get('store').findQuery('customer', { offset: offset, limit: limit }));
-		var result = this.get('store').findQuery('customer', { offset: offset, limit: limit });		
-
-		result.then(
-			function(data) {
-				this.set('content.[]', result);
-			}
-		);
-	},
-
-	/**
-		getPaginationLink
-	**/
-	getPaginationLink: function (rel) {
-		var metadata = this.get('metadata');		
-
-		return metadata.links.findBy('rel', rel);		
-	},
-
-	/**
-		nextPage
-	**/
-	nextPage: function () {
-		var link = this.getPaginationLink('next');
-		
-		if (link) {			
-			this.queryServer(link.get('offset'), link.get('limit'));
-		}
-
-		this._super();
-	},
-
-	/**
-		didContentChange
-	**/
-	contentDidChange: function () {
-
-		console.log('contentDidChange');
+		if (!this.get('contentLoaded')) return;
 
 		var model = this.get('model');
-		var meta = this.get('store').metadataFor(model.type);		
+		var meta = this.get('store').metadataFor(model.type);
+
+		console.dir(model);
 
 		if (meta) {
             // Creamos el objeto de metadatos
@@ -1043,13 +981,33 @@ Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.
             }
 
             this.set('metadata', metadata);
-            this.set('offset', metadata.offset);
             this.set('limit', metadata.limit);
             this.set('totalCount', metadata.totalCount);
-        }
+		}
 
-	}.observes('content'),
+	}.observes('contentLoaded'),
 
+	/**
+		refresh
+	**/
+	refresh: function () {
+
+		var offset = this.get('offset');
+		var limit = this.get('limit');
+		var self = this;
+
+		self.set('contentLoaded', false);
+
+		this.get('store').findQuery('customer', { offset: offset, limit: limit }).then(function (result) {			
+			self.set('content', result);
+			self.set('contentLoaded', true);
+		});
+
+	}.observes('page'),
+	
+	/**
+		columns
+	**/
     columns: [
 		Northwind.Common.Components.Grid.column('id', { formatter: '{{#link-to \'customer\' view.content}}{{view.content.id}}{{/link-to}}' }),
 		Northwind.Common.Components.Grid.column('contactName'),

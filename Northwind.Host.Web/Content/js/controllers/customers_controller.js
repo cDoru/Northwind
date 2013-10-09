@@ -3,54 +3,19 @@
     @namespace  Northwind
     @extends    Northwind.ArrayController
 **/
-Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({
+Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({		
 
+	contentLoaded: false,
+	
 	/**
-		queryServer
+		contentDidChange
 	**/
-	queryServer: function (offset, limit) {
+	loadMetadata: function () {	
 
-		//this.set('content', this.get('store').findQuery('customer', { offset: offset, limit: limit }));
-		var result = this.get('store').findQuery('customer', { offset: offset, limit: limit });		
-
-		result.then(
-			function(data) {
-				this.set('content.[]', result);
-			}
-		);
-	},
-
-	/**
-		getPaginationLink
-	**/
-	getPaginationLink: function (rel) {
-		var metadata = this.get('metadata');		
-
-		return metadata.links.findBy('rel', rel);		
-	},
-
-	/**
-		nextPage
-	**/
-	nextPage: function () {
-		var link = this.getPaginationLink('next');
-		
-		if (link) {			
-			this.queryServer(link.get('offset'), link.get('limit'));
-		}
-
-		this._super();
-	},
-
-	/**
-		didContentChange
-	**/
-	contentDidChange: function () {
-
-		console.log('contentDidChange');
+		if (!this.get('contentLoaded')) return;
 
 		var model = this.get('model');
-		var meta = this.get('store').metadataFor(model.type);		
+		var meta = this.get('store').metadataFor(model.type);
 
 		if (meta) {
             // Creamos el objeto de metadatos
@@ -71,13 +36,33 @@ Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.
             }
 
             this.set('metadata', metadata);
-            this.set('offset', metadata.offset);
             this.set('limit', metadata.limit);
             this.set('totalCount', metadata.totalCount);
-        }
+		}
 
-	}.observes('content'),
+	}.observes('contentLoaded'),
 
+	/**
+		refresh
+	**/
+	refresh: function () {
+
+		var offset = this.get('offset');
+		var limit = this.get('limit');
+		var self = this;
+
+		self.set('contentLoaded', false);
+
+		this.get('store').findQuery('customer', { offset: offset, limit: limit }).then(function (result) {			
+			self.set('content', result);
+			self.set('contentLoaded', true);
+		});
+
+	}.observes('page'),
+	
+	/**
+		columns
+	**/
     columns: [
 		Northwind.Common.Components.Grid.column('id', { formatter: '{{#link-to \'customer\' view.content}}{{view.content.id}}{{/link-to}}' }),
 		Northwind.Common.Components.Grid.column('contactName'),
