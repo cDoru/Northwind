@@ -1,14 +1,15 @@
 /**
+	Modelo que representa un Customer
+
 	@class		Customer
-	@extends	Em.Model
+	@extends	Northwind.Model
 	@namespace	Northwind
 	@module		@Northwind
 **/
 
-Northwind.Customer = DS.Model.extend({
-	//id: DS.attr('string'),
-	companyName: DS.attr('string'),
-	contactName: DS.attr('string'),
+Northwind.Customer = Northwind.Model.extend({
+	companyName: DS.attr('string', { required: true }),
+	contactName: DS.attr('string', { required: true }),
 	contactTitle: DS.attr('string'),
 	address: DS.attr('string'),
 	city: DS.attr('string'),

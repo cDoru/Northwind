@@ -1,7 +1,7 @@
 ﻿application.js
 
-common/utils.js
-common/array_controller.js
+common/namespaces.js
+common/uri.js
 
 components/grid/main.js
 components/grid/pagination_mixin.js
@@ -26,12 +26,15 @@ routes/application_route.js
 routes/customers_route.js
 routes/customer_route.js
 
+controllers/object_controller.js
+controllers/array_controller.js
 controllers/customer_controller.js
 controllers/customers_controller.js
 
-views/pager_view.js
+views/text_edit_view.js
 views/customers_view.js
 
+models/model.js
 models/customer.js
 models/order.js
 models/orderdetail.js

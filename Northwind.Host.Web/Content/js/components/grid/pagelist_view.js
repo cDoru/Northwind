@@ -67,6 +67,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
         refreshPageListItems
     **/
     refreshPageListItems: function () {
+
         var pages = this.get('pages');
 
         if (!pages.get('length')) return;
@@ -88,6 +89,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         this.pushObject(this.get('nextPageView').create());
         this.pushObject(this.get('lastPageView').create());
+        
     }.observes('pages'),
 
     /**
@@ -128,7 +130,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         this.set('pagesCount', pages);
         this.set('hasNextPage', page + 1 < pages);
-        this.set('hasPrevPage', page > 0);
+        this.set('hasPreviousPage', page > 0);
         this.set('hasFirstPage', page > 0);
         this.set('hasLastPage', page + 1 < pages);
 
@@ -174,7 +176,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
         **/
         prevPage: function () {
 
-            if (!this.get('hasPrevPage')) return;
+            if (!this.get('hasPreviousPage')) return;
 
             this.get('controller').previousPage();
 

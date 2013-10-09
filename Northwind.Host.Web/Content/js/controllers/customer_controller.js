@@ -3,9 +3,10 @@
 
     @class 		CustomerController
     @namespace 	Northwind
-    @extends 	Ember.Object
+    @extends 	Northwind.ObjectController
 
 */
-Northwind.CustomerController = Ember.ObjectController.extend({
+Northwind.CustomerController = Northwind.ObjectController.extend({
+		
 
 });

@@ -11,7 +11,7 @@ Northwind.Common.Components.Grid.FooterView = Ember.ContainerView.extend({
 
     tagName: 'tfoot',
 
-    classNames: ['table-footer'],
+    classNames: ['table-footer', 'text-muted'],
 
     childViews: ['gridFooter'],
 

@@ -15,24 +15,30 @@ Northwind.store = DS.Store.extend();
 **/
 
 Northwind.Common = Ember.Namespace.create({
-    Utils: Ember.Namespace.create()
+    
 });
 
-/**
-    @class      UriUtis
-    @extends	Ember.Namespace
-    @namespace	Northwind.Common.Utils
-    @module		Northwind
+
+;/**
+	Funciones relacionadas con Url
+
+	@class		Uri
+	@namespace	Northwind
+	@module		Northwind
+	@extends	Ember.Object
 **/
-Northwind.Common.Utils.UriUtils = Ember.Object.extend({
+Northwind.Common.Uri = Ember.Object.create({
+	
+	/**
+		Extrae los argumentos de una Url en forma de objeto
 
-    /**
-    Extrae los argumentos de una Url en forma de objeto
+		@method	queryParams
+		@param  {String} Uri de donde se extraerán sus parámetros
+		@see 	https://gist.github.com/simonsmith/5152680
+	**/
+	queryParams: function (uri) {
 
-    @see https://gist.github.com/simonsmith/5152680
-    **/
-    parseQueryParams: function (uri) {
-        var queryParams = {};
+		var queryParams = {};
 
         if (uri) {
             var reg = /\\?([^?=&]+)(=([^&#]*))?/g;
@@ -46,31 +52,7 @@ Northwind.Common.Utils.UriUtils = Ember.Object.extend({
 
         return queryParams;
 
-    }
-});
-
-Northwind.uriUtils = Northwind.Common.Utils.UriUtils.create();
-
-;/**
-    @class      ArrayController
-    @namespace  Northwind
-    @extends    Ember.ArrayController
-**/
-Northwind.ArrayController = Ember.ArrayController.extend({
-    /**
-        offset
-    **/
-    offset: 0,
-
-    /**
-        limit
-    **/
-    limit: 0,    
-
-    /**
-    metadata
-    **/
-    metadata: null
+	}
 
 });
 ;/**
@@ -391,6 +373,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
         refreshPageListItems
     **/
     refreshPageListItems: function () {
+
         var pages = this.get('pages');
 
         if (!pages.get('length')) return;
@@ -412,6 +395,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         this.pushObject(this.get('nextPageView').create());
         this.pushObject(this.get('lastPageView').create());
+        
     }.observes('pages'),
 
     /**
@@ -452,7 +436,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
 
         this.set('pagesCount', pages);
         this.set('hasNextPage', page + 1 < pages);
-        this.set('hasPrevPage', page > 0);
+        this.set('hasPreviousPage', page > 0);
         this.set('hasFirstPage', page > 0);
         this.set('hasLastPage', page + 1 < pages);
 
@@ -498,7 +482,7 @@ Northwind.Common.Components.Grid.PageListView = Ember.ContainerView.extend({
         **/
         prevPage: function () {
 
-            if (!this.get('hasPrevPage')) return;
+            if (!this.get('hasPreviousPage')) return;
 
             this.get('controller').previousPage();
 
@@ -731,7 +715,7 @@ Northwind.Common.Components.Grid.FooterView = Ember.ContainerView.extend({
 
     tagName: 'tfoot',
 
-    classNames: ['table-footer'],
+    classNames: ['table-footer', 'text-muted'],
 
     childViews: ['gridFooter'],
 
@@ -872,14 +856,13 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 
     },
 
-    // Extracción de los metadatos de la respuesta
+    // Extracción de los metadatos de la respuesta    
     extractMeta: function (store, type, payload) {
 
         if (payload && payload.metadata) {
             store.metaForType(type, payload.metadata);
+            delete payload.metadata;
         }
-
-        this._super(store, type, payload);
 
     }
 
@@ -889,8 +872,10 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 ;/**
 **/
 Northwind.Router.map(function () {
-    this.resource('customers', /*{ queryParams: ['offset', 'limit'] },*/ function () {
-        this.resource('customer', { path: ':customer_id' });
+    this.resource('customers', function () {
+        this.resource('customer', { path: ':customer_id' }, function () {
+        	this.route('orders');
+        });
     });
     this.resource('about');
 });
@@ -931,38 +916,114 @@ Northwind.CustomersRoute = Ember.Route.extend({
     }
 });
 ;/**
-    `CustomerController` 
+    `ObjectController` 
 
-    @class 		CustomerController
+    @class 		ObjectController
     @namespace 	Northwind
-    @extends 	Ember.Object
+    @extends 	Ember.ObjectController
 
 */
-Northwind.CustomerController = Ember.ObjectController.extend({
+Northwind.ObjectController = Ember.ObjectController.extend({
+
+	/**
+		Indica si se está editando un registro
+
+		@property	isEditing
+		@type		{Boolean}
+
+	**/
+	isEditing: false,
+
+	actions: {
+
+		/**
+			Modificación de un registro
+
+			@action 	edit
+		**/
+		edit: function () {
+
+			this.set('isEditing', true);
+
+		},
+
+		/**
+			Se guardan los datos del registro
+
+			@action 	acceptChanges
+		**/
+		acceptChanges: function () {
+
+			this.set('isEditing', false);
+
+			// Comprobamos que los campos obligatorios tienen datos			
+			if (this.get('model.isSaveable'))
+			{
+				this.send('save');
+			} else {
+				this.send('remove');
+			}
+
+		},
+
+		/**
+			Se guardan los datos del registro en la base de datos
+
+			@action 	save
+		**/
+		save: function () {
+
+			this.get('model').save();
+
+		},
+
+		/**
+			Se elimina el registro
+
+			@action 	remove
+		**/
+		remove: function () {
+
+			this.get('model').deleteRecord();
+			this.send('save');
+
+		}
+
+	}
 
 });
 ;/**
-    @class      CustomersController
+    @class      ArrayController
     @namespace  Northwind
-    @extends    Northwind.ArrayController
+    @extends    Northwind.Common.Components.Grid.GridController
 **/
-Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.extend({		
+Northwind.ArrayController = Northwind.Common.Components.Grid.GridController.extend({
+    
+    contentLoaded: false,
 
-	contentLoaded: false,
-	
-	/**
-		contentDidChange
-	**/
-	loadMetadata: function () {	
+    modelType: Ember.computed(function () {
 
-		if (!this.get('contentLoaded')) return;
+        var model = this.get('model');
 
-		var model = this.get('model');
-		var meta = this.get('store').metadataFor(model.type);
+        return model.type;
 
-		console.dir(model);
+    }),
+    
+    /**
+        @method loadMetadata
 
-		if (meta) {
+        Carga los metadatos.
+
+        Este método se ejecuta una vez que todos los datos se han cargado.
+    **/
+    loadMetadata: function () { 
+
+        if (!this.get('contentLoaded')) return;
+
+        var model = this.get('model');
+        var meta = this.get('store').metadataFor(model.type);
+
+        if (meta) {
             // Creamos el objeto de metadatos
             var metadata = Ember.Object.create({
                 offset: meta.offset,
@@ -974,7 +1035,7 @@ Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.
             // Se añaden los enlaces de paginación
             if (meta.links) {
                 for (var link in meta.links) {
-                    var lnkObj = Ember.Object.create(Northwind.uriUtils.parseQueryParams(meta.links[link]));
+                    var lnkObj = Ember.Object.create(Northwind.Common.Uri.queryParams(meta.links[link]));
                     lnkObj.set('rel', link);
                     metadata.links.pushObject(lnkObj);
                 }
@@ -983,28 +1044,55 @@ Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.
             this.set('metadata', metadata);
             this.set('limit', metadata.limit);
             this.set('totalCount', metadata.totalCount);
-		}
+        }
 
-	}.observes('contentLoaded'),
+    }.observes('contentLoaded'),
 
-	/**
-		refresh
-	**/
-	refresh: function () {
+    /**
+        @method refresh
 
-		var offset = this.get('offset');
-		var limit = this.get('limit');
-		var self = this;
+        Actualiza la información del controlador a partir de los datos de paginación actuales.
 
-		self.set('contentLoaded', false);
+        Este método se dispara cuando se cambia de página de resultados
+    **/
+    refresh: function () {
 
-		this.get('store').findQuery('customer', { offset: offset, limit: limit }).then(function (result) {			
-			self.set('content', result);
-			self.set('contentLoaded', true);
-		});
+        var offset = this.get('offset');
+        var limit = this.get('limit');
+        var modelType = this.get('modelType');
+        var self = this;
 
-	}.observes('page'),
-	
+        self.set('contentLoaded', false);
+
+        this.get('store').findQuery(modelType, { offset: offset, limit: limit }).then(function (result) {          
+            self.set('model', result);
+            self.set('contentLoaded', true);
+        });
+
+    }.observes('page')
+
+});
+;/**
+    `CustomerController` 
+
+    @class 		CustomerController
+    @namespace 	Northwind
+    @extends 	Northwind.ObjectController
+
+*/
+Northwind.CustomerController = Northwind.ObjectController.extend({
+		
+
+});
+;/**
+    @class      CustomersController
+    @namespace  Northwind
+    @extends    Northwind.ArrayController
+**/
+Northwind.CustomersController = Northwind.ArrayController.extend({		
+
+	itemController: 'customer',
+
 	/**
 		columns
 	**/
@@ -1017,14 +1105,23 @@ Northwind.CustomersController = Northwind.Common.Components.Grid.GridController.
 
 });
 ;/**
-    @class PagerView
-**/
+    `TextEditView` 
 
-Northwind.PagerView = Ember.View.extend({
-    templateName: 'pager',
-    tagName: 'ul',
-    classNames: ['pager']   
+    @class 		TextEditView
+    @namespace 	Northwind
+    @extends 	Ember.TextField
+
+*/
+Northwind.TextEditView = Ember.TextField.extend({
+
+	didInsertElement: function () {
+		this.$.focus();
+	}
+
 });
+
+Ember.Handlebars.helper('text-edit', Northwind.TextEditView);
+
 ;/**
     `CustomersView` 
 
@@ -1039,16 +1136,73 @@ Northwind.CustomersView = Northwind.Common.Components.Grid.GridView.extend({
 });
 */
 ;/**
-	@class		Customer
-	@extends	Em.Model
+	Clase base para todos los modelos definidos en Northwind
+
+	@class		Model
+	@extends	DS.Model
 	@namespace	Northwind
 	@module		@Northwind
 **/
 
-Northwind.Customer = DS.Model.extend({
-	//id: DS.attr('string'),
-	companyName: DS.attr('string'),
-	contactName: DS.attr('string'),
+Northwind.Model = DS.Model.extend();
+
+Northwind.Model.reopenClass({
+
+	/**
+		Define las propiedades obligatorias del modelo
+
+		@property	required
+		@type		{Array}
+	**/
+	required: Ember.computed(function () {		
+
+		var required = Ember.makeArray();
+
+		this.eachComputedProperty(function (name, meta) {
+			if (meta.isAttribute && meta.options.required) {
+				required.push(name);
+			}
+		});
+
+		console.log(required);
+
+		return required;
+
+	}),
+
+	/**
+		Comprueba si todas las propiedades obligatorias del modelo tienen valor
+
+		@property	isSaveable
+		@type		{Boolean}
+	**/
+	isSaveable: Ember.computed(function () {
+
+		var required = this.get('required');
+
+		for (var prop in required) {
+			if(!this.get(prop)) {
+				return false;
+			}
+		}
+
+		return true;
+
+	})
+
+});
+;/**
+	Modelo que representa un Customer
+
+	@class		Customer
+	@extends	Northwind.Model
+	@namespace	Northwind
+	@module		@Northwind
+**/
+
+Northwind.Customer = Northwind.Model.extend({
+	companyName: DS.attr('string', { required: true }),
+	contactName: DS.attr('string', { required: true }),
 	contactTitle: DS.attr('string'),
 	address: DS.attr('string'),
 	city: DS.attr('string'),

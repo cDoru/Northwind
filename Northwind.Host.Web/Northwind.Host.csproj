@@ -431,7 +431,8 @@
     <Content Include="Content\css\normalize.css" />
     <Content Include="Content\js\adapters\application_adapter.js" />
     <Content Include="Content\js\application.js" />
-    <Content Include="Content\js\common\utils.js" />
+    <Content Include="Content\js\common\namespaces.js" />
+    <Content Include="Content\js\common\uri.js" />
     <Content Include="Content\js\components\grid\column.js" />
     <Content Include="Content\js\components\grid\footer_view.js" />
     <Content Include="Content\js\components\grid\cell_view.js" />
@@ -447,12 +448,14 @@
     <Content Include="Content\js\components\grid\pagination_mixin.js" />
     <Content Include="Content\js\components\grid\main.js" />
     <Content Include="Content\js\controllers\customers_controller.js" />
-    <Content Include="Content\js\common\array_controller.js" />
+    <Content Include="Content\js\controllers\array_controller.js" />
     <Content Include="Content\js\controllers\customer_controller.js" />
+    <Content Include="Content\js\controllers\object_controller.js" />
     <Content Include="Content\js\libs\ember-1.0.0.js" />
     <Content Include="Content\js\libs\ember-data.js" />
     <Content Include="Content\js\libs\handlebars-1.0.0.js" />
     <Content Include="Content\js\models\customer.js" />
+    <Content Include="Content\js\models\model.js" />
     <Content Include="Content\js\models\order.js" />
     <Content Include="Content\js\models\orderdetail.js" />
     <Content Include="Content\js\models\supplier.js" />
@@ -461,7 +464,7 @@
     <Content Include="Content\js\routes\application_route.js" />
     <Content Include="Content\js\serializers\application_serializer.js" />
     <Content Include="Content\js\views\customers_view.js" />
-    <Content Include="Content\js\views\pager_view.js" />
+    <Content Include="Content\js\views\text_edit_view.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\js\libs\jquery-1.9.1.js" />
     <None Include="bundler\bundler.cmd" />

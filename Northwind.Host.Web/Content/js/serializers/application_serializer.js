@@ -116,14 +116,13 @@ Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
 
     },
 
-    // Extracción de los metadatos de la respuesta
+    // Extracción de los metadatos de la respuesta    
     extractMeta: function (store, type, payload) {
 
         if (payload && payload.metadata) {
             store.metaForType(type, payload.metadata);
+            delete payload.metadata;
         }
-
-        this._super(store, type, payload);
 
     }
 

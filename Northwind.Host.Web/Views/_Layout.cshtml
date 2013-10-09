@@ -39,8 +39,15 @@
     </script>    
 
     <script type="text/x-handlebars" id="customer" data-template-name="customer">           
-        <p>
-            <h1>{{contactName}}</h1>
+        <p>            
+            <h1>
+            {{#if isEditing}}
+                {{text-edit class="edit" value=contactName focus-out="acceptChanges"}}
+            {{else}}
+                <label {{action "edit" on="doubleClick"}}>{{contactName}}</label>
+            {{/if}}
+            </h1>            
+
             <h4>{{companyName}}</h4>
             <h5>{{contactTitle}}</h5>
         </p>
