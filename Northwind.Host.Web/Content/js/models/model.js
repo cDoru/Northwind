@@ -7,31 +7,9 @@
 	@module		@Northwind
 **/
 
-Northwind.Model = DS.Model.extend();
+Northwind.Model = DS.Model.extend({
 
-Northwind.Model.reopenClass({
-
-	/**
-		Define las propiedades obligatorias del modelo
-
-		@property	required
-		@type		{Array}
-	**/
-	required: Ember.computed(function () {		
-
-		var required = Ember.makeArray();
-
-		this.eachComputedProperty(function (name, meta) {
-			if (meta.isAttribute && meta.options.required) {
-				required.push(name);
-			}
-		});
-
-		console.log(required);
-
-		return required;
-
-	}),
+	required: [],
 
 	/**
 		Comprueba si todas las propiedades obligatorias del modelo tienen valor
@@ -39,18 +17,19 @@ Northwind.Model.reopenClass({
 		@property	isSaveable
 		@type		{Boolean}
 	**/
-	isSaveable: Ember.computed(function () {
+	isSaveable: function () {
 
 		var required = this.get('required');
-
-		for (var prop in required) {
-			if(!this.get(prop)) {
+		var self = this;
+		
+		required.forEach(function (value) {			
+			if(!self.get(value)) {
 				return false;
 			}
-		}
+		});
 
 		return true;
 
-	})
+	}.property('required')
 
 });

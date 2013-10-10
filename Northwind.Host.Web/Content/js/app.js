@@ -954,14 +954,16 @@ Northwind.ObjectController = Ember.ObjectController.extend({
 		**/
 		acceptChanges: function () {
 
-			this.set('isEditing', false);
+			this.set('isEditing', false);			
 
-			// Comprobamos que los campos obligatorios tienen datos			
+			// Comprobamos que los campos obligatorios tienen datos
 			if (this.get('model.isSaveable'))
 			{
-				this.send('save');
+				console.log('isSaveable');
+				//this.send('save');
 			} else {
-				this.send('remove');
+				console.log('NOT isSaveable');
+				//this.send('remove');
 			}
 
 		},
@@ -1115,7 +1117,9 @@ Northwind.CustomersController = Northwind.ArrayController.extend({
 Northwind.TextEditView = Ember.TextField.extend({
 
 	didInsertElement: function () {
-		this.$.focus();
+
+		this.$().focus();
+		
 	}
 
 });
@@ -1144,31 +1148,9 @@ Northwind.CustomersView = Northwind.Common.Components.Grid.GridView.extend({
 	@module		@Northwind
 **/
 
-Northwind.Model = DS.Model.extend();
+Northwind.Model = DS.Model.extend({
 
-Northwind.Model.reopenClass({
-
-	/**
-		Define las propiedades obligatorias del modelo
-
-		@property	required
-		@type		{Array}
-	**/
-	required: Ember.computed(function () {		
-
-		var required = Ember.makeArray();
-
-		this.eachComputedProperty(function (name, meta) {
-			if (meta.isAttribute && meta.options.required) {
-				required.push(name);
-			}
-		});
-
-		console.log(required);
-
-		return required;
-
-	}),
+	required: [],
 
 	/**
 		Comprueba si todas las propiedades obligatorias del modelo tienen valor
@@ -1176,21 +1158,23 @@ Northwind.Model.reopenClass({
 		@property	isSaveable
 		@type		{Boolean}
 	**/
-	isSaveable: Ember.computed(function () {
+	isSaveable: function () {
 
 		var required = this.get('required');
-
-		for (var prop in required) {
-			if(!this.get(prop)) {
+		var self = this;
+		
+		required.forEach(function (value) {			
+			if(!self.get(value)) {
 				return false;
 			}
-		}
+		});
 
 		return true;
 
-	})
+	}.property('required')
 
 });
+
 ;/**
 	Modelo que representa un Customer
 
@@ -1201,8 +1185,8 @@ Northwind.Model.reopenClass({
 **/
 
 Northwind.Customer = Northwind.Model.extend({
-	companyName: DS.attr('string', { required: true }),
-	contactName: DS.attr('string', { required: true }),
+	companyName: DS.attr('string'),
+	contactName: DS.attr('string'),
 	contactTitle: DS.attr('string'),
 	address: DS.attr('string'),
 	city: DS.attr('string'),
@@ -1213,6 +1197,12 @@ Northwind.Customer = Northwind.Model.extend({
 	fax: DS.attr('string'),
 	    
     orders: DS.hasMany('order')
+});
+
+Northwind.Customer.reopen({
+
+	required: ['contactName', 'companyName']
+
 });
 
 ;/**

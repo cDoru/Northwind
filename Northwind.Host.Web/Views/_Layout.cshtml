@@ -40,7 +40,7 @@
 
     <script type="text/x-handlebars" id="customer" data-template-name="customer">           
         <p>            
-            <h1>
+            <h1 {{bind-attr class="isEditing:editing"}}>
             {{#if isEditing}}
                 {{text-edit class="edit" value=contactName focus-out="acceptChanges"}}
             {{else}}

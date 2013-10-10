@@ -8,8 +8,8 @@
 **/
 
 Northwind.Customer = Northwind.Model.extend({
-	companyName: DS.attr('string', { required: true }),
-	contactName: DS.attr('string', { required: true }),
+	companyName: DS.attr('string'),
+	contactName: DS.attr('string'),
 	contactTitle: DS.attr('string'),
 	address: DS.attr('string'),
 	city: DS.attr('string'),
@@ -20,4 +20,10 @@ Northwind.Customer = Northwind.Model.extend({
 	fax: DS.attr('string'),
 	    
     orders: DS.hasMany('order')
+});
+
+Northwind.Customer.reopen({
+
+	required: ['contactName', 'companyName']
+
 });
