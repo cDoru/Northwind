@@ -55,7 +55,7 @@ namespace Northwind.Common.Collections
 			PageSize = limit;			
 			
 			PageCount = (TotalItemCount > 0 ? (int)Math.Ceiling(TotalItemCount / (double)PageSize) : 0);
-			PageNumber = (PageCount > 0 ? (FirstItemOnPage / PageCount) + 1 : 1);
+			PageNumber = (PageCount > 0 ? (FirstItemOnPage / PageCount) - 1 : 1);
 			HasPreviousPage = (PageNumber > 1);
 			HasNextPage = (PageNumber < PageCount);
 			IsFirstPage = (PageNumber == 1);
