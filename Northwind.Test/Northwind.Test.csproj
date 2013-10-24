@@ -92,9 +92,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomersServiceTest.cs" />
+    <Compile Include="Data\NorthwindData.cs" />
+    <Compile Include="Data\NorthwindFactory.cs" />
+    <Compile Include="PaginationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAppHost.cs" />
     <Compile Include="TestConfig.cs" />
+    <Compile Include="UrlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Northwind.Common\Northwind.Common.csproj">
@@ -124,7 +128,17 @@
     <None Include="Northwind.vsmdi" />
     <None Include="packages.config" />
     <None Include="TraceAndTestImpact.testsettings" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

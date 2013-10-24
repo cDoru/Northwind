@@ -34,17 +34,12 @@ namespace Northwind.Test
 		/// <summary>
 		/// 
 		/// </summary>
-		public static int ProductionPort = 2828;
-
-		/// <summary>
-		/// 
-		/// </summary>
 		public static int TestPort = 2829;
 
 		/// <summary>
 		/// <see cref="Uri"/> base de los test
 		/// </summary>
-		public static Uri AbsoluteBaseUri = new Uri("http://localhost:" + ProductionPort.ToString() + "/");
+		public static Uri AbsoluteBaseUri = new Uri("http://localhost:" + TestPort.ToString() + "/");
 
 		/// <summary>
 		/// <see cref="Uri"/> para el servicio <see cref="Customers"/>
@@ -54,7 +49,7 @@ namespace Northwind.Test
 		/// <summary>
 		/// <see cref="Uri"/> para el servicio obtener <see cref="Order"/> de un <see cref="Customer"/>
 		/// </summary>
-		public static Uri CustomerOrdersUri = new Uri(CustomerServiceUri, "{1}/orders");
+		public static Uri CustomerOrdersUri = new Uri(CustomerServiceUri, "{0}/orders");
 
 		/// <summary>
 		/// 
