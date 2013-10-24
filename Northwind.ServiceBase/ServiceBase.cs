@@ -14,9 +14,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +32,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using Northwind.Common;
+using Northwind.Common.Collections;
 using Northwind.Data;
 using Northwind.Data.Model;
 using Northwind.Data.Repositories;
@@ -42,182 +43,180 @@ using Northwind.ServiceBase.Query;
 
 namespace Northwind.ServiceBase
 {
-	/// <summary>
-	/// Clase que representa un servicio web
-	/// </summary>
 	public abstract class ServiceBase<TEntity, TDto> : Service
 		where TEntity : IEntity, new()
 		where TDto : CommonDto, new()
-	{
-		#region Propiedades
+	{		
 
 		/// <summary>
-		/// Repositorio
+		/// 
 		/// </summary>
-		public IRepository<TEntity> Repository { get; set; }			// Se establecerá mediante IoC
+		protected readonly IRepository<TEntity> Repository;
 
+		/// <summary>
+		/// Constructor de la clase
+		/// </summary>
+		/// <param name="repository"></param>
+		public ServiceBase( IRepository<TEntity> repository )
+		{
+			Verify.ArgumentNotNull(repository, "repository");
+
+			Repository = repository;			
+		}
+
+		#region Métodos públicos
+
+		#region GetCurrentRequestCacheKey
+		/// <summary>
+		/// Devuelve una clave de caché para la petición actual
+		/// </summary>
+		/// <returns>Cadena con la clave de caché para la petición actual</returns>
+		public virtual string GetCurrentRequestCacheKey()
+		{
+			return new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();
+		}
 		#endregion		
 
-		#region Métodos CRUD
-
-		#region GET
-		/// <summary>
-		/// Recuperación de un elemento a partir de su clave primaria
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public virtual object Get( SingleRequest<TDto> request )
-		{
-			var cacheKey = IdUtils.CreateUrn<TDto>(request.Id);
-
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
-			{
-				var result = Repository.Get(request.Id);
-
-				if ( result == null )
-				{
-					throw HttpError.NotFound("Not found");
-				}
-
-				Response.AddHeaderLastModified(result.LastUpdated);
-				Response.AddHeader(HttpHeaders.ETag, result.GetETagValue());				
-
-				return new SingleResponse<TDto> { Result = result.TranslateTo<TDto>() };
-			});
-		}
-
-		/// <summary>
-		/// Recuperación de todos los elementos
-		/// </summary>
-		/// <param name="request">Petición</param>
-		/// <returns>Collección de elementos</returns>
-		public virtual object Get( CollectionRequest<TDto> request )
-		{
-			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();
-
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, 
-				() =>
-				{
-					var query = (QueryExpression<TEntity>)request.Query;
-					var queryExpr = (query != null ? query.Select : null);
-					var requestUrl = Request.GetPathUrl();
-
-					FixOffsetAndLimit(request);
-
-					var result = Repository
-						.GetAll(queryExpr, request.Offset, request.Limit)
-						.Select(e => 
-							{								
-								var dto = e.TranslateTo<TDto>();
-								//var restPath = EndpointHostConfig.Instance.Metadata.Routes.RestPaths.Single(r => r.RequestType == request.GetType());
-								dto.Link = new Uri(String.Format("{0}/{1}", requestUrl, dto.GetId<TDto>().ToString()));
-								return dto;
-							})
-						.ToList();
-
-					// Creación de la respuesta					
-					return new CollectionResponse<TDto>(result, request.Offset, request.Limit, Repository.Count());
-				});			
-		}
-
 		#endregion
-
-		#region POST
-
-		/// <summary>
-		/// Actualización
-		/// <para>
-		/// Devuelve Status 201 si la creación ha sido correcta
-		/// </para>
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public virtual object Post( SingleRequest<TDto> request )
-		{
-			try
-			{
-				var newEntity = Repository.Add(request.TranslateTo<TEntity>());
-
-				var result = new SingleResponse<TDto> { Result = newEntity.TranslateTo<TDto>() };
-
-				return new HttpResult(result, HttpStatusCode.Created);
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-		#endregion
-
-		#region PUT
-
-		/// <summary>
-		/// Actualización
-		/// <para>
-		/// Devuelve Status 200 si la actualización ha sido correcta
-		/// </para>
-		/// </summary>
-		/// <param name="request"></param>
-		/// <returns></returns>
-		public virtual object Put( SingleRequest<TDto> request )
-		{
-			try
-			{
-				Repository.Update(request.TranslateTo<TEntity>());
-
-				return new HttpResult(HttpStatusCode.OK);
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-		#endregion
-
-		#region DELETE
-
-		/// <summary>		
-		/// Elimina una entidad
-		/// <para>
-		/// Devuelve Status 204 (sin contenido) si la eliminación ha sido correcta
-		/// </para>		
-		/// </summary>	
-		/// <param name="request">Petición</param>
-		/// <returns>Respuesta <seealso cref="CustomerResponse"/></returns>
-		public object Delete( SingleResponse<TDto> request )
-		{
-			try
-			{
-				Repository.Delete(request.TranslateTo<TEntity>());
-
-				return new HttpResult(HttpStatusCode.NoContent);
-			}
-			catch
-			{
-				throw;
-			}
-
-		}
-
-		#endregion		
-
-		#endregion		
 
 		#region Métodos protegidos
+
+		#region GetSingle
+		/// <summary>
+		/// Obtención de un elemento a partir de su clave
+		/// </summary>
+		/// <typeparam name="TResponse">Tipo de la respuesta</typeparam>
+		/// <param name="request">Petición</param>
+		/// <returns>Elemento</returns>
+		protected TResponse GetSingle<TResponse>( SingleRequest request ) where TResponse : SingleResponse<TDto>, new()
+		{
+			var result = Repository.Get(request.Id);
+
+			if ( result == null )
+			{
+				throw HttpError.NotFound("Not found");
+			}
+
+			Response.AddHeaderLastModified(result.LastUpdated);
+			Response.AddHeader(HttpHeaders.ETag, result.GetETagValue());
+
+			return TypeExtensionHelper.CreateInstance<TResponse>(result.TranslateTo<TDto>());
+
+		}
+		#endregion
+
+		#region GetCollection
+		/// <summary>
+		/// Obtención de una lista de elementos
+		/// </summary>
+		/// <typeparam name="TResponse">Tipo de la respuesta</typeparam>
+		/// <param name="request">Parámetros de la petición</param>
+		/// <returns>Lista de elementos</returns>
+		protected TResponse GetCollection<TResponse>( CollectionRequest request ) where TResponse : CollectionResponse<TDto>, new()
+		{
+			var query = (QueryExpression<TEntity>)request.Query;
+			var queryExpr = (query != null ? query.Select : null);
+			var requestUrl = base.Request.GetPathUrl();
+
+			FixOffsetAndLimit(request);
+
+			var result = Repository
+				.GetAll(queryExpr, request.Offset, request.Limit)
+				.Select(e =>
+				{
+					var dto = e.TranslateTo<TDto>();
+					dto.Link = new Uri(String.Format("{0}/{1}", requestUrl, dto.GetId<TDto>().ToString()));
+					return dto;
+				})
+				.ToList();
+
+			// Creación de la respuesta			
+			var response = TypeExtensionHelper.CreateInstance<TResponse>(result);			
+			response.Metadata = new Metadata(
+				new Uri(base.RequestContext.AbsoluteUri),
+				new StaticList<TDto>(result, request.Offset, request.Limit, Repository.Count())
+			);
+
+			return response;
+				
+		}
+		#endregion
+
+		#region ToOptimizedResultUsingCache
+		/// <summary>
+		/// Obtiene los resultados de una petición con comprobación de caché
+		/// </summary>
+		/// <param name="factoryFn">Elementos que se guardarán en caché si no existen</param>
+		/// <returns>La respuesa optimizada</returns>
+		protected object ToOptimizedResultUsingCache<TResponse>( Func<TResponse> factoryFn ) where TResponse : class
+		{
+			Verify.ArgumentNotNull(factoryFn, "factoryFn");
+
+			return base.RequestContext.ToOptimizedResultUsingCache<TResponse>(base.Cache, GetCurrentRequestCacheKey(), factoryFn);
+		}
+		#endregion
+
+		#region Put
+		/// <summary>
+		/// Actualización de un elemento.
+		/// <para>
+		/// Devuelve el status 201 si la creación ha sido correcta
+		/// </para>
+		/// </summary>
+		/// <typeparam name="TResponse">Tipo de la respuesta</typeparam>
+		/// <param name="request">Elemento a añadir</param>
+		/// <returns>El nuevo objeto creado</returns>
+		protected object Update( TDto dto )
+		{
+			Repository.Update(dto.TranslateTo<TEntity>());
+
+			return new HttpResult(HttpStatusCode.OK);
+		}
+		#endregion
+
+		#region Post
+		/// <summary>
+		/// Creación de un elemento
+		/// </summary>
+		/// <param name="request">Elemento a crear</param>
+		/// <returns>{TResponse}</returns>
+		protected object Insert<TResponse>( TDto dto ) where TResponse : SingleResponse<TDto>, new()
+		{
+			var newEntity = Repository.Add(dto.TranslateTo<TEntity>());
+			var response = TypeExtensionHelper.CreateInstance<TResponse>(newEntity.TranslateTo<TDto>());
+
+			return new HttpResult(response, HttpStatusCode.Created);			
+		}
+		#endregion
+
+		#region Delete
+		/// <summary>
+		/// Eliminación de un elemento
+		/// </summary>
+		/// <param name="request">Elemento a eliminar</param>
+		/// <returns>Status 204 (sin contenido)</returns>
+		protected object Remove( TDto request )
+		{
+			Repository.Delete(request.TranslateTo<TEntity>());
+
+			return new HttpResult(HttpStatusCode.NoContent);
+		}
+		#endregion
+
+		#endregion
+
+		#region Métodos privados
 
 		/// <summary>
 		/// Establece los límites de recuperación de datos
 		/// </summary>
 		/// <param name="request"></param>
-		protected void FixOffsetAndLimit( CollectionRequest<TDto> request )
+		private void FixOffsetAndLimit( ICollectionRequest request )
 		{
 			if ( request.Offset < 1 ) request.Offset = 1;
 			if ( request.Limit < 1 ) request.Limit = 10;
 		}		
 
 		#endregion
-
 	}
 }

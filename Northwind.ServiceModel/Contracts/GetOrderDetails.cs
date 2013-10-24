@@ -21,44 +21,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.ServiceHost;
 using Northwind.ServiceBase;
 using Northwind.ServiceModel.Dto;
+using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceModel.Operations
+namespace Northwind.ServiceModel.Contracts
 {
 	/// <summary>
-	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
+	/// Clase que representa una petición para obtener el detalle de un <see cref="Order"/> 
 	/// </summary>
-	public class CustomersCollectionResponse : CollectionResponse<Customer>
+	[Api("Get details from a single Order by Id.")]
+	[Route("/orders/{Id}/details", "GET")]
+	public class GetOrderDetails : CollectionRequest, IReturn<OrderDetailsCollectionResponse>
 	{
-
-		/// <summary>
-		/// Lista de <see cref="Supplier"/>
-		/// </summary>
-		public List<Customer> Customers
-		{
-			get { return base.Result; }
-			set { base.Result = value; }
-		}
-
-		#region Constructores
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		public CustomersCollectionResponse()
-			: base()
-		{ }
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		/// <param name="customers"></param>
-		public CustomersCollectionResponse( List<Customer> customers )
-			: base(customers)
-		{ }		
-
-		#endregion
-
+		public long Id { get; set; }
 	}
 }

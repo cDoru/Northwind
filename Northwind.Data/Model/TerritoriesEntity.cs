@@ -29,7 +29,6 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Territories")]
-	[ETag("Id", "LastUpdated")]
 	public partial class TerritoryEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]

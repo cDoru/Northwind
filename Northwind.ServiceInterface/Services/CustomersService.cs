@@ -43,25 +43,86 @@ namespace Northwind.ServiceInterface.Services
 	/// </summary>	
 	public class CustomersService : ServiceBase<CustomerEntity, Customer>
 	{
+		public CustomersService( ICustomerEntityRepository repository )
+			: base(repository)
+		{ }
+
+		/// <summary>
+		/// Recuperación de un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( GetCustomer request )
+		{
+			return base.ToOptimizedResultUsingCache(
+				() =>
+				{
+					return GetSingle<CustomerResponse>(request);
+				});
+		}
+
+		/// <summary>
+		/// Recuperación de la lista de <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( GetCustomers request )
+		{
+			return base.ToOptimizedResultUsingCache(
+				() => 
+				{
+					return GetCollection<CustomersCollectionResponse>(request);
+				});
+		}
+
 		/// <summary>
 		/// Recuperación de <see cref="Order"/> para un <see cref="Customer"/>
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		public object Get( CustomerOrders request )
+		public object Get( GetCustomerOrders request )
 		{
-			var cacheKey = new CacheKey(Request.AbsoluteUri, Request.Headers).ToString();
+			return base.ToOptimizedResultUsingCache(
+				() =>
+				{
+					var orders = ((ICustomerEntityRepository)Repository)
+						.GetOrders(request.Id)
+						.Select(o => o.TranslateTo<Order>())
+						.ToList();
 
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
-			{
-				var orders = ((CustomerEntityRepository)Repository)
-					.GetOrders(request.Id)
-					.Select(o => o.TranslateTo<Order>()).ToList();
+					return new OrdersCollectionResponse(orders);
+				});
 
+		}
 
-				return new CollectionResponse<Order>(orders);
-				
-			});
-		}		
+		/// <summary>
+		/// Actualización de un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"><see cref="Customer"/> a actualizar</param>
+		/// <returns></returns>
+		public object Put( Customer request )
+		{
+			return base.Update(request);
+		}
+
+		/// <summary>
+		/// Creación de un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"><see cref="Customer"/> a crear</param>
+		/// <returns></returns>
+		public object Post( Customer request )
+		{
+			return base.Insert<CustomerResponse>(request);
+		}
+
+		/// <summary>
+		/// Eliminación de un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"><see cref="Customer"/> a eliminar</param>
+		/// <returns></returns>
+		public object Delete( Customer request )
+		{
+			return base.Remove(request);
+		}
 	}
 }

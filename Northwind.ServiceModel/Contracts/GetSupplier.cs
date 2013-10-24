@@ -14,51 +14,37 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.ServiceHost;
 using Northwind.ServiceBase;
 using Northwind.ServiceModel.Dto;
+using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceModel.Operations
+namespace Northwind.ServiceModel.Contracts
 {
 	/// <summary>
-	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
+	/// Clase que representa una petición del tipo <see cref="Customer"/> por su clave
 	/// </summary>
-	public class CustomersCollectionResponse : CollectionResponse<Customer>
+	[Api("Get/Update/Remove a single Supplier by Id.")]
+	[Route("/suppliers/{Id}", "GET")]
+	public class GetSupplier : SingleRequest, IReturn<SupplierResponse>
 	{
-
-		/// <summary>
-		/// Lista de <see cref="Supplier"/>
-		/// </summary>
-		public List<Customer> Customers
-		{
-			get { return base.Result; }
-			set { base.Result = value; }
-		}
-
-		#region Constructores
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		public CustomersCollectionResponse()
-			: base()
-		{ }
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		/// <param name="customers"></param>
-		public CustomersCollectionResponse( List<Customer> customers )
-			: base(customers)
-		{ }		
-
-		#endregion
-
+		public string CompanyName { get; set; }
+		public string ContactName { get; set; }
+		public string ContactTitle { get; set; }
+		public string Address { get; set; }
+		public string City { get; set; }
+		public string Region { get; set; }
+		public string PostalCode { get; set; }
+		public string Country { get; set; }
+		public string Phone { get; set; }
+		public string Fax { get; set; }
+		public string HomePage { get; set; }		
 	}
 }

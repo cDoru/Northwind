@@ -14,51 +14,39 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
-using Northwind.ServiceBase;
-using Northwind.ServiceModel.Dto;
 
-namespace Northwind.ServiceModel.Operations
+namespace Northwind.Common
 {
 	/// <summary>
-	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
+	/// Métodos de extensión para <see cref="Expression"/>
 	/// </summary>
-	public class CustomersCollectionResponse : CollectionResponse<Customer>
+	public static class ExpressionExtensionHelper
 	{
-
 		/// <summary>
-		/// Lista de <see cref="Supplier"/>
+		/// Elimina todas las conversiones existentes en la expresión
 		/// </summary>
-		public List<Customer> Customers
+		/// <param name="expression">Expresión a comprobar</param>
+		/// <returns><see cref="Expression"/> resultante</returns>
+		public static Expression RemoveConvert( this Expression expression )
 		{
-			get { return base.Result; }
-			set { base.Result = value; }
+			Verify.ArgumentNotNull(expression, "expression");
+
+			while ( (expression != null) &&
+					(expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked) )
+			{
+				expression = RemoveConvert(((UnaryExpression)expression).Operand);
+			}
+
+			return expression;
+					
 		}
-
-		#region Constructores
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		public CustomersCollectionResponse()
-			: base()
-		{ }
-
-		/// <summary>
-		/// Constructor de la clase
-		/// </summary>
-		/// <param name="customers"></param>
-		public CustomersCollectionResponse( List<Customer> customers )
-			: base(customers)
-		{ }		
-
-		#endregion
-
 	}
 }

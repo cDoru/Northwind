@@ -14,23 +14,48 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.ServiceHost;
+using Northwind.ServiceBase;
+using Northwind.ServiceModel.Dto;
 
-namespace Northwind.ServiceBase
+namespace Northwind.ServiceModel.Operations
 {
 	/// <summary>
-	/// 
+	/// Clase que representa una respuesta para el tipo Supplier
 	/// </summary>
-	/// <typeparam name="TResult"></typeparam>
-	public interface IResponse<TDto>
-		where TDto : IDto, new()
+	public class SupplierResponse : SingleResponse<Supplier>
 	{
-		TDto Result { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public Supplier Supplier
+		{
+			get { return base.Result; }
+			set { base.Result = value; }
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public SupplierResponse()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="result"></param>
+		public SupplierResponse( Supplier result )
+			: base(result)
+		{
+		}
 	}
 }

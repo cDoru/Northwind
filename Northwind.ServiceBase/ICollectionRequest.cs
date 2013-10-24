@@ -27,7 +27,7 @@ namespace Northwind.ServiceBase
 	/// <summary>
 	/// Interfaz que representa una petición de colección
 	/// </summary>
-	public interface ICollectionRequest
+	public interface ICollectionRequest : ISearchable
 	{
 		/// <summary>
 		/// Primer elemento de la petición

@@ -75,7 +75,7 @@ namespace Northwind.Data.Model
 		{
 			Verify.ArgumentNotNull(entity, "entity");
 
-			var etagAttr = entity.GetType().GetCustomAttributes(typeof(ETagAttribute), true).Cast<ETagAttribute>().First();
+			var etagAttr = entity.GetType().GetCustomAttributes(typeof(ETagAttribute), true).Cast<ETagAttribute>().FirstOrDefault();
 			var etagString = String.Empty;
 
 			if ( etagAttr != null )

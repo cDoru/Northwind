@@ -83,7 +83,7 @@ namespace Northwind.ServiceBase.Query.Parser
 
 		#endregion
 
-		#region Constructores		
+		#region Constructores
 
 		/// <summary>
 		/// 

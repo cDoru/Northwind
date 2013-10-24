@@ -29,8 +29,7 @@ namespace Northwind.ServiceBase
 	/// 
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class SingleRequest<TDto> : Request<TDto, SingleResponse<TDto>>
-		where TDto : IDto, new()
+	public class SingleRequest : ISingleRequest
 	{
 		public object Id { get; set; }
 	}

@@ -29,7 +29,7 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("Customers")]
-	[ETag("Id", "LastUpdated")]
+	// TODO: ETagAttribute se da de hostias con QueryParser
 	public partial class CustomerEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]

@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using Northwind.ServiceBase;
 using Northwind.ServiceBase.Relations;
+using ServiceStack.ServiceHost;
 
 namespace Northwind.ServiceModel.Dto
 {
 	/// <summary>
 	/// Clase que representa una entidad <see cref="Customer"/>
 	/// </summary>	
-	public class Customer : CommonDto
+	[Api("Create a single Customer.")]
+	[Route("/customers", "POST")]
+	[Route("/customers/{Id}", "PUT DELETE")]	
+	public class Customer : CommonDto, IReturnVoid
 	{		
 		public string Id { get; set; }		
 		public string CompanyName { get; set; }

@@ -38,12 +38,12 @@ namespace Northwind.Common.Collections
 		#region Constructor
 
 		/// <summary>
-		/// 
+		/// Constructor de la clase
 		/// </summary>
-		/// <param name="subset"></param>
-		/// <param name="offset"></param>
-		/// <param name="limit"></param>
-		/// <param name="totalCount"></param>
+		/// <param name="subset">Lista de elementos</param>
+		/// <param name="offset">Primer elemento de la lista</param>
+		/// <param name="limit">Número de elementos</param>
+		/// <param name="totalCount">Número total de elementos</param>
 		public StaticList(IEnumerable<T> subset, int offset, int limit, long totalCount)
 		{
 			Verify.ArgumentNotNull(subset, "subset");
@@ -55,11 +55,11 @@ namespace Northwind.Common.Collections
 			PageSize = limit;			
 			
 			PageCount = (TotalItemCount > 0 ? (int)Math.Ceiling(TotalItemCount / (double)PageSize) : 0);
-			PageNumber = (PageCount > 0 ? (FirstItemOnPage / PageCount) - 1 : 1);
+			PageNumber = (PageCount > 0 ? (int)Math.Ceiling(FirstItemOnPage / (double)PageSize) : 1);
 			HasPreviousPage = (PageNumber > 1);
 			HasNextPage = (PageNumber < PageCount);
 			IsFirstPage = (PageNumber == 1);
-			IsLastPage = (PageNumber > PageCount);
+			IsLastPage = (PageNumber == PageCount);
 		}
 
 		#endregion

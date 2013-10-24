@@ -24,17 +24,39 @@ using System.Text;
 using ServiceStack.ServiceHost;
 using Northwind.ServiceBase;
 using Northwind.ServiceModel.Dto;
-using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceModel.Contracts
+namespace Northwind.ServiceModel.Operations
 {
 	/// <summary>
-	/// Clase que representa una petición de inserción de un <see cref="Customer"/>
+	/// Clase que representa una respuesta para el tipo Customer
 	/// </summary>
-	[Api("Insert a single Customer")]
-	//[Route("/customers", "POST")]
-	public class CustomerCreation : SingleRequest<Customer>
+	public class CustomerResponse : SingleResponse<Customer>
 	{
-		
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public Customer Customer
+		{
+			get { return base.Result; }
+			set { base.Result = value; }
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public CustomerResponse()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="result"></param>
+		public CustomerResponse( Customer result )
+			: base(result)
+		{
+		}		 
 	}
 }

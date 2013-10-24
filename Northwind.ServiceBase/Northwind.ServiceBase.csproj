@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -81,9 +82,7 @@
     <Compile Include="Common\ServiceOperations.cs" />
     <Compile Include="Formats\AtomFeed\AtomFeedFormat.cs" />
     <Compile Include="ICollectionRequest.cs" />
-    <Compile Include="ICollectionResponse.cs" />
     <Compile Include="IDto.cs" />
-    <Compile Include="IResponse.cs" />
     <Compile Include="ISearchable.cs" />
     <Compile Include="Meta\Metadata.cs" />
     <Compile Include="Meta\MetadataUriType.cs" />
@@ -100,7 +99,7 @@
     <Compile Include="Query\QueryLanguageFeature.cs" />
     <Compile Include="Relations\RelationAttribute.cs" />
     <Compile Include="Relations\RelationType.cs" />
-    <Compile Include="Request.cs" />
+    <Compile Include="ISingleRequest.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="SingleRequest.cs" />
     <Compile Include="SingleResponse.cs" />

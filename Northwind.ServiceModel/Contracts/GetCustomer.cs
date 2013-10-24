@@ -31,10 +31,9 @@ namespace Northwind.ServiceModel.Contracts
 	/// <summary>
 	/// Clase que representa una petición del tipo <see cref="Customer"/> por su clave
 	/// </summary>
-	[Api("Get details from a single Order by Id.")]
-	//[Route("/customers/{Id}/orders", "GET, DELETE")]
-	public class OrderDetails : CollectionRequest<OrderDetail>
-	{
-		public long Id { get; set; }
+	[Api("Get a single Customer by Id.")]
+	[Route("/customers/{Id}", "GET")]
+	public class GetCustomer : SingleRequest, IReturn<CustomerResponse>
+	{		
 	}
 }

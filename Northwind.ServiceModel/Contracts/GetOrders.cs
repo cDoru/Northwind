@@ -14,9 +14,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,22 +24,16 @@ using System.Text;
 using ServiceStack.ServiceHost;
 using Northwind.ServiceBase;
 using Northwind.ServiceModel.Dto;
+using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceModel.Operations
+namespace Northwind.ServiceModel.Contracts
 {
 	/// <summary>
-	/// Clase que representa una respuesta para el tipo Customer
+	/// Clase que representa una petición del lista <see cref="Customer"/>
 	/// </summary>
-	public class CustomersResponse : SingleResponse<Customer>
+	[Route("/orders", "GET")]
+	public class GetOrders : CollectionRequest, IReturn<OrdersCollectionResponse>
 	{
-		public CustomersResponse()
-			: base()
-		{
-		}
 
-		public CustomersResponse( Customer result )
-			: base(result)
-		{
-		}		 
 	}
 }

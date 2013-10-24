@@ -93,7 +93,7 @@ namespace Northwind.ServiceBase.Meta
 			if ( !list.IsFirstPage ) AddLink(MetadataUriType.First, 1);
 			if ( !list.IsLastPage ) AddLink(MetadataUriType.Last, Convert.ToInt32(TotalCount - Limit));
 			if ( list.HasNextPage ) AddLink(MetadataUriType.Next, Offset + Limit);
-			if ( list.HasPreviousPage ) AddLink(MetadataUriType.Previous, Limit - Offset);
+			if ( list.HasPreviousPage ) AddLink(MetadataUriType.Previous, Offset - Limit);
 		}
 
 		#endregion

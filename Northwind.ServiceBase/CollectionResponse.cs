@@ -14,39 +14,40 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
 using ServiceStack;
+using ServiceStack.ServiceHost;
 using ServiceStack.WebHost.Endpoints.Extensions;
-using Northwind.Common.Collections;
 using Northwind.ServiceBase.Meta;
 
 namespace Northwind.ServiceBase
 {
-	public class CollectionResponse<TDto> : ICollectionResponse<TDto>
+	public class CollectionResponse<TDto> 
 		where TDto : IDto, new()
-	{		
-
-		#region Miembros de ICollectionResponse<TDto>
+	{
+		
+		#region Propiedades
 
 		/// <summary>
 		/// Número de elementos de la colección
 		/// </summary>
 		public int Count
 		{
-			get { return (Result != null ? Result.Count : 0); }
+			get { return Result.Count; }
 		}
 
 		/// <summary>
 		/// Resultado
+		/// Esta propiedad se reescribirá en las clases derivadas. 
 		/// </summary>
-		public List<TDto> Result { get; set; }
+		protected virtual List<TDto> Result { get; set; }
 
 		/// <summary>
 		/// Metadatos
@@ -54,7 +55,7 @@ namespace Northwind.ServiceBase
 		public Metadata Metadata { get; set; }
 
 
-		#endregion		
+		#endregion
 
 		#region Constructores
 
@@ -62,9 +63,8 @@ namespace Northwind.ServiceBase
 		/// Constructor de la clase
 		/// </summary>
 		public CollectionResponse()
-		{
-			Result = new List<TDto>();
-		}
+			: this(new List<TDto>())
+		{ }
 
 		/// <summary>
 		/// Constructor de la clase
@@ -82,15 +82,13 @@ namespace Northwind.ServiceBase
 		/// <param name="offset">Primer elemento de la respuesta</param>
 		/// <param name="limit">Número de elementos de la respuesta</param>
 		/// <param name="totalCount">Número total de elementos</param>
-		public CollectionResponse( List<TDto> result, int offset, int limit, long totalCount ) 
+		public CollectionResponse( List<TDto> result, Metadata metadata )
 			: this(result)
 		{
-			var staticList = new StaticList<TDto>(result, offset, limit, totalCount);
-
-			Metadata = new Metadata(HttpContext.Current.Request.Url, staticList);
+			Metadata = metadata;
 		}
 
 		#endregion
-	
+		
 	}
 }

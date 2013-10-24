@@ -85,31 +85,21 @@ namespace Northwind.Host.Web
 			{
 				DebugMode = true
 			});
-
-			// Rutas			
-			Routes
-				.Add<CollectionRequest<Customer>>("/customers", "GET, PUT")
-				.Add<SingleRequest<Customer>>("/customers/{Id}", "GET, DELETE, POST")
-				.Add<CollectionRequest<Order>>("/orders", "GET, PUT")
-				.Add<CustomerOrders>("/customers/{Id}/orders", "GET, PUT")
-				.Add<SingleRequest<Order>>("/orders/{Id}", "GET, DELETE, POST")
-				.Add<OrderDetails>("/orders/{Id}/details", "GET, DELETE, POST")
-				.Add<CollectionRequest<Supplier>>("/suppliers", "GET, PUT")
-				.Add<SingleRequest<Supplier>>("/suppliers/{Id}", "GET, DELETE, POST");
-
-			// Formatos
-			//AtomFeedFormat.Register(this);
-
+			
 			// Plugins
 			var queryPlugin = new QueryLanguageFeature();
 			queryPlugin.RegisterAssociation(typeof(Customer), typeof(CustomerEntity));
+			queryPlugin.RegisterAssociation(typeof(GetCustomers), typeof(CustomerEntity));
 			queryPlugin.RegisterAssociation(typeof(Order), typeof(OrderEntity));
+			queryPlugin.RegisterAssociation(typeof(GetOrders), typeof(OrderEntity));
 			queryPlugin.RegisterAssociation(typeof(Supplier), typeof(SupplierEntity));
+			queryPlugin.RegisterAssociation(typeof(GetSuppliers), typeof(SupplierEntity));
 
 			Plugins.Add(queryPlugin);
 			Plugins.Add(new ValidationFeature());
 			Plugins.Add(new SwaggerFeature());
 			Plugins.Add(new RazorFormat());
+			Plugins.Add(new CorsFeature());
 
 			// Validaciones
 			container.RegisterValidators(typeof(CustomerValidator).Assembly);						

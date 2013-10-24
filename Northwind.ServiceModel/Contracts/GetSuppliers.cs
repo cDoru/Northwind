@@ -14,9 +14,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +29,11 @@ using Northwind.ServiceModel.Operations;
 namespace Northwind.ServiceModel.Contracts
 {
 	/// <summary>
-	/// Clase que representa una petición del tipo <see cref="Customer"/> por su clave
+	/// Clase que representa una petición de lista <see cref="Supplier"/> 
 	/// </summary>
-	[Api("Get orders from a single Customer by Id.")]
-	//[Route("/customers/{Id}/orders", "GET, DELETE")]
-	public class CustomerOrders : CollectionRequest<Order>
+	[Route("/suppliers", "GET")]
+	public class GetSuppliers : CollectionRequest, IReturn<SuppliersCollectionResponse>
 	{
-		public string Id { get; set; }
+
 	}
 }

@@ -22,17 +22,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceHost;
+using Northwind.ServiceBase;
+using Northwind.ServiceModel.Dto;
+using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceBase
+namespace Northwind.ServiceModel.Contracts
 {
 	/// <summary>
-	/// 
+	/// Clase que representa una petición del lista <see cref="Customer"/>
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public abstract class Request<TDto, TResponse> : IReturn<TResponse>
-		where TDto : IDto, new()
-		where TResponse : class, new()
+	[Route("/customers", "GET")]
+	public class GetCustomers : CollectionRequest, IReturn<CustomersCollectionResponse>
 	{
-		
+	
 	}
 }

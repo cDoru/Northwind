@@ -28,8 +28,7 @@ using ServiceStack.DesignPatterns.Model;
 
 namespace Northwind.Data.Model
 {
-	[Alias("Categories")]
-	[ETag("Id", "LastUpdated")]
+	[Alias("Categories")]	
     public partial class CategoryEntity : IEntity, IHasId<long> 
     {
         [Alias("Id")]

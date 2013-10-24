@@ -826,25 +826,19 @@ Por ejemplo, para el caso anterior, Ember Data espera esto:
 **/
 
 Northwind.ApplicationSerializer = DS.RESTSerializer.extend({
+
     // Reestructuramos el nivel superior para organizarlo de la manera que espera Ember. 
     // Crearemos un nuevo objeto payload cuyo nivel superior sea el nombre del modelo "primaryType" en plural
     extractArray: function (store, primaryType, payload) {
+        
+        delete payload.count;
+        
+        this.extractMeta(store, primaryType, payload);
 
-        var result = payload.result;
-        var metadata = payload.metadata;
-
-        // Obtenemos el nombre que tiene que tener el elemento raíz
-        var root = Ember.String.pluralize(primaryType.typeKey);
-
-        // Creamos un nuevo objeto como lo quiere Ember Data
-        var newPayload = {};
-
-        newPayload[root] = result;
-
-        return this._super(store, primaryType, newPayload);
+        return this._super(store, primaryType, payload);
 
     },
-
+    
     // Hacemos lo mismo que en extractArray
     extractSingle: function (store, primaryType, payload, recordId, requestType) {
 

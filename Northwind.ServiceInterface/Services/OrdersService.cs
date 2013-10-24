@@ -37,34 +37,89 @@ using Northwind.ServiceModel.Operations;
 namespace Northwind.ServiceInterface.Services
 {
 	/// <summary>
-	/// Servicio de clientes 
+	/// Servicio de <see cref="Order"/>
 	/// </summary>	
 	public class OrdersService : ServiceBase<OrderEntity, Order>
 	{
+		public OrdersService( IOrderEntityRepository repository )
+			: base(repository)
+		{ }
+
 		/// <summary>
-		/// Recuperación de <see cref="Order"/> para un <see cref="Customer"/>
+		/// Recuperación de un <see cref="Order"/>
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		public object Get( OrderDetails request )
+		public object Get( GetOrder request )
 		{
-			var cacheKey = UrnId.Create<OrderDetails>(request.Id.ToString());
+			return base.ToOptimizedResultUsingCache(
+				() =>
+				{
+					return GetSingle<OrderResponse>(request);
+				});
+		}
 
-			return RequestContext.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
-			{
-				var details = ((OrderEntityRepository)Repository).GetDetails(request.Id);
+		/// <summary>
+		/// Recuperación de la lista de <see cref="Orders"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( GetOrders request )
+		{
+			return base.ToOptimizedResultUsingCache(
+				() =>
+				{
+					return GetCollection<OrdersCollectionResponse>(request);
+				});			
+		}
 
-				var list = new List<OrderDetail>();
-				var result = details.All(
-					o =>
-					{
-						list.Add(o.TranslateTo<OrderDetail>());
-						return true;
-					});
+		/// <summary>
+		/// Recuperación de <see cref="OrderDetail"/> para un <see cref="Order"/>
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		public object Get( GetOrderDetails request )
+		{
+			return base.ToOptimizedResultUsingCache(
+				() =>
+				{
+					var details = ((IOrderEntityRepository)Repository)
+						.GetDetails(request.Id)
+						.Select(o => o.TranslateTo<OrderDetail>())
+						.ToList();
 
-				return new CollectionResponse<OrderDetail>(list);
+					return new OrderDetailsCollectionResponse(details);
+				});
+		}
 
-			});
+		/// <summary>
+		/// Actualización de un <see cref="Order"/>
+		/// </summary>
+		/// <param name="request"><see cref="Order"/> a actualizar</param>
+		/// <returns></returns>
+		public object Put( Order request )
+		{
+			return base.Update(request);
+		}
+
+		/// <summary>
+		/// Creación de un <see cref="Order"/>
+		/// </summary>
+		/// <param name="request"><see cref="Order"/> a crear</param>
+		/// <returns></returns>
+		public object Post( Order request )
+		{
+			return base.Insert<OrderResponse>(request);
+		}
+
+		/// <summary>
+		/// Eliminación de un <see cref="Order"/>
+		/// </summary>
+		/// <param name="request"><see cref="Order"/> a eliminar</param>
+		/// <returns></returns>
+		public object Delete( Order request )
+		{
+			return base.Remove(request);
 		}
 	}
 }

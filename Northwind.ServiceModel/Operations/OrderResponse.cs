@@ -20,33 +20,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
+using ServiceStack.ServiceHost;
+using Northwind.ServiceBase;
+using Northwind.ServiceModel.Dto;
 
-namespace Northwind.Common
+namespace Northwind.ServiceModel.Operations
 {
 	/// <summary>
-	/// Métodos de extensión para <see cref="Expression"/>
+	/// Clase que representa una respuesta para el tipo Customer
 	/// </summary>
-	public static class ExpressionExtensions
+	public class OrderResponse : SingleResponse<Order>
 	{
 		/// <summary>
-		/// Elimina todas las conversiones existentes en la expresión
+		/// 
 		/// </summary>
-		/// <param name="expression">Expresión a comprobar</param>
-		/// <returns><see cref="Expression"/> resultante</returns>
-		public static Expression RemoveConvert( this Expression expression )
+		public Order Order
 		{
-			Verify.ArgumentNotNull(expression, "expression");
+			get { return base.Result; }
+			set { base.Result = value; }
+		}
 
-			while ( (expression != null) &&
-					(expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked) )
-			{
-				expression = RemoveConvert(((UnaryExpression)expression).Operand);
-			}
+		/// <summary>
+		/// 
+		/// </summary>
+		public OrderResponse()
+			: base()
+		{
+		}
 
-			return expression;
-					
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="result"></param>
+		public OrderResponse( Order result )
+			: base(result)
+		{
 		}
 	}
 }

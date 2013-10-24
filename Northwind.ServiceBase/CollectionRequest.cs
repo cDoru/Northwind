@@ -30,8 +30,7 @@ namespace Northwind.ServiceBase
 	/// 
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class CollectionRequest<TDto> : Request<TDto, CollectionResponse<TDto>>, ICollectionRequest, ISearchable
-		where TDto : IDto, new()
+	public class CollectionRequest : ICollectionRequest
 	{
 		/// <summary>
 		/// 
@@ -48,6 +47,7 @@ namespace Northwind.ServiceBase
 		/// <summary>
 		/// Representa una expresión de búsqueda y filtrado de datos
 		/// </summary>
+		/// TODO: Añadir una función para la conversión de un string o IEnumerable<String> en IQueryExpression
 		public IQueryExpression Query { get; set; }
 
 		#endregion

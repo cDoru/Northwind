@@ -29,7 +29,7 @@ namespace Northwind.Common
 	/// <summary>
 	/// Clases de extensión para <see cref="Uri"/>
 	/// </summary>
-	public static class UriExtensions
+	public static class UriExtensionHelper
 	{
 		/// <summary>
 		/// Devuelve la información de consulta de una <see cref="Uri"/> en forma de <see cref="HttpQueryValueCollection"/>

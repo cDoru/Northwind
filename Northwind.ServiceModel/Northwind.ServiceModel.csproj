@@ -72,18 +72,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\CustomerDetail.cs" />
-    <Compile Include="Contracts\CustomerCreation.cs" />
-    <Compile Include="Contracts\CustomerOrders.cs" />
-    <Compile Include="Contracts\Customers.cs" />
-    <Compile Include="Contracts\CustomerUpdate.cs" />
-    <Compile Include="Contracts\OrderDetails.cs" />
+    <Compile Include="Contracts\GetCustomer.cs" />
+    <Compile Include="Contracts\GetCustomerOrders.cs" />
+    <Compile Include="Contracts\GetCustomers.cs" />
+    <Compile Include="Contracts\GetOrder.cs" />
+    <Compile Include="Contracts\GetOrderDetails.cs" />
+    <Compile Include="Contracts\GetOrders.cs" />
+    <Compile Include="Contracts\GetSupplier.cs" />
+    <Compile Include="Contracts\GetSuppliers.cs" />
     <Compile Include="Dto\Order.cs" />
     <Compile Include="Dto\OrderDetail.cs" />
     <Compile Include="Dto\Supplier.cs" />
     <Compile Include="Operations\CustomersCollectionResponse.cs" />
-    <Compile Include="Operations\CustomersResponse.cs" />
+    <Compile Include="Operations\CustomerResponse.cs" />
     <Compile Include="Dto\Customer.cs" />
+    <Compile Include="Operations\OrderDetailsCollectionResponse.cs" />
+    <Compile Include="Operations\OrdersCollectionResponse.cs" />
+    <Compile Include="Operations\OrderResponse.cs" />
+    <Compile Include="Operations\SupplierResponse.cs" />
+    <Compile Include="Operations\SuppliersCollectionResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

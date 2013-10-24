@@ -29,7 +29,6 @@ using ServiceStack.DesignPatterns.Model;
 namespace Northwind.Data.Model
 {
 	[Alias("OrderDetails")]
-	[ETag("Id", "LastUpdated")]
 	public partial class OrderDetailEntity : IEntity, IHasId<string> 
     {
         [Alias("Id")]

@@ -30,7 +30,7 @@ namespace Northwind.Common
 	/// Clase con métodos de extensión para <see cref="Type"/>
 	/// </summary>
 	/// <seealso cref="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/"/>
-	public static class TypeExtensions
+	public static class TypeExtensionHelper
 	{		
 		/// <summary>
 		/// Crea una instancia del <paramref name="type"/> con los parámetros indicados
@@ -43,8 +43,10 @@ namespace Northwind.Common
 			Verify.ArgumentNotNull(type, "type");
 			Verify.ArgumentNotNull(args, "args");
 
-			// Obtención del primer constructor
-			var constructor = type.GetConstructors().First();
+			// Obtención del constructor adecuado para los parámetros
+			//var constructor = type.GetConstructors().First();
+			var types = args.Select(a => a.GetType()).ToArray();
+			var constructor = type.GetConstructor(types);
 			var paramsInfo = constructor.GetParameters();
 
 			// Creación de un parámetro de tipo object[] (parámetros variables)
@@ -54,7 +56,7 @@ namespace Northwind.Common
 			// Creación de una expresión tipada para cada parámetro del array
 			for ( var item = 0; item < paramsInfo.Length; item++ )
 			{
-				var index = Expression.Constant("i");
+				var index = Expression.Constant(item);
 				var paramAccessorExpr = Expression.ArrayIndex(paramExpr, index);
 				var paramCastExpr = Expression.Convert(paramAccessorExpr, paramsInfo[item].ParameterType);
 
@@ -81,6 +83,27 @@ namespace Northwind.Common
 		public static object CreateInstance( this Type type )
 		{
 			return CreateInstance(type, new object[] { });
-		}				
+		}
+
+		/// <summary>
+		/// Crea una instancia de <typeparamref name="T"/> según los argumentos indicados
+		/// </summary>
+		/// <typeparam name="T"><see cref="Type"/> que se creará</typeparam>
+		/// <returns>Un objeto de tipo <typeparamref name="T"/></returns>
+		public static T CreateInstance<T>()
+		{
+			return (T)CreateInstance(typeof(T));
+		}
+
+		/// <summary>
+		/// Crea una instancia de <typeparamref name="T"/> según los argumentos indicados
+		/// </summary>
+		/// <typeparam name="T"><see cref="Type"/> que se creará</typeparam>
+		/// <param name="args">Argumentos</param>
+		/// <returns>Un objeto de tipo <typeparamref name="T"/></returns>
+		public static T CreateInstance<T>( params object[] args )
+		{
+			return (T)CreateInstance(typeof(T), args);
+		}
 	}
 }

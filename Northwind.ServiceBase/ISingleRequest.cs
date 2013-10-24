@@ -22,18 +22,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceHost;
-using Northwind.ServiceBase;
-using Northwind.ServiceModel.Dto;
-using Northwind.ServiceModel.Operations;
 
-namespace Northwind.ServiceModel.Contracts
+namespace Northwind.ServiceBase
 {
 	/// <summary>
-	/// Clase que representa una petición del tipo <see cref="Customer"/> por su clave
+	/// 
 	/// </summary>
-	[Api("Get a single Customer by Id.")]
-	//[Route("/customers/{Id}", "GET, DELETE")]
-	public class CustomerDetail : SingleRequest<Customer>
+	/// <typeparam name="T"></typeparam>
+	public interface ISingleRequest
 	{
+		object Id { get; set; }
 	}
 }

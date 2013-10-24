@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace Northwind.ServiceBase
 {
@@ -28,22 +29,29 @@ namespace Northwind.ServiceBase
 	/// 
 	/// </summary>
 	/// <typeparam name="TResult"></typeparam>
-	public class SingleResponse<TResult> : IResponse<TResult>
+	public class SingleResponse<TResult>  
 		where TResult : IDto, new()
 	{
 		#region Miembros de IResponse<TResult>
-
-		public TResult Result { get; set; }
+				
+		protected virtual TResult Result { get; set; }
 
 		#endregion
 
 		#region Constructores
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public SingleResponse()
 		{
 			
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="result"></param>
 		public SingleResponse( TResult result )
 		{
 			Result = result;

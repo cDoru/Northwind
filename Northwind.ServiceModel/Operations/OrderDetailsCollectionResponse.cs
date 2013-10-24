@@ -14,38 +14,51 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Northwind.ServiceBase.Meta;
+using Northwind.ServiceBase;
+using Northwind.ServiceModel.Dto;
 
-namespace Northwind.ServiceBase
+namespace Northwind.ServiceModel.Operations
 {
 	/// <summary>
-	/// Interfaz que representa una respuesta en forma de colección
+	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
 	/// </summary>
-	/// <typeparam name="TDto"></typeparam>
-	public interface ICollectionResponse<TDto> 
-		where TDto : IDto, new()
+	public class OrderDetailsCollectionResponse : CollectionResponse<OrderDetail>
 	{
-		/// <summary>
-		/// Número de elementos
-		/// </summary>
-		int Count { get; }
 
 		/// <summary>
-		/// Resultado
+		/// Lista de <see cref="Supplier"/>
 		/// </summary>
-		List<TDto> Result { get; set; }
-		
+		public List<OrderDetail> Details
+		{
+			get { return base.Result; }
+			set { base.Result = value; }
+		}
+
+		#region Constructores
+
 		/// <summary>
-		/// Metadatos
+		/// Constructor de la clase
 		/// </summary>
-		Metadata Metadata { get; set; }
+		public OrderDetailsCollectionResponse()
+			: base()
+		{ }
+
+		/// <summary>
+		/// Constructor de la clase
+		/// </summary>
+		/// <param name="details"></param>
+		public OrderDetailsCollectionResponse( List<OrderDetail> details )
+			: base(details)
+		{ }
+		
+		#endregion
 
 	}
 }

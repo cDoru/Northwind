@@ -14,9 +14,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/        
+*/
 #endregion
-          
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,15 +27,14 @@ using Northwind.ServiceModel.Dto;
 namespace Northwind.ServiceModel.Operations
 {
 	/// <summary>
-	/// Clase que representa una respuesta para una colección de <seealso cref="Customer"/>
+	/// Clase que representa una respuesta para una colección de <seealso cref="Supplier"/>
 	/// </summary>
-	public class CustomersCollectionResponse : CollectionResponse<Customer>
+	public class SuppliersCollectionResponse : CollectionResponse<Supplier>
 	{
-
 		/// <summary>
 		/// Lista de <see cref="Supplier"/>
 		/// </summary>
-		public List<Customer> Customers
+		public List<Supplier> Suppliers
 		{
 			get { return base.Result; }
 			set { base.Result = value; }
@@ -46,19 +45,18 @@ namespace Northwind.ServiceModel.Operations
 		/// <summary>
 		/// Constructor de la clase
 		/// </summary>
-		public CustomersCollectionResponse()
+		public SuppliersCollectionResponse()
 			: base()
 		{ }
 
 		/// <summary>
 		/// Constructor de la clase
 		/// </summary>
-		/// <param name="customers"></param>
-		public CustomersCollectionResponse( List<Customer> customers )
-			: base(customers)
+		/// <param name="suppliers"></param>
+		public SuppliersCollectionResponse( List<Supplier> suppliers )
+			: base(suppliers)
 		{ }		
 
 		#endregion
-
 	}
 }
