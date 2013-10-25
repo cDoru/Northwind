@@ -10,7 +10,7 @@ namespace Northwind.ServiceModel.Dto
 	/// </summary>	
 	[Api("Create a single Customer.")]
 	[Route("/customers", "POST")]
-	[Route("/customers/{Id}", "PUT DELETE")]	
+	[Route("/customers/{Id}", "PUT DELETE")]       
 	public class Customer : CommonDto, IReturnVoid
 	{		
 		public string Id { get; set; }		

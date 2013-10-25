@@ -124,5 +124,15 @@ namespace Northwind.ServiceInterface.Services
 		{
 			return base.Remove(request);
 		}
+
+		/// <summary>
+		/// Actualización parcial de un <see cref="Customer"/>
+		/// </summary>
+		/// <param name="request"><see cref="Customer"/> a actualizar</param>
+		/// <returns></returns>
+		public object Patch( Customer request )
+		{
+			return base.UpdatePartial(request);
+		}
 	}
 }

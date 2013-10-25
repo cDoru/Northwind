@@ -158,9 +158,9 @@ namespace Northwind.ServiceBase
 
 		#region Put
 		/// <summary>
-		/// Actualización de un elemento.
+		/// Actualización completa de un elemento.
 		/// <para>
-		/// Devuelve el status 201 si la creación ha sido correcta
+		/// Devuelve el status 200 si la creación ha sido correcta
 		/// </para>
 		/// </summary>
 		/// <typeparam name="TResponse">Tipo de la respuesta</typeparam>
@@ -177,6 +177,9 @@ namespace Northwind.ServiceBase
 		#region Post
 		/// <summary>
 		/// Creación de un elemento
+		/// <para>
+		/// Devuelve el status 201 si la creación ha sido correcta
+		/// </para>
 		/// </summary>
 		/// <param name="request">Elemento a crear</param>
 		/// <returns>{TResponse}</returns>
@@ -200,6 +203,24 @@ namespace Northwind.ServiceBase
 			Repository.Delete(request.TranslateTo<TEntity>());
 
 			return new HttpResult(HttpStatusCode.NoContent);
+		}
+		#endregion
+
+		#region Patch
+		/// <summary>
+		/// Actualización parcial de un elemento
+		/// </summary>
+		/// <param name="request">Elemento a actualizar</param>
+		/// <returns></returns>
+		protected object UpdatePartial( TDto request )
+		{
+			var current = Repository.Get(request.GetId<TDto>());
+			current.PopulateWithNonDefaultValues(request);
+
+			Repository.Update(current.TranslateTo<TEntity>());
+
+			return new HttpResult(HttpStatusCode.OK);
+
 		}
 		#endregion
 

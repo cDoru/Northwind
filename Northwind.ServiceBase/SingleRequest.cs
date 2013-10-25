@@ -31,6 +31,6 @@ namespace Northwind.ServiceBase
 	/// <typeparam name="T"></typeparam>
 	public class SingleRequest : ISingleRequest
 	{
-		public object Id { get; set; }
+		public virtual object Id { get; set; }
 	}
 }
