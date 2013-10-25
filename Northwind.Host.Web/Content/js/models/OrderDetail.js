@@ -5,8 +5,7 @@
 	@module		@Northwind
 **/
 
-Northwind.OrderDetail = DS.Model.extend({
-//	id: DS.attr('string'),
+Northwind.OrderDetail = Northwind.Model.extend({
 	productId: DS.attr('long'),
 	unitPrice: DS.attr('decimal'),
 	quantity: DS.attr('long'),

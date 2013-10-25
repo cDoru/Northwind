@@ -5,8 +5,7 @@
 	@module		@Northwind
 **/
 
-Northwind.Order = DS.Model.extend({
-//	id: DS.attr('long'),
+Northwind.Order = Northwind.Model.extend({
 	employeeId: DS.attr('long'),
 	orderDate: DS.attr('string'),
 	requiredDate: DS.attr('string'),
@@ -21,5 +20,5 @@ Northwind.Order = DS.Model.extend({
 	
     customer: DS.belongsTo('customer'),
 
-    details: DS.hasMany('orderdetails')
+    details: DS.hasMany('orderDetail')
 });

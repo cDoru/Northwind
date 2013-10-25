@@ -37,16 +37,14 @@ Northwind.ObjectController = Ember.ObjectController.extend({
 		**/
 		acceptChanges: function () {
 
-			this.set('isEditing', false);			
+			this.set('isEditing', false);
 
 			// Comprobamos que los campos obligatorios tienen datos
 			if (this.get('model.isSaveable'))
 			{
-				console.log('isSaveable');
-				//this.send('save');
+				this.send('save');
 			} else {
-				console.log('NOT isSaveable');
-				//this.send('remove');
+				this.send('remove');
 			}
 
 		},
